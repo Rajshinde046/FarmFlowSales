@@ -17,12 +17,8 @@ class RouteName {
   static const String connectfarmer = '/connectfarmer';
 
 
-
-
-
-
-
-
+  static const String sales = '/sales';
+  static const String ordermain = '/ordermain';
 
   // side menu
   static const String contact = '/contact';

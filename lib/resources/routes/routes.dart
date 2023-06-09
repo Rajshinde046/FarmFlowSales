@@ -1,11 +1,19 @@
 
+import 'package:farm_flow_sales/View/Connectfarmer.dart';
+import 'package:farm_flow_sales/View/Farmers/farmer.dart';
+import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
+
+
 
 import 'package:farm_flow_sales/View/Connectfarmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
 
+
 import 'package:farm_flow_sales/View/LoginScreen.dart';
 import 'package:farm_flow_sales/View/Notification.dart';
+import 'package:farm_flow_sales/View/Order/ordersmain.dart';
+import 'package:farm_flow_sales/View/Sales.dart';
 import 'package:farm_flow_sales/View/Settings.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/faqs.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/insidefaq.dart';
@@ -62,8 +70,13 @@ class AppRoutes {
         GetPage(
           name: RouteName.faqcontent,
           page: () => const Faqscontent(),
+        ),
+      
 
+
+     
           GetPage(
+
           name: RouteName.feedBack,
           page: () => FeedBack(),
         ),
@@ -71,15 +84,15 @@ class AppRoutes {
           name: RouteName.feedBackform,
           page: () => Feedbackform(),
         ),
-          GetPage(
+        GetPage(
           name: RouteName.contactus,
           page: () => ContactUs(),
         ),
-         GetPage(
+        GetPage(
           name: RouteName.notification,
           page: () => const Notification(),
         ),
-            GetPage(
+        GetPage(
           name: RouteName.settings,
           page: () => const Settings(),
 

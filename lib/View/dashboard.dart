@@ -1,4 +1,3 @@
-
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
@@ -317,8 +316,18 @@ class _Dashboard extends State<Dashboard> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          bottomContainer('In Progress Delivery', '03'),
-                          bottomContainer('Pending Delivery', '19'),
+                          InkWell(
+                              onTap: () {
+                                Get.toNamed("/sales");
+                              },
+                              child: bottomContainer(
+                                  'In Progress Delivery', '03')),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed("/ordermain");
+                            },
+                            child: bottomContainer('Pending Delivery', '19'),
+                          ),
                         ],
                       ),
                       sizedBoxHeight(20.h),
