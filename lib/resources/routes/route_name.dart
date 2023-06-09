@@ -10,6 +10,12 @@ class RouteName {
   static const String sideMenu = '/sideMenu';
   static const String notification = '/notification';
   static const String settings = '/settings';
+  static const String warehouse = '/warehouse';
+  static const String products = '/products';
+  static const String farmer = '/farmer';
+  static const String farmerdetails = '/farmerdetails';
+  static const String connectfarmer = '/connectfarmer';
+
   static const String sales = '/sales';
   static const String ordermain = '/ordermain';
 

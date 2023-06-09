@@ -1,3 +1,6 @@
+import 'package:farm_flow_sales/View/Connectfarmer.dart';
+import 'package:farm_flow_sales/View/Farmers/farmer.dart';
+import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
 import 'package:farm_flow_sales/View/LoginScreen.dart';
 import 'package:farm_flow_sales/View/Notification.dart';
 import 'package:farm_flow_sales/View/Order/ordersmain.dart';
@@ -10,7 +13,9 @@ import 'package:farm_flow_sales/View/Side%20Menu/Feedback/feedbackform.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/SideMenu.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Contact/contact.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/contactUs.dart';
+import 'package:farm_flow_sales/View/Warehouse/warehouse.dart';
 import 'package:farm_flow_sales/View/forgot_password.dart';
+import 'package:farm_flow_sales/View/products.dart';
 import 'package:farm_flow_sales/View/reset_password.dart';
 import 'package:farm_flow_sales/View/splash_screen.dart';
 import 'package:farm_flow_sales/View/verify_number.dart';
@@ -75,14 +80,6 @@ class AppRoutes {
         GetPage(
           name: RouteName.settings,
           page: () => const Settings(),
-        ),
-        GetPage(
-          name: RouteName.sales,
-          page: () => const Sales(),
-        ),
-        GetPage(
-          name: RouteName.ordermain,
-          page: () => OrderMain(),
         ),
       ];
 }

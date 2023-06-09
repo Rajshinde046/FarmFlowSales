@@ -1,0 +1,188 @@
+import 'package:farm_flow_sales/Common/custom_appbar.dart';
+import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Utils/colors.dart';
+import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class Connectfarmer extends StatefulWidget {
+  const Connectfarmer({super.key});
+
+  @override
+  State<Connectfarmer> createState() => _ConnectfarmerState();
+}
+
+class _ConnectfarmerState extends State<Connectfarmer> {
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
+  buildconnectfarmer(context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.of(context).pop(true);
+            Get.toNamed("/farmer");
+          });
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: 16),
+                backgroundColor:
+                    Get.isDarkMode ? Colors.black : Color(0XFFFFFFFF),
+                contentPadding: EdgeInsets.fromLTRB(31.w, 50.h, 31.w, 52.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  side: BorderSide(
+                      color: Get.isDarkMode ? Colors.grey : Color(0XFFFFFFFF)),
+                ),
+                content: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //sizedBoxHeight(46.h),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text("Farmer Added Succesfully",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontSize: 22.sp,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w500,
+                          )),
+                    ),
+                    sizedBoxHeight(23.h),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        "assets/images/connectcheck.svg",
+                        width: 87.w,
+                        height: 87.h,
+                      ),
+                    ),
+
+                    // sizedBoxHeight(28.h)
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: customAppBar(text: "Connect To Farmer"),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        titleSpacing: 0,
+        backgroundColor: AppColors.white,
+      ),
+      body: SafeArea(
+          child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Form(
+            key: _form,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                sizedBoxHeight(42.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Enter The Code To Connect To \nA Farmer",
+                      // textAlign: TextAlign.center,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff141414)),
+                    ),
+                  ],
+                ),
+                sizedBoxHeight(59.h),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text("Connection Code!",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff141414))),
+                ),
+                sizedBoxHeight(14.h),
+                TextFormField(
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  readOnly: false,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  cursorColor: AppColors.buttoncolour,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    errorStyle: TextStyle(fontSize: 16.sp),
+                    contentPadding: EdgeInsets.all(17.h),
+                    filled: true,
+                    fillColor: Color(0xFFF1F1F1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.red, width: 1),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.red, width: 1),
+                    ),
+                    hintStyle: TextStyle(
+                        color: AppColors.buttoncolour,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: "Poppins",
+                        fontSize: 16.sp),
+                    hintText: "Enter Code",
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Connection code is required';
+                    }
+                    return null;
+                  },
+                ),
+                sizedBoxHeight(55.h),
+                customButtonCurve(
+                    text: "Connect To Farmer",
+                    onTap: () {
+                      if (_form.currentState!.validate()) {
+                        buildconnectfarmer(context);
+                      }
+                    })
+              ],
+            ),
+          ),
+        ),
+      )),
+    );
+  }
+}
