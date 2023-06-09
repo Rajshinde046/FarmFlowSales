@@ -24,180 +24,183 @@ class _Dashboard extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(75.w, 10.h, 16.w, 10.h),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      textBlack20W7000Mon("Dashboard"),
-                    ],
-                  ),
-                  const Spacer(),
-                  Container(
-                    height: 42.h,
-                    width: 42.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.h),
-                      color: AppColors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade400,
-                          blurRadius: 5.h,
-                          spreadRadius: 2.h,
-                        )
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: AppColors.transparent,
+      // extendBody: true,
+      body: Container(
+        // color: AppColors.white,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(75.w, 10.h, 16.w, 10.h),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            Get.toNamed("/notification");
-                          },
-                          child: SvgPicture.asset(
-                            "assets/images/notification_bell.svg",
-                            height: 28.h,
-                            width: 28.h,
-                            color: AppColors.black,
-                          ),
-                        ),
+                        textBlack20W7000Mon("Dashboard"),
                       ],
                     ),
-                  ),
-                  sizedBoxWidth(10.w),
-                  Container(
-                    height: 42.h,
-                    width: 42.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.h),
-                      color: AppColors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade400,
-                          blurRadius: 5.h,
-                          spreadRadius: 2.h,
-                        )
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            // Get.toNamed("/settings");
-                          },
-                          child: SvgPicture.asset(
-                            "assets/images/Settings.svg",
-                            height: 28.h,
-                            width: 28.h,
-                            color: AppColors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(27.h),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.04),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            )
-                          ],
-                          color: AppColors.pistaE3FFE9,
-                        ),
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Lottie.asset(
-                                    "assets/lotties/cloud2.json",
-                                    height: 156.h,
-                                    width: 156.w,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      20.w, 15.h, 36.w, 20.h),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Stack(
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  textBlack20W7000Mon(
-                                                      "Welcome Back Kevin"),
-                                                  sizedBoxHeight(15.h),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                        "assets/images/locationconnect.svg",
-                                                        color: AppColors.black,
-                                                        height: 20.h,
-                                                        width: 20.h,
-                                                      ),
-                                                      sizedBoxWidth(5.w),
-                                                      textBlack18W5000(
-                                                          "Ireland")
-                                                    ],
-                                                  ),
-                                                  textGreen50Bold("22° C"),
-                                                  textBlack18W5000(
-                                                      "Sat, 3 Nov -12.32PM"),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                    const Spacer(),
+                    Container(
+                      height: 42.h,
+                      width: 42.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.h),
+                        color: AppColors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade400,
+                            blurRadius: 5.h,
+                            spreadRadius: 2.h,
+                          )
+                        ],
                       ),
-                      sizedBoxHeight(15.h),
-                      Visibility(
-                        visible: lowFeed,
-                        child: Column(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed("/notification");
+                            },
+                            child: SvgPicture.asset(
+                              "assets/images/notification_bell.svg",
+                              height: 28.h,
+                              width: 28.h,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    sizedBoxWidth(10.w),
+                    Container(
+                      height: 42.h,
+                      width: 42.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.h),
+                        color: AppColors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade400,
+                            blurRadius: 5.h,
+                            spreadRadius: 2.h,
+                          )
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              // Get.toNamed("/settings");
+                            },
+                            child: SvgPicture.asset(
+                              "assets/images/Settings.svg",
+                              height: 28.h,
+                              width: 28.h,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(27.h),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.04),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              )
+                            ],
+                            color: AppColors.pistaE3FFE9,
+                          ),
+                          child: Column(
+                            children: [
+                              Stack(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Lottie.asset(
+                                      "assets/lotties/cloud2.json",
+                                      height: 156.h,
+                                      width: 156.w,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        20.w, 15.h, 36.w, 20.h),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Stack(
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    textBlack20W7000Mon(
+                                                        "Welcome Back Kevin"),
+                                                    sizedBoxHeight(15.h),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          "assets/images/locationconnect.svg",
+                                                          color: AppColors.black,
+                                                          height: 20.h,
+                                                          width: 20.h,
+                                                        ),
+                                                        sizedBoxWidth(5.w),
+                                                        textBlack18W5000(
+                                                            "Ireland")
+                                                      ],
+                                                    ),
+                                                    textGreen50Bold("22° C"),
+                                                    textBlack18W5000(
+                                                        "Sat, 3 Nov -12.32PM"),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                       
+                        sizedBoxHeight(15.h),
+                        Column(
                           children: [
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.h),
                                 color: AppColors.redFCDADA,
-                                border: Border.all(
-                                    color: AppColors.redFA5658, width: 1.h),
+                                // border: Border.all(
+                                //     color: AppColors.redFA5658, width: 1.h),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.04),
@@ -209,167 +212,129 @@ class _Dashboard extends State<Dashboard> {
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 15.w, vertical: 10.h),
-                                child: Row(
+                                child: Column(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 18.h,
-                                      backgroundColor: AppColors.redFA5658,
-                                      child: CircleAvatar(
-                                        radius: 13.h,
-                                        backgroundColor: AppColors.white,
-                                        child: Icon(
-                                          Icons.warning_amber_rounded,
-                                          size: 16.h,
-                                          color: AppColors.redFA5658,
-                                        ),
-                                      ),
-                                    ),
-                                    sizedBoxWidth(20.w),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Row(
                                       children: [
+                                        CircleAvatar(
+                                          radius: 13.h,
+                                          backgroundColor: AppColors.redFA5658.withOpacity(0.2),
+                                          child: Icon(
+                                            Icons.warning_amber_rounded,
+                                            size: 16.h,
+                                            color: AppColors.redFA5658,
+                                          ),
+                                        ),
+                                        sizedBoxWidth(10.w),
                                         textblack14M("Loreum Ipsum Is"),
-                                        sizedBoxHeight(5.h),
-                                        textGrey12L(
-                                            "Loreum Ipsum Is Simple Dummy text")
+      
+                                        const Spacer(),
+      
+                                        textGreen14("New")
+                                    
                                       ],
                                     ),
-                                    const Spacer(),
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          lowFeed = false;
-                                        });
-                                      },
-                                      child: CircleAvatar(
-                                        radius: 13.h,
-                                        backgroundColor: AppColors.white,
-                                        child: Icon(
-                                          Icons.close,
-                                          size: 15.h,
-                                          color: AppColors.grey4D4D4D,
-                                        ),
-                                      ),
-                                    ),
+      
+                                    sizedBoxHeight(5.h),
+      
+                                    textGrey12L("Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry Lorem")
                                   ],
                                 ),
                               ),
                             ),
                             sizedBoxHeight(15.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(
-                                5,
-                                (index) => Container(
-                                  decoration: BoxDecoration(
-                                      color: index == 2
-                                          ? AppColors.buttoncolour
-                                          : const Color(0xffE1E1E1),
-                                      borderRadius:
-                                          BorderRadius.circular(25.r)),
-                                  height: 7.h,
-                                  width: index == 2 ? 30.h : 7.h,
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 3.0,
-                                  ),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 5.w, vertical: 10.h),
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(24.w, 15.h, 24.w, 0),
+      
+                        Container(
                           decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(19.h)),
-                              color: AppColors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0x48B9B9BE),
-                                  blurRadius: 10,
-                                  spreadRadius: 2,
-                                )
-                              ]),
-                          child: Row(
+                            borderRadius: BorderRadius.circular(27.h),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.04),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              )
+                            ],
+                            color: AppColors.pistaE3FFE9,
+                          ),
+                          child: Column(
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              sizedBoxHeight(10.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  textBlack20W7000("Start Delivery"),
+                                  Column(
+                                    // crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Image.asset("assets/images/locationRoad.png",
+                                        height: 80.h,
+                                        width: 80.h,
+                                      ),
+                                      // SvgPicture.asset(
+                                      //   'assets/images/locationRoad.svg',
+                                      //   height: 80.h,
+                                      //   width: 80.h,
+                                      // ),
+      
+                                      sizedBoxHeight(10.h),
+      
+                                      textBlack20W7000("Deliveries"),
+      
+                                    ],
+                                  ),
+      
                                   Lottie.asset(
-                                      "assets/lotties/delivery_track.json",
-                                      height: 120.h,
-                                      width: 137.w)
+                                    "assets/lotties/delivery_track.json",
+                                    height: 150.h,
+                                    width: 160.w
+                                  ),
+                                  
                                 ],
                               ),
+      
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 16.h),
+                                child: Row(
+                                  children: [
+                                    deliveriesCard("assets/images/timer.png", "In Progress Delivery", "3", 0),
+                                    sizedBoxWidth(3.w),
+                                    deliveriesCard("assets/images/clock.png", "Pending Delivery", "19", 1),
+                                    sizedBoxWidth(3.w),
+                                    deliveriesCard("assets/images/calender.png", "In Progress Delivery", "3", 2),
+      
+                                    
+                                  ],
+                                ),
+                              )
+      
+                          
                             ],
                           ),
                         ),
-                      ),
-                      sizedBoxHeight(10.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          bottomContainer('In Progress Delivery', '03'),
-                          bottomContainer('Pending Delivery', '19'),
-                        ],
-                      ),
-                      sizedBoxHeight(20.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          bottomContainer('Reschedule Delivery', '05'),
-                          bottomContainer('Complete Delivery', '153'),
-                        ],
-                      ),
-                      sizedBoxHeight(20.h),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.h),
-                          color: AppColors.redFCDADA,
-                          border: Border.all(
-                              color: AppColors.redFA5658, width: 1.h),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.04),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            )
+                       
+                        sizedBoxHeight(20.h),
+      
+                        Row(
+                          children: [
+                            sfwCard("assets/images/sales.png", "Sales"),
+                            sizedBoxWidth(15.w),
+                            sfwCard("assets/images/farmer.png", "Farmers"),
+                            sizedBoxWidth(15.w),
+                            sfwCard("assets/images/warehouse.png", "Warehouse"),
+                            
                           ],
+      
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15.w, vertical: 10.h),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset('assets/images/Settings.svg'),
-                              sizedBoxWidth(20.w),
-                              textGrey4D4D4D_16('Cancelled Delivery'),
-                              const Spacer(),
-                              Text(
-                                '02',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 25.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      sizedBoxHeight(20.h),
-                    ],
+      
+                        sizedBoxHeight(10.h)
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -435,4 +400,90 @@ class _Dashboard extends State<Dashboard> {
       ),
     );
   }
+
+  Widget deliveriesCard(String image, String title, String number,int index){
+    return Expanded(
+      child: Container(
+        height: 155.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular( index == 0 ?10.h:0),
+            bottomLeft: Radius.circular(index == 0 ? 10.h:0),
+            topRight: Radius.circular(index == 2 ? 10.h:0),
+            bottomRight: Radius.circular(index == 2 ? 10.h:0)
+          ),
+          color: AppColors.white,
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
+          child: Column(
+            children: [
+              Image.asset(
+                image,
+                // "assets/images/timer.png",
+                height: 30.h,
+                width: 18.w,
+              ),
+          
+              sizedBoxHeight(10.h),
+          
+              textblack14M(title
+                // "In Progress Delivery"
+              ),
+            
+              // sizedBoxHeight(10.h),
+              Spacer(),
+          
+              textGreen20W7000Mon(number)
+            ],
+          ),
+        ),
+                  
+      ),
+    );
+                                
+  }
+
+  Widget sfwCard(String image, String title){
+    return Expanded(
+      child: Container(
+        height: 110.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.h),
+          color: AppColors.pistaE3FFE9,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade400,
+              blurRadius: 5.h,
+              spreadRadius: 0.5.h,
+            )
+          ],
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
+          child: Column(
+            children: [
+              Image.asset(
+                image,
+                // "assets/images/timer.png",
+                height: 46.h,
+                width: 46.h,
+              ),
+          
+              sizedBoxHeight(10.h),
+          
+              textblack14M(title
+                // "In Progress Delivery"
+              ),
+            
+              // sizedBoxHeight(10.h),
+            ],
+          ),
+        ),
+                  
+      ),
+    );
+                                
+  }
+
 }
