@@ -1,6 +1,6 @@
-
 import 'package:farm_flow_sales/View/LoginScreen.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/faqs.dart';
+import 'package:farm_flow_sales/View/Side%20Menu/Faqs/insidefaq.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/SideMenu.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/contact.dart';
 import 'package:farm_flow_sales/View/forgot_password.dart';
@@ -44,6 +44,10 @@ class AppRoutes {
         GetPage(
           name: RouteName.faqs,
           page: () => const Faq(),
+        ),
+        GetPage(
+          name: RouteName.faqcontent,
+          page: () => const Faqscontent(),
         ),
       ];
 }
