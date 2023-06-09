@@ -27,9 +27,9 @@ class RouteName {
   // side menu
   static const String contact = '/contact';
   static const String faqs = '/faq';
+  static const String faqcontent = '/faqcontent';
   static const String feedBack = '/feedBack';
   static const String feedBackform = '/feedbackform';
   static const String contactus = '/contactus';
-
 
 }
