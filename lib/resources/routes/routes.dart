@@ -12,6 +12,7 @@ import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
 
 import 'package:farm_flow_sales/View/LoginScreen.dart';
 import 'package:farm_flow_sales/View/Notification.dart';
+import 'package:farm_flow_sales/View/Order/orderdetails.dart';
 import 'package:farm_flow_sales/View/Order/ordersmain.dart';
 import 'package:farm_flow_sales/View/Sales.dart';
 import 'package:farm_flow_sales/View/Settings.dart';
@@ -70,11 +71,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.faqcontent,
           page: () => const Faqscontent(),
-        ),
-      
-
-
-     
+        ),           
           GetPage(
 
           name: RouteName.feedBack,
@@ -116,6 +113,14 @@ class AppRoutes {
           GetPage(
           name: RouteName.connectfarmer,
           page: () => const Connectfarmer(),
+        ),
+        GetPage(
+          name: RouteName.orderdetails,
+          page: () => const Orderdetails(),
+        ),
+         GetPage(
+          name: RouteName.ordermain,
+          page: () => const OrderMain(),
         ),
       ];
 }
