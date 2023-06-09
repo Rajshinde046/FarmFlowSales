@@ -45,6 +45,7 @@ dependencies:
   percent_indicator: ^4.2.3
   scroll_snap_list: ^0.9.1
   flutter_switch: ^0.3.2
+  flutter_dash: ^1.0.0
 
 dev_dependencies:
   flutter_test:

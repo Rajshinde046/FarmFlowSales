@@ -16,20 +16,40 @@ class _ProductspageState extends State<Productspage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        title: customAppBar(text: "Products"),
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
-      ),
+      backgroundColor: AppColors.white,
+      // appBar: AppBar(
+      //   backgroundColor: AppColors.white,
+      //   title: customAppBar(text: "Products"),
+      //   elevation: 0,
+      //   automaticallyImplyLeading: false,
+      //   titleSpacing: 0,
+      // ),
       body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
-        child: SingleChildScrollView(
           child: Column(
             children: [
-              sizedBoxHeight(31.h),
+                Padding(
+                padding: EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Products",
+                      style: TextStyle(
+                        color: const Color(0XFF141414),
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      children: [
+                         sizedBoxHeight(31.h),
               redcard(),
               sizedBoxHeight(19.h),
               yellowcard(),
@@ -110,10 +130,15 @@ class _ProductspageState extends State<Productspage> {
               redcard(),
               sizedBoxHeight(19.h),
               yellowcard(),
+                      ],
+                    ),
+                    
+                    ),
+                )
+                 )
+             
             ],
-          ),
-        ),
-      )),
+          )),
     );
   }
 
