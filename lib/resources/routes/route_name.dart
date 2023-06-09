@@ -16,6 +16,7 @@ class RouteName {
   static const String farmerdetails = '/farmerdetails';
   static const String connectfarmer = '/connectfarmer';
 
+
   static const String sales = '/sales';
   static const String ordermain = '/ordermain';
 
@@ -26,4 +27,5 @@ class RouteName {
   static const String feedBack = '/feedBack';
   static const String feedBackform = '/feedbackform';
   static const String contactus = '/contactus';
+
 }

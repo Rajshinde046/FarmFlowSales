@@ -1,6 +1,15 @@
+
 import 'package:farm_flow_sales/View/Connectfarmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
+
+
+
+import 'package:farm_flow_sales/View/Connectfarmer.dart';
+import 'package:farm_flow_sales/View/Farmers/farmer.dart';
+import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
+
+
 import 'package:farm_flow_sales/View/LoginScreen.dart';
 import 'package:farm_flow_sales/View/Notification.dart';
 import 'package:farm_flow_sales/View/Order/ordersmain.dart';
@@ -57,11 +66,17 @@ class AppRoutes {
           name: RouteName.faqs,
           page: () => const Faq(),
         ),
+
         GetPage(
           name: RouteName.faqcontent,
           page: () => const Faqscontent(),
         ),
-        GetPage(
+      
+
+
+     
+          GetPage(
+
           name: RouteName.feedBack,
           page: () => FeedBack(),
         ),
@@ -80,6 +95,27 @@ class AppRoutes {
         GetPage(
           name: RouteName.settings,
           page: () => const Settings(),
+
+        ),
+        GetPage(
+          name: RouteName.warehouse,
+          page: () => const Warehouse(),
+        ),
+          GetPage(
+          name: RouteName.products,
+          page: () => const Productspage(),
+        ),
+          GetPage(
+          name: RouteName.farmer,
+          page: () => const Farmer(),
+        ),
+          GetPage(
+          name: RouteName.farmerdetails,
+          page: () => const Farmerdetails(),
+        ),
+          GetPage(
+          name: RouteName.connectfarmer,
+          page: () => const Connectfarmer(),
         ),
       ];
 }
