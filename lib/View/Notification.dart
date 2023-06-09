@@ -126,12 +126,14 @@ class _NotificationState extends State<Notification> {
                               SizedBox(
                                 width: 18.w,
                               ),
-                              Text(
-                                _data[index]['subtitle']!,
-                                style: TextStyle(
-                                  color: const Color(0xFF131313),
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
+                              Expanded(
+                                child: Text(
+                                  _data[index]['subtitle']!,
+                                  style: TextStyle(
+                                    color: const Color(0xFF131313),
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -196,12 +198,14 @@ class _NotificationState extends State<Notification> {
                               SizedBox(
                                 width: 18.w,
                               ),
-                              Text(
-                                _data[index]['subtitle']!,
-                                style: TextStyle(
-                                  color: const Color(0xFF131313),
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
+                              Expanded(
+                                child: Text(
+                                  _data[index]['subtitle']!,
+                                  style: TextStyle(
+                                    color: const Color(0xFF131313),
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
