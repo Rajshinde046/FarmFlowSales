@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
+              canvasColor: Colors.transparent,
               fontFamily: "Poppins",
               scaffoldBackgroundColor: AppColors.white,
               primarySwatch: Colors.blue,

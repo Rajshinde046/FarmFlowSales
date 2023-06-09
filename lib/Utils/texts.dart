@@ -198,7 +198,7 @@ Widget textGreen14(String text) {
     text,
     textAlign: TextAlign.center,
     style: TextStyle(
-      fontSize: 16.sp,
+      fontSize: 14.sp,
       color: AppColors.buttoncolour,
       // fontWeight: FontWeight.w700,
     ),
@@ -229,6 +229,18 @@ Widget textBlack10(String text) {
   );
 }
 
+Widget textBlack10W600(String text) {
+  return Text(
+    text,
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 10.sp,
+      color: AppColors.black,
+      fontWeight: FontWeight.w700,
+    ),
+  );
+}
+
 Widget textWhite16(String text) {
   return Text(
     text,
@@ -236,6 +248,18 @@ Widget textWhite16(String text) {
     style: TextStyle(
       fontSize: 16.sp,
       color: AppColors.white,
+      // fontWeight: FontWeight.w500,
+    ),
+  );
+}
+
+Widget textGreen16(String text) {
+  return Text(
+    text,
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      fontSize: 16.sp,
+      color: AppColors.buttoncolour,
       // fontWeight: FontWeight.w500,
     ),
   );
@@ -277,7 +301,7 @@ Widget textGrey4D4D4D_14(String text) {
 Widget textblack14M(String text) {
   return Text(
     text,
-    textAlign: TextAlign.left,
+    textAlign: TextAlign.center,
     style: TextStyle(
         fontSize: 14.sp, color: AppColors.black, fontWeight: FontWeight.w500),
   );
