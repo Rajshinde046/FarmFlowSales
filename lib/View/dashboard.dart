@@ -92,7 +92,7 @@ class _Dashboard extends State<Dashboard> {
                         children: [
                           InkWell(
                             onTap: () {
-                              // Get.toNamed("/settings");
+                               Get.toNamed("/settings");
                             },
                             child: SvgPicture.asset(
                               "assets/images/Settings.svg",
@@ -194,50 +194,55 @@ class _Dashboard extends State<Dashboard> {
                         sizedBoxHeight(15.h),
                         Column(
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.h),
-                                color: AppColors.redFCDADA,
-                                // border: Border.all(
-                                //     color: AppColors.redFA5658, width: 1.h),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.04),
-                                    blurRadius: 10,
-                                    spreadRadius: 2,
-                                  )
-                                ],
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15.w, vertical: 10.h),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 13.h,
-                                          backgroundColor: AppColors.redFA5658.withOpacity(0.2),
-                                          child: Icon(
-                                            Icons.warning_amber_rounded,
-                                            size: 16.h,
-                                            color: AppColors.redFA5658,
-                                          ),
-                                        ),
-                                        sizedBoxWidth(10.w),
-                                        textblack14M("Loreum Ipsum Is"),
-      
-                                        const Spacer(),
-      
-                                        textGreen14("New")
-                                    
-                                      ],
-                                    ),
-      
-                                    sizedBoxHeight(5.h),
-      
-                                    textGrey12L("Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry Lorem")
+                            GestureDetector(
+                              onTap: (){
+                                Get.toNamed("/notification");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.h),
+                                  color: AppColors.redFCDADA,
+                                  // border: Border.all(
+                                  //     color: AppColors.redFA5658, width: 1.h),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.04),
+                                      blurRadius: 10,
+                                      spreadRadius: 2,
+                                    )
                                   ],
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15.w, vertical: 10.h),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 13.h,
+                                            backgroundColor: AppColors.redFA5658.withOpacity(0.2),
+                                            child: Icon(
+                                              Icons.warning_amber_rounded,
+                                              size: 16.h,
+                                              color: AppColors.redFA5658,
+                                            ),
+                                          ),
+                                          sizedBoxWidth(10.w),
+                                          textblack14M("Loreum Ipsum Is"),
+                                  
+                                          const Spacer(),
+                                  
+                                          textGreen14("New")
+                                      
+                                        ],
+                                      ),
+                                  
+                                      sizedBoxHeight(5.h),
+                                  
+                                      textGrey12L("Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry Lorem")
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -316,11 +321,11 @@ class _Dashboard extends State<Dashboard> {
       
                         Row(
                           children: [
-                            sfwCard("assets/images/sales.png", "Sales"),
+                            sfwCard("assets/images/sales.png", "Sales", "/sales"),
                             sizedBoxWidth(15.w),
-                            sfwCard("assets/images/farmer.png", "Farmers"),
+                            sfwCard("assets/images/farmer.png", "Farmers", "/farmer"),
                             sizedBoxWidth(15.w),
-                            sfwCard("assets/images/warehouse.png", "Warehouse"),
+                            sfwCard("assets/images/warehouse.png", "Warehouse", "/warehouse"),
                             
                           ],
       
@@ -443,43 +448,48 @@ class _Dashboard extends State<Dashboard> {
                                 
   }
 
-  Widget sfwCard(String image, String title){
+  Widget sfwCard(String image, String title, String onTapnamed){
     return Expanded(
-      child: Container(
-        height: 110.h,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.h),
-          color: AppColors.pistaE3FFE9,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade400,
-              blurRadius: 5.h,
-              spreadRadius: 0.5.h,
-            )
-          ],
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
-          child: Column(
-            children: [
-              Image.asset(
-                image,
-                // "assets/images/timer.png",
-                height: 46.h,
-                width: 46.h,
-              ),
-          
-              sizedBoxHeight(10.h),
-          
-              textblack14M(title
-                // "In Progress Delivery"
-              ),
-            
-              // sizedBoxHeight(10.h),
+      child: GestureDetector(
+        onTap: (){
+          Get.toNamed(onTapnamed);
+        },
+        child: Container(
+          height: 110.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.h),
+            color: AppColors.pistaE3FFE9,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade400,
+                blurRadius: 5.h,
+                spreadRadius: 0.5.h,
+              )
             ],
           ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
+            child: Column(
+              children: [
+                Image.asset(
+                  image,
+                  // "assets/images/timer.png",
+                  height: 46.h,
+                  width: 46.h,
+                ),
+            
+                sizedBoxHeight(10.h),
+            
+                textblack14M(title
+                  // "In Progress Delivery"
+                ),
+              
+                // sizedBoxHeight(10.h),
+              ],
+            ),
+          ),
+                    
         ),
-                  
       ),
     );
                                 

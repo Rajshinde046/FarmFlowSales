@@ -26,119 +26,117 @@ class _ProductspageState extends State<Productspage> {
       // ),
       body: SafeArea(
           child: Column(
-            children: [
-                Padding(
-                padding: EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Products",
-                      style: TextStyle(
-                        color: const Color(0XFF141414),
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      children: [
-                         sizedBoxHeight(31.h),
-              redcard(),
-              sizedBoxHeight(19.h),
-              yellowcard(),
-              sizedBoxHeight(19.h),
-              SizedBox(
-                width: 358.w,
-                child: Card(
-                  elevation: 2,
-                  color: Color(0xffF1F1F1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "Products",
+                  style: TextStyle(
+                    color: const Color(0XFF141414),
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w600,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+              child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                children: [
+                  sizedBoxHeight(31.h),
+                  redcard(),
+                  sizedBoxHeight(19.h),
+                  yellowcard(),
+                  sizedBoxHeight(19.h),
+                  SizedBox(
+                    width: 358.w,
+                    child: Card(
+                      elevation: 2,
+                      color: Color(0xffF1F1F1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Pre-Calver Gain Gold",
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff141414),
-                                  fontFamily: "Poppins"),
-                            ),
-                            sizedBoxHeight(3.h),
-                            Text(
-                              "€ 500",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff141414),
-                                  fontFamily: "Poppins"),
-                            ),
-                            sizedBoxHeight(3.h),
-                            Row(
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: 50,
-                                  child: Text("5 Lbs",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14.sp,
-                                        color: Color(0xff4D4D4D),
-                                      )),
-                                ),
-                                sizedBoxWidth(64.w),
                                 Text(
-                                  "Quantity : 800",
-                                  style: GoogleFonts.poppins(
+                                  "Pre-Calver Gain Gold",
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff141414),
+                                      fontFamily: "Poppins"),
+                                ),
+                                sizedBoxHeight(3.h),
+                                Text(
+                                  "€ 500",
+                                  style: TextStyle(
                                       fontSize: 16.sp,
-                                      color: Color(0xff0E5F02),
-                                      fontWeight: FontWeight.w500),
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff141414),
+                                      fontFamily: "Poppins"),
+                                ),
+                                sizedBoxHeight(3.h),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 50,
+                                      child: Text("5 Lbs",
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14.sp,
+                                            color: Color(0xff4D4D4D),
+                                          )),
+                                    ),
+                                    sizedBoxWidth(64.w),
+                                    Text(
+                                      "Quantity : 800",
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16.sp,
+                                          color: Color(0xff0E5F02),
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
+                            sizedBoxWidth(30.w),
+                            Image.asset(
+                              "assets/images/orderwhite.png",
+                              width: 49.w,
+                              height: 87.h,
+                            )
                           ],
                         ),
-                        sizedBoxWidth(30.w),
-                        Image.asset(
-                          "assets/images/orderwhite.png",
-                          width: 49.w,
-                          height: 87.h,
-                        )
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  sizedBoxHeight(19.h),
+                  redcard(),
+                  sizedBoxHeight(19.h),
+                  yellowcard(),
+                  sizedBoxHeight(19.h),
+                ],
               ),
-              sizedBoxHeight(19.h),
-              redcard(),
-              sizedBoxHeight(19.h),
-              yellowcard(),
-                      ],
-                    ),
-                    
-                    ),
-                )
-                 )
-             
-            ],
-          )),
+            ),
+          ))
+        ],
+      )),
     );
   }
 
