@@ -5,8 +5,11 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/View/Connectfarmer.dart';
+import 'package:farm_flow_sales/View/Order/ordersmain.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/faqs.dart';
 import 'package:farm_flow_sales/View/dashboard.dart';
+import 'package:farm_flow_sales/View/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,11 +37,11 @@ class _SideMenuState extends State<SideMenu>
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
 
   var screens = [
-    const Faq(),
-    const Faq(),
+    const OrderMain(),
+    const Productspage(),
     const Dashboard(),
     const Dashboard(),
-    const Faq(),
+    const Connectfarmer(),
   ];
 
   final items = <Widget>[

@@ -2,14 +2,6 @@
 import 'package:farm_flow_sales/View/Connectfarmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
-
-
-
-import 'package:farm_flow_sales/View/Connectfarmer.dart';
-import 'package:farm_flow_sales/View/Farmers/farmer.dart';
-import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
-
-
 import 'package:farm_flow_sales/View/LoginScreen.dart';
 import 'package:farm_flow_sales/View/Notification.dart';
 import 'package:farm_flow_sales/View/Order/orderdetails.dart';
@@ -121,6 +113,10 @@ class AppRoutes {
          GetPage(
           name: RouteName.ordermain,
           page: () => const OrderMain(),
+        ),
+        GetPage(
+          name: RouteName.sales,
+          page: () => const Sales(),
         ),
       ];
 }
