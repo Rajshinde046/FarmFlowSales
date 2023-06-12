@@ -44,6 +44,11 @@ dependencies:
   flutter_share: ^2.0.0
   percent_indicator: ^4.2.3
   curved_navigation_bar: ^1.0.3
+  image_cropper: ^4.0.1
+  image_picker: ^0.8.7+5
+  path_provider: ^2.0.15
+  another_flushbar: ^1.12.30
+  local_auth: ^2.1.6
   # animated_notch_bottom_bar: ^1.0.0
 
   scroll_snap_list: ^0.9.1
