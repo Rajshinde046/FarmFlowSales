@@ -23,7 +23,26 @@ class _Dashboard extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       backgroundColor: AppColors.transparent,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 80.h),
+        child: FloatingActionButton(
+            backgroundColor: AppColors.buttoncolour,
+            onPressed: () {},
+            //  _incrementCounter,
+            tooltip: 'Search',
+            child: SvgPicture.asset(
+              "assets/images/floatingbutton.svg",
+              width: 51.w,
+              height: 51.h,
+            )
+            // Icon(
+            //   Icons.add,
+            //   color: AppColors.white,
+            // ),
+            ),
+      ),
       // extendBody: true,
       body: Container(
         // color: AppColors.white,
@@ -92,7 +111,7 @@ class _Dashboard extends State<Dashboard> {
                         children: [
                           InkWell(
                             onTap: () {
-                               Get.toNamed("/settings");
+                              Get.toNamed("/settings");
                             },
                             child: SvgPicture.asset(
                               "assets/images/Settings.svg",
@@ -160,11 +179,13 @@ class _Dashboard extends State<Dashboard> {
                                                     sizedBoxHeight(15.h),
                                                     Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                       children: [
                                                         SvgPicture.asset(
                                                           "assets/images/locationconnect.svg",
-                                                          color: AppColors.black,
+                                                          color:
+                                                              AppColors.black,
                                                           height: 20.h,
                                                           width: 20.h,
                                                         ),
@@ -190,12 +211,11 @@ class _Dashboard extends State<Dashboard> {
                             ],
                           ),
                         ),
-                       
                         sizedBoxHeight(15.h),
                         Column(
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Get.toNamed("/notification");
                               },
                               child: Container(
@@ -221,7 +241,8 @@ class _Dashboard extends State<Dashboard> {
                                         children: [
                                           CircleAvatar(
                                             radius: 13.h,
-                                            backgroundColor: AppColors.redFA5658.withOpacity(0.2),
+                                            backgroundColor: AppColors.redFA5658
+                                                .withOpacity(0.2),
                                             child: Icon(
                                               Icons.warning_amber_rounded,
                                               size: 16.h,
@@ -230,17 +251,13 @@ class _Dashboard extends State<Dashboard> {
                                           ),
                                           sizedBoxWidth(10.w),
                                           textblack14M("Loreum Ipsum Is"),
-                                  
                                           const Spacer(),
-                                  
                                           textGreen14("New")
-                                      
                                         ],
                                       ),
-                                  
                                       sizedBoxHeight(5.h),
-                                  
-                                      textGrey12L("Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry Lorem")
+                                      textGrey12L(
+                                          "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry Lorem")
                                     ],
                                   ),
                                 ),
@@ -249,7 +266,6 @@ class _Dashboard extends State<Dashboard> {
                             sizedBoxHeight(15.h),
                           ],
                         ),
-      
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(27.h),
@@ -266,12 +282,14 @@ class _Dashboard extends State<Dashboard> {
                             children: [
                               sizedBoxHeight(10.h),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Column(
                                     // crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Image.asset("assets/images/locationRoad.png",
+                                      Image.asset(
+                                        "assets/images/locationRoad.png",
                                         height: 80.h,
                                         width: 80.h,
                                       ),
@@ -280,57 +298,50 @@ class _Dashboard extends State<Dashboard> {
                                       //   height: 80.h,
                                       //   width: 80.h,
                                       // ),
-      
+
                                       sizedBoxHeight(10.h),
-      
+
                                       textBlack20W7000("Deliveries"),
-      
                                     ],
                                   ),
-      
                                   Lottie.asset(
-                                    "assets/lotties/delivery_track.json",
-                                    height: 150.h,
-                                    width: 160.w
-                                  ),
-                                  
+                                      "assets/lotties/delivery_track.json",
+                                      height: 150.h,
+                                      width: 160.w),
                                 ],
                               ),
-      
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 16.h),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 7.w, vertical: 16.h),
                                 child: Row(
                                   children: [
-                                    deliveriesCard("assets/images/timer.png", "In Progress Delivery", "3", 0),
+                                    deliveriesCard("assets/images/timer.png",
+                                        "In Progress Delivery", "3", 0),
                                     sizedBoxWidth(3.w),
-                                    deliveriesCard("assets/images/clock.png", "Pending Delivery", "19", 1),
+                                    deliveriesCard("assets/images/clock.png",
+                                        "Pending Delivery", "19", 1),
                                     sizedBoxWidth(3.w),
-                                    deliveriesCard("assets/images/calender.png", "In Progress Delivery", "3", 2),
-      
-                                    
+                                    deliveriesCard("assets/images/calender.png",
+                                        "In Progress Delivery", "3", 2),
                                   ],
                                 ),
                               )
-      
-                          
                             ],
                           ),
                         ),
-                       
                         sizedBoxHeight(20.h),
-      
                         Row(
                           children: [
-                            sfwCard("assets/images/sales.png", "Sales", "/sales"),
+                            sfwCard(
+                                "assets/images/sales.png", "Sales", "/sales"),
                             sizedBoxWidth(15.w),
-                            sfwCard("assets/images/farmer.png", "Farmers", "/farmer"),
+                            sfwCard("assets/images/farmer.png", "Farmers",
+                                "/farmer"),
                             sizedBoxWidth(15.w),
-                            sfwCard("assets/images/warehouse.png", "Warehouse", "/warehouse"),
-                            
+                            sfwCard("assets/images/warehouse.png", "Warehouse",
+                                "/warehouse"),
                           ],
-      
                         ),
-      
                         sizedBoxHeight(10.h)
                       ],
                     ),
@@ -405,17 +416,16 @@ class _Dashboard extends State<Dashboard> {
     );
   }
 
-  Widget deliveriesCard(String image, String title, String number,int index){
+  Widget deliveriesCard(String image, String title, String number, int index) {
     return Expanded(
       child: Container(
         height: 155.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular( index == 0 ?10.h:0),
-            bottomLeft: Radius.circular(index == 0 ? 10.h:0),
-            topRight: Radius.circular(index == 2 ? 10.h:0),
-            bottomRight: Radius.circular(index == 2 ? 10.h:0)
-          ),
+              topLeft: Radius.circular(index == 0 ? 10.h : 0),
+              bottomLeft: Radius.circular(index == 0 ? 10.h : 0),
+              topRight: Radius.circular(index == 2 ? 10.h : 0),
+              bottomRight: Radius.circular(index == 2 ? 10.h : 0)),
           color: AppColors.white,
         ),
         child: Padding(
@@ -428,30 +438,28 @@ class _Dashboard extends State<Dashboard> {
                 height: 30.h,
                 width: 18.w,
               ),
-          
+
               sizedBoxHeight(10.h),
-          
+
               textblack14M(title
-                // "In Progress Delivery"
-              ),
-            
+                  // "In Progress Delivery"
+                  ),
+
               // sizedBoxHeight(10.h),
               Spacer(),
-          
+
               textGreen20W7000Mon(number)
             ],
           ),
         ),
-                  
       ),
     );
-                                
   }
 
-  Widget sfwCard(String image, String title, String onTapnamed){
+  Widget sfwCard(String image, String title, String onTapnamed) {
     return Expanded(
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           Get.toNamed(onTapnamed);
         },
         child: Container(
@@ -477,22 +485,19 @@ class _Dashboard extends State<Dashboard> {
                   height: 46.h,
                   width: 46.h,
                 ),
-            
+
                 sizedBoxHeight(10.h),
-            
+
                 textblack14M(title
-                  // "In Progress Delivery"
-                ),
-              
+                    // "In Progress Delivery"
+                    ),
+
                 // sizedBoxHeight(10.h),
               ],
             ),
           ),
-                    
         ),
       ),
     );
-                                
   }
-
 }
