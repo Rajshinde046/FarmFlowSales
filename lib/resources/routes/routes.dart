@@ -1,4 +1,7 @@
 
+import 'package:farm_flow_sales/View/Cart/cartmain.dart';
+import 'package:farm_flow_sales/View/Cart/discountpage.dart';
+import 'package:farm_flow_sales/View/Cart/placeorder.dart';
 import 'package:farm_flow_sales/View/Connectfarmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
@@ -117,6 +120,18 @@ class AppRoutes {
         GetPage(
           name: RouteName.sales,
           page: () => const Sales(),
+        ),
+        GetPage(
+          name: RouteName.cartmain,
+          page: () => const Cartmain(),
+        ),
+         GetPage(
+          name: RouteName.placeordermain,
+          page: () => const Placedorder(),
+        ),
+        GetPage(
+          name: RouteName.discount,
+          page: () => const Discount(),
         ),
       ];
 }

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="361" height="45" viewBox="0 0 361 45">
+  <g id="Group_57501" data-name="Group 57501" transform="translate(-16 -73)">
+    <line id="Line_350" data-name="Line 350" x2="292" transform="translate(41.5 83.5)" fill="none" stroke="#0e5f02" stroke-width="1"/>
+    <g id="Group_51607" data-name="Group 51607">
+      <g id="Group_51599" data-name="Group 51599" transform="translate(-3)">
+        <g id="Group_51598" data-name="Group 51598" transform="translate(18)">
+          <g id="Ellipse_602" data-name="Ellipse 602" transform="translate(16 73)" fill="#fff" stroke="#0e5f02" stroke-width="1">
+            <circle cx="10.5" cy="10.5" r="10.5" stroke="none"/>
+            <circle cx="10.5" cy="10.5" r="10" fill="none"/>
+          </g>
+          <g id="Ellipse_605" data-name="Ellipse 605" transform="translate(20 77)" fill="#0e5f02" stroke="#0e5f02" stroke-width="1">
+            <circle cx="6.5" cy="6.5" r="6.5" stroke="none"/>
+            <circle cx="6.5" cy="6.5" r="6" fill="none"/>
+          </g>
+        </g>
+      </g>
+      <text id="farmer" transform="translate(16 99)" fill="#141414" font-size="16" font-family="Montserrat-Medium, Montserrat" font-weight="500" letter-spacing="0.01em"><tspan x="0" y="15">Farmer</tspan></text>
+    </g>
+    <g id="Group_51604" data-name="Group 51604" transform="translate(37)">
+      <g id="Ellipse_603" data-name="Ellipse 603" transform="translate(170 73)" fill="#fff" stroke="#0e5f02" stroke-width="1">
+        <circle cx="10.5" cy="10.5" r="10.5" stroke="none"/>
+        <circle cx="10.5" cy="10.5" r="10" fill="none"/>
+      </g>
+      <text id="discount" transform="translate(144 99)" fill="#141414" font-size="16" font-family="Montserrat-Medium, Montserrat" font-weight="500" letter-spacing="0.01em"><tspan x="0" y="15">Discount</tspan></text>
+      <g id="Ellipse_822" data-name="Ellipse 822" transform="translate(86 77)" fill="#0e5f02" stroke="#0e5f02" stroke-width="1">
+        <circle cx="6.5" cy="6.5" r="6.5" stroke="none"/>
+        <circle cx="6.5" cy="6.5" r="6" fill="none"/>
+      </g>
+    </g>
+    <g id="Ellipse_603-2" data-name="Ellipse 603" transform="translate(119 73)" fill="#fff" stroke="#0e5f02" stroke-width="1">
+      <circle cx="10.5" cy="10.5" r="10.5" stroke="none"/>
+      <circle cx="10.5" cy="10.5" r="10" fill="none"/>
+    </g>
+    <text id="details" transform="translate(101 99)" fill="#141414" font-size="16" font-family="Montserrat-Medium, Montserrat" font-weight="500" letter-spacing="0.01em"><tspan x="0" y="15">Details</tspan></text>
+    <g id="Ellipse_821" data-name="Ellipse 821" transform="translate(123 77)" fill="#0e5f02" stroke="#0e5f02" stroke-width="1">
+      <circle cx="6.5" cy="6.5" r="6.5" stroke="none"/>
+      <circle cx="6.5" cy="6.5" r="6" fill="none"/>
+    </g>
+    <g id="Group_51605" data-name="Group 51605" transform="translate(-7)">
+      <g id="Ellipse_604" data-name="Ellipse 604" transform="translate(322 73)" fill="#fff" stroke="#0e5f02" stroke-width="1">
+        <circle cx="10.5" cy="10.5" r="10.5" stroke="none"/>
+        <circle cx="10.5" cy="10.5" r="10" fill="none"/>
+      </g>
+      <text id="place_order" data-name="place order" transform="translate(285 99)" fill="#141414" font-size="16" font-family="Montserrat-Medium, Montserrat" font-weight="500" letter-spacing="0.01em"><tspan x="0" y="15">Place Order</tspan></text>
+    </g>
+    <g id="Ellipse_823" data-name="Ellipse 823" transform="translate(211 77)" fill="#0e5f02" stroke="#0e5f02" stroke-width="1">
+      <circle cx="6.5" cy="6.5" r="6.5" stroke="none"/>
+      <circle cx="6.5" cy="6.5" r="6" fill="none"/>
+    </g>
+  </g>
+</svg>

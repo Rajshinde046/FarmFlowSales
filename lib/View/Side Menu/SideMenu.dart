@@ -5,6 +5,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/View/Cart/cartmain.dart';
 import 'package:farm_flow_sales/View/Connectfarmer.dart';
 import 'package:farm_flow_sales/View/Order/ordersmain.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/faqs.dart';
@@ -40,7 +41,7 @@ class _SideMenuState extends State<SideMenu>
     const OrderMain(),
     const Productspage(),
     const Dashboard(),
-    const Dashboard(),
+    const Cartmain(),
     const Connectfarmer(),
   ];
 
