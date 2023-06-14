@@ -152,7 +152,11 @@ class SearchItem extends StatelessWidget {
                     ),
                   ),
                   sizedBoxHeight(30.h),
-                  customButtonCurve(text: 'Add to Cart')
+                  customButtonCurve(text: 'Add to Cart',
+                   onTap: (){
+                    Get.toNamed('/sideMenu', arguments: 3);
+                   }
+                   )
                 ],
               ),
             )

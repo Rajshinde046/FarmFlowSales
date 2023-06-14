@@ -28,6 +28,9 @@ import 'package:farm_flow_sales/View/selectfarmer.dart';
 
 import 'package:farm_flow_sales/View/Cart/select_frequency.dart';
 
+import 'package:farm_flow_sales/View/search_item.dart';
+import 'package:farm_flow_sales/View/search_product_categories.dart';
+
 import 'package:farm_flow_sales/View/splash_screen.dart';
 import 'package:farm_flow_sales/View/verify_number.dart';
 import 'package:get/get.dart';
@@ -144,9 +147,18 @@ class AppRoutes {
           name: RouteName.discount,
           page: () => const Discount(),
         ),
+
+        
+         GetPage(
+          name: RouteName.searchpage,
+          page: () => const SearchProductCategories(),
+        ),
+
+
         GetPage(
           name: RouteName.selectfarmer,
           page: () => const selectFarmer(),
         ),
+
       ];
 }
