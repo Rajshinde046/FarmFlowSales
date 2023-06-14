@@ -7,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+import 'search_product_categories.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -29,7 +31,9 @@ class _Dashboard extends State<Dashboard> {
         padding: EdgeInsets.only(bottom: 80.h),
         child: FloatingActionButton(
             backgroundColor: AppColors.buttoncolour,
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => const SearchProductCategories());
+            },
             //  _incrementCounter,
             tooltip: 'Search',
             child: SvgPicture.asset(
