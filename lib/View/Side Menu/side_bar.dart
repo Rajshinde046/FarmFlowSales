@@ -1,5 +1,6 @@
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/View/Side%20Menu/Profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -78,7 +79,9 @@ class _SideBarState extends State<SideBar> {
                 children: [
                   sizedBoxHeight(80.h),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => const Profile());
+                    },
                     child: Row(
                       children: [
                         Stack(
