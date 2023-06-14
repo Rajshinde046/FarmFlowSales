@@ -142,7 +142,7 @@ class _PlacedorderState extends State<Placedorder> {
             children: [
               SvgPicture.asset(
                 "assets/images/placedorder.svg",
-                width: 411.w,
+                 width: 360.w,
                 // height: 45.h,
               ),
               sizedBoxHeight(28.h),

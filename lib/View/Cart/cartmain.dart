@@ -108,7 +108,7 @@ class _CartmainState extends State<Cartmain> {
             // CustomButton(text: "Proceed To Buy (3 Items)", onTap: () {}),
             InkWell(
               onTap: () {
-                Get.toNamed("/selectfrequency");
+                Get.toNamed("/selectfarmer"); 
               },
               child: Container(
                 height: 50.h,

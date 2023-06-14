@@ -1,5 +1,3 @@
-
-
 import 'package:farm_flow_sales/View/Cart/cartmain.dart';
 import 'package:farm_flow_sales/View/Cart/discountpage.dart';
 import 'package:farm_flow_sales/View/Cart/placeorder.dart';
@@ -24,7 +22,15 @@ import 'package:farm_flow_sales/View/Warehouse/warehouse.dart';
 import 'package:farm_flow_sales/View/forgot_password.dart';
 import 'package:farm_flow_sales/View/products.dart';
 import 'package:farm_flow_sales/View/reset_password.dart';
+
+// import 'package:farm_flow_sales/View/select_frequency.dart';
+import 'package:farm_flow_sales/View/Cart/selectfarmer.dart';
+
 import 'package:farm_flow_sales/View/Cart/select_frequency.dart';
+
+import 'package:farm_flow_sales/View/search_item.dart';
+import 'package:farm_flow_sales/View/search_product_categories.dart';
+
 import 'package:farm_flow_sales/View/splash_screen.dart';
 import 'package:farm_flow_sales/View/verify_number.dart';
 import 'package:get/get.dart';
@@ -118,11 +124,14 @@ class AppRoutes {
           page: () => const OrderMain(),
         ),
         GetPage(
-
           name: RouteName.selectfrequency,
           page: () => const selectFrequency(),
-          ),
+
+        ),
+
+         
   GetPage(
+
           name: RouteName.sales,
           page: () => const Sales(),
         ),
@@ -130,7 +139,7 @@ class AppRoutes {
           name: RouteName.cartmain,
           page: () => const Cartmain(),
         ),
-         GetPage(
+        GetPage(
           name: RouteName.placeordermain,
           page: () => const Placedorder(),
         ),
@@ -138,5 +147,18 @@ class AppRoutes {
           name: RouteName.discount,
           page: () =>  Discount(),
         ),
+
+        
+         GetPage(
+          name: RouteName.searchpage,
+          page: () => const SearchProductCategories(),
+        ),
+
+
+        GetPage(
+          name: RouteName.selectfarmer,
+          page: () => const selectFarmer(),
+        ),
+
       ];
 }

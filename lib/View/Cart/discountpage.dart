@@ -42,6 +42,7 @@ class Discount extends StatelessWidget {
                 sizedBoxHeight(9.h),
                 Obx(
                   () => Row(
+
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       GestureDetector(
