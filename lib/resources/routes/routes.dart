@@ -23,8 +23,8 @@ import 'package:farm_flow_sales/View/forgot_password.dart';
 import 'package:farm_flow_sales/View/products.dart';
 import 'package:farm_flow_sales/View/reset_password.dart';
 
-import 'package:farm_flow_sales/View/select_frequency.dart';
-import 'package:farm_flow_sales/View/selectfarmer.dart';
+// import 'package:farm_flow_sales/View/select_frequency.dart';
+import 'package:farm_flow_sales/View/Cart/selectfarmer.dart';
 
 import 'package:farm_flow_sales/View/Cart/select_frequency.dart';
 

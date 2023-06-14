@@ -25,14 +25,6 @@ class RouteName {
 
   static const String searchpage = '/searchnmain';
 
-
-
-
-
-
-
-
-
   static const String sales = '/sales';
   static const String ordermain = '/ordermain';
   static const String selectfarmer = '/selectfarmer';

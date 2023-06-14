@@ -20,76 +20,82 @@ class _selectFarmerState extends State<selectFarmer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 30.h,
-            ),
-            SvgPicture.asset(
-              "assets/images/selectfarmer.svg",
-              width: 360.w,
-            ),
-            SizedBox(
-              height: 25.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Select Farmer",
-                  style: GoogleFonts.poppins(
-                      fontSize: 20.sp, fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-            sizedBoxHeight(10.h),
-            ListView.builder(
-                // physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: newsData.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      newslistCard(
-                        newsData[index]["recipeimage"],
-                        newsData[index]["title"],
-                        newsData[index]["street"],
-                        index,
-                        newsData[index]["city"],
-                        newsData[index]["state"],
-                        newsData[index]["phone"],
-                        newsData[index]["zipcode"],
-                        newsData[index]["country"],
-                      )
-                    ],
-                  );
-                }),
-            CustomButton(text: "Deliver To This Address"),
-            SizedBox(
-              height: 20,
-            ),
-            InkWell(
-              onTap: () {
-                buildcustomnote();
-              },
-              child: Container(
-                height: 50.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.buttoncolour),
-                    borderRadius: BorderRadius.circular(25.h),
-                    color: AppColors.white),
-                child: Center(
-                  child: Text(
-                    "Add Delivery Instructions",
-                    style: TextStyle(color: AppColors.black, fontSize: 18.sp),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30.h,
+              ),
+              SvgPicture.asset(
+                "assets/images/selectfarmer.svg",
+                width: 360.w,
+              ),
+              SizedBox(
+                height: 25.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Select Farmer",
+                    style: GoogleFonts.poppins(
+                        fontSize: 20.sp, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+              sizedBoxHeight(10.h),
+              ListView.builder(
+                  // physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: newsData.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        newslistCard(
+                          newsData[index]["recipeimage"],
+                          newsData[index]["title"],
+                          newsData[index]["street"],
+                          index,
+                          newsData[index]["city"],
+                          newsData[index]["state"],
+                          newsData[index]["phone"],
+                          newsData[index]["zipcode"],
+                          newsData[index]["country"],
+                        )
+                      ],
+                    );
+                  }),
+              CustomButton(
+                  text: "Deliver To This Address",
+                  onTap: () {
+                    Get.toNamed("/selectfrequency");
+                  }),
+              SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  buildcustomnote();
+                },
+                child: Container(
+                  height: 50.h,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.buttoncolour),
+                      borderRadius: BorderRadius.circular(25.h),
+                      color: AppColors.white),
+                  child: Center(
+                    child: Text(
+                      "Add Delivery Instructions",
+                      style: TextStyle(color: AppColors.black, fontSize: 18.sp),
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
