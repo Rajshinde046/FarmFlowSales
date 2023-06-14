@@ -145,7 +145,7 @@ class AppRoutes {
         ),
         GetPage(
           name: RouteName.discount,
-          page: () => const Discount(),
+          page: () =>  Discount(),
         ),
 
         
