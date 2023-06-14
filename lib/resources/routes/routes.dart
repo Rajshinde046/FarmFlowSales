@@ -1,7 +1,9 @@
 
+
 import 'package:farm_flow_sales/View/Cart/cartmain.dart';
 import 'package:farm_flow_sales/View/Cart/discountpage.dart';
 import 'package:farm_flow_sales/View/Cart/placeorder.dart';
+
 import 'package:farm_flow_sales/View/Connectfarmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmer.dart';
 import 'package:farm_flow_sales/View/Farmers/farmerdetails.dart';
@@ -9,7 +11,6 @@ import 'package:farm_flow_sales/View/LoginScreen.dart';
 import 'package:farm_flow_sales/View/Notification.dart';
 import 'package:farm_flow_sales/View/Order/orderdetails.dart';
 import 'package:farm_flow_sales/View/Order/ordersmain.dart';
-import 'package:farm_flow_sales/View/Sales.dart';
 import 'package:farm_flow_sales/View/Settings.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/faqs.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/insidefaq.dart';
@@ -22,6 +23,7 @@ import 'package:farm_flow_sales/View/Warehouse/warehouse.dart';
 import 'package:farm_flow_sales/View/forgot_password.dart';
 import 'package:farm_flow_sales/View/products.dart';
 import 'package:farm_flow_sales/View/reset_password.dart';
+import 'package:farm_flow_sales/View/select_frequency.dart';
 import 'package:farm_flow_sales/View/splash_screen.dart';
 import 'package:farm_flow_sales/View/verify_number.dart';
 import 'package:get/get.dart';
@@ -62,13 +64,11 @@ class AppRoutes {
           name: RouteName.faqs,
           page: () => const Faq(),
         ),
-
         GetPage(
           name: RouteName.faqcontent,
           page: () => const Faqscontent(),
-        ),           
-          GetPage(
-
+        ),
+        GetPage(
           name: RouteName.feedBack,
           page: () => FeedBack(),
         ),
@@ -87,25 +87,24 @@ class AppRoutes {
         GetPage(
           name: RouteName.settings,
           page: () => const Settings(),
-
         ),
         GetPage(
           name: RouteName.warehouse,
           page: () => const Warehouse(),
         ),
-          GetPage(
+        GetPage(
           name: RouteName.products,
           page: () => const Productspage(),
         ),
-          GetPage(
+        GetPage(
           name: RouteName.farmer,
           page: () => const Farmer(),
         ),
-          GetPage(
+        GetPage(
           name: RouteName.farmerdetails,
           page: () => const Farmerdetails(),
         ),
-          GetPage(
+        GetPage(
           name: RouteName.connectfarmer,
           page: () => const Connectfarmer(),
         ),
@@ -113,11 +112,15 @@ class AppRoutes {
           name: RouteName.orderdetails,
           page: () => const Orderdetails(),
         ),
-         GetPage(
+        GetPage(
           name: RouteName.ordermain,
           page: () => const OrderMain(),
         ),
         GetPage(
+
+          name: RouteName.selectfrequency,
+          page: () => const selectFrequency(),),
+  GetPage(
           name: RouteName.sales,
           page: () => const Sales(),
         ),

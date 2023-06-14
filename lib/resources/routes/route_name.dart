@@ -16,9 +16,13 @@ class RouteName {
   static const String farmerdetails = '/farmerdetails';
   static const String connectfarmer = '/connectfarmer';
   static const String orderdetails = '/orderdetails';
+
+  static const String selectfrequency = '/selectfrequency';
+
   static const String cartmain = '/cartmain';
   static const String placeordermain = '/placeordermain';
   static const String discount = '/discountpage';
+
 
 
 
@@ -35,5 +39,4 @@ class RouteName {
   static const String feedBack = '/feedBack';
   static const String feedBackform = '/feedbackform';
   static const String contactus = '/contactus';
-
 }
