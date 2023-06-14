@@ -1,5 +1,3 @@
-
-
 import 'package:farm_flow_sales/View/Cart/cartmain.dart';
 import 'package:farm_flow_sales/View/Cart/discountpage.dart';
 import 'package:farm_flow_sales/View/Cart/placeorder.dart';
@@ -11,6 +9,7 @@ import 'package:farm_flow_sales/View/LoginScreen.dart';
 import 'package:farm_flow_sales/View/Notification.dart';
 import 'package:farm_flow_sales/View/Order/orderdetails.dart';
 import 'package:farm_flow_sales/View/Order/ordersmain.dart';
+import 'package:farm_flow_sales/View/Sales.dart';
 import 'package:farm_flow_sales/View/Settings.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/faqs.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Faqs/insidefaq.dart';
@@ -24,6 +23,7 @@ import 'package:farm_flow_sales/View/forgot_password.dart';
 import 'package:farm_flow_sales/View/products.dart';
 import 'package:farm_flow_sales/View/reset_password.dart';
 import 'package:farm_flow_sales/View/select_frequency.dart';
+import 'package:farm_flow_sales/View/selectfarmer.dart';
 import 'package:farm_flow_sales/View/splash_screen.dart';
 import 'package:farm_flow_sales/View/verify_number.dart';
 import 'package:get/get.dart';
@@ -117,10 +117,10 @@ class AppRoutes {
           page: () => const OrderMain(),
         ),
         GetPage(
-
           name: RouteName.selectfrequency,
-          page: () => const selectFrequency(),),
-  GetPage(
+          page: () => const selectFrequency(),
+        ),
+        GetPage(
           name: RouteName.sales,
           page: () => const Sales(),
         ),
@@ -128,13 +128,17 @@ class AppRoutes {
           name: RouteName.cartmain,
           page: () => const Cartmain(),
         ),
-         GetPage(
+        GetPage(
           name: RouteName.placeordermain,
           page: () => const Placedorder(),
         ),
         GetPage(
           name: RouteName.discount,
           page: () => const Discount(),
+        ),
+        GetPage(
+          name: RouteName.selectfarmer,
+          page: () => const selectFarmer(),
         ),
       ];
 }

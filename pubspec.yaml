@@ -54,6 +54,7 @@ dependencies:
   scroll_snap_list: ^0.9.1
   flutter_switch: ^0.3.2
   flutter_dash: ^1.0.0
+  getwidget: ^3.1.1
 
 dev_dependencies:
   flutter_test:

@@ -22,15 +22,9 @@ class RouteName {
   static const String cartmain = '/cartmain';
   static const String placeordermain = '/placeordermain';
   static const String discount = '/discountpage';
-
-
-
-
-
-
-
   static const String sales = '/sales';
   static const String ordermain = '/ordermain';
+  static const String selectfarmer = '/selectfarmer';
 
   // side menu
   static const String contact = '/contact';
