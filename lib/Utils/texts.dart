@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
@@ -335,5 +336,15 @@ Widget textGrey4D4D4D_16W500(String text) {
         fontSize: 16.sp,
         color: const Color(0xff4D4D4D),
         fontWeight: FontWeight.w500),
+  );
+}
+
+Widget text18w5004D4D4D(String txt) {
+  return Text(
+    txt,
+    style: GoogleFonts.poppins(
+        fontSize: 18.sp,
+        fontWeight: FontWeight.w500,
+        color: const Color(0xff4D4D4D)),
   );
 }
