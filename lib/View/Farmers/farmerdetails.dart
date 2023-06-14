@@ -197,7 +197,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                 ),
               ),
               sizedBoxHeight(17.h),
-              Text("Farm Location",
+              Text("Farm Address",
                   style: GoogleFonts.poppins(
                     fontSize: 18.sp,
                     color: Colors.black,
@@ -232,6 +232,196 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                       fontFamily: "Poppins",
                       fontSize: 16.sp),
                   hintText: "Kingswell",
+                ),
+              ),
+              sizedBoxHeight(17.h),
+              Text("Street",
+                  style: GoogleFonts.poppins(
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  )),
+              sizedBoxHeight(3.h),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  errorStyle: TextStyle(fontSize: 16.sp),
+                  contentPadding: EdgeInsets.all(17.h),
+                  filled: true,
+                  fillColor: Color(0xFFF1F1F1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  hintStyle: TextStyle(
+                      color: const Color(0xFF4D4D4D),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Poppins",
+                      fontSize: 16.sp),
+                  hintText: "64 martens place",
+                ),
+              ),
+              sizedBoxHeight(17.h),
+              Text("City",
+                  style: GoogleFonts.poppins(
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  )),
+              sizedBoxHeight(3.h),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  errorStyle: TextStyle(fontSize: 16.sp),
+                  contentPadding: EdgeInsets.all(17.h),
+                  filled: true,
+                  fillColor: Color(0xFFF1F1F1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  hintStyle: TextStyle(
+                      color: const Color(0xFF4D4D4D),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Poppins",
+                      fontSize: 16.sp),
+                  hintText: "dunwich",
+                ),
+              ),
+              sizedBoxHeight(17.h),
+              Text("State/Province/Area",
+                  style: GoogleFonts.poppins(
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  )),
+              sizedBoxHeight(3.h),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  errorStyle: TextStyle(fontSize: 16.sp),
+                  contentPadding: EdgeInsets.all(17.h),
+                  filled: true,
+                  fillColor: Color(0xFFF1F1F1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  hintStyle: TextStyle(
+                      color: const Color(0xFF4D4D4D),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Poppins",
+                      fontSize: 16.sp),
+                  hintText: "queensland",
+                ),
+              ),
+              sizedBoxHeight(17.h),
+              Text("Zip code",
+                  style: GoogleFonts.poppins(
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  )),
+              sizedBoxHeight(3.h),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  errorStyle: TextStyle(fontSize: 16.sp),
+                  contentPadding: EdgeInsets.all(17.h),
+                  filled: true,
+                  fillColor: Color(0xFFF1F1F1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  hintStyle: TextStyle(
+                      color: const Color(0xFF4D4D4D),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Poppins",
+                      fontSize: 16.sp),
+                  hintText: "4183",
+                ),
+              ),
+              sizedBoxHeight(17.h),
+              Text("Country",
+                  style: GoogleFonts.poppins(
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  )),
+              sizedBoxHeight(3.h),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  errorStyle: TextStyle(fontSize: 16.sp),
+                  contentPadding: EdgeInsets.all(17.h),
+                  filled: true,
+                  fillColor: Color(0xFFF1F1F1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  hintStyle: TextStyle(
+                      color: const Color(0xFF4D4D4D),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Poppins",
+                      fontSize: 16.sp),
+                  hintText: "Ireland",
                 ),
               ),
             ],

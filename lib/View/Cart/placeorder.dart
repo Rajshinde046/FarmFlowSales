@@ -37,6 +37,7 @@ class _PlacedorderState extends State<Placedorder> {
   int counter = 0;
   int counter1 = 0;
   int counter2 = 0;
+  String gender = "security-first";
 
   buildorderconfirmpopup() {
     return showDialog(
@@ -100,7 +101,7 @@ class _PlacedorderState extends State<Placedorder> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed("/placeordermain");
+                    Get.toNamed("/sideMenu");
                   },
                   child: Container(
                     height: 50.h,
@@ -182,15 +183,29 @@ class _PlacedorderState extends State<Placedorder> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 7.w),
-                      child: SvgPicture.asset(
-                        "assets/images/address.svg",
-                        width: 29.w,
-                        height: 29.h,
+                    Transform.scale(
+                      scale: 1.5,
+                      child: Radio<String>(
+                        value: 'male',
+                        groupValue: gender,
+                        fillColor: MaterialStateColor.resolveWith(
+                            (states) => AppColors.buttoncolour),
+                        onChanged: (value) {
+                          setState(() {
+                            gender = value!;
+                          });
+                        },
                       ),
                     ),
-                    sizedBoxWidth(13.w),
+                    //   Padding(
+                    //   padding: EdgeInsets.only(left: 7.w),
+                    //   child: SvgPicture.asset(
+                    //     "assets/images/address.svg",
+                    //     width: 29.w,
+                    //     height: 29.h,
+                    //   ),
+                    // ),
+                    // sizedBoxWidth(13.w),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
