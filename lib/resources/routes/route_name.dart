@@ -22,6 +22,8 @@ class RouteName {
   static const String cartmain = '/cartmain';
   static const String placeordermain = '/placeordermain';
   static const String discount = '/discountpage';
+  static const String searchpage = '/searchnmain';
+
 
 
 

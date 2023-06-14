@@ -32,7 +32,8 @@ class _Dashboard extends State<Dashboard> {
         child: FloatingActionButton(
             backgroundColor: AppColors.buttoncolour,
             onPressed: () {
-              Get.to(() => const SearchProductCategories());
+              Get.toNamed('/searchnmain');
+              // Get.to(() => const SearchProductCategories());
             },
             //  _incrementCounter,
             tooltip: 'Search',

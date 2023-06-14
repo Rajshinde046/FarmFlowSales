@@ -1,4 +1,4 @@
-
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -14,6 +14,7 @@ import 'package:farm_flow_sales/View/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'side_bar.dart';
 // import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 
@@ -53,7 +54,6 @@ class _SideMenuState extends State<SideMenu>
           size: 25.w,
           color: Colors.white,
         ),
-
         textBlack10("text")
       ],
     ),
@@ -82,14 +82,12 @@ class _SideMenuState extends State<SideMenu>
     ),
   ];
 
-
   List bottomBarData = [
     {"imageUrl": "assets/images/bottom_icon1.svg", "label": "Order"},
     {"imageUrl": "assets/images/bottom_icon2.svg", "label": "Products"},
     {"imageUrl": "assets/images/bottom_icon3.svg", "label": "Dashbaord"},
     {"imageUrl": "assets/images/bottom_icon4.svg", "label": "Cart"},
     {"imageUrl": "assets/images/bottom_icon5.svg", "label": "Connect"},
-
   ];
 
   @override
@@ -103,6 +101,9 @@ class _SideMenuState extends State<SideMenu>
         parent: _animationController, curve: Curves.fastOutSlowIn));
     scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(CurvedAnimation(
         parent: _animationController, curve: Curves.fastOutSlowIn));
+
+    selectedIndex = Get.arguments ?? 2;
+
     super.initState();
   }
 
@@ -115,7 +116,6 @@ class _SideMenuState extends State<SideMenu>
   var selectedIndex = 2;
   // int activePage = 0;
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -123,7 +123,7 @@ class _SideMenuState extends State<SideMenu>
         // color: Colors.transparent,
         child: Scaffold(
             // ex
-          // backgroundColor: Colors.transparent,
+            // backgroundColor: Colors.transparent,
             // backgroundColor: AppColors.transparent,
             // resizeToAvoidBottomInset: false,
             extendBody: true,
@@ -193,7 +193,8 @@ class _SideMenuState extends State<SideMenu>
                                       ],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         SvgPicture.asset(
                                           "assets/images/menu.svg",
@@ -217,31 +218,31 @@ class _SideMenuState extends State<SideMenu>
             ),
             bottomNavigationBar: isSideMenuClosed
                 ? Padding(
-                  padding: EdgeInsets.only(bottom: 10.h),
-                  child: Container(
-                    height: 70.h,
-                    decoration: BoxDecoration(
-                        color: AppColors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade400,
-                            blurRadius: 5.h,
-                            spreadRadius: 2.h,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(35.h)),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.h),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(
-                              bottomBarData.length,
-                              (index) => activeIcon(
-                                  "assets/images/bottom_icon1_i.svg",
-                                  index))),
+                    padding: EdgeInsets.only(bottom: 10.h),
+                    child: Container(
+                      height: 70.h,
+                      decoration: BoxDecoration(
+                          color: AppColors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade400,
+                              blurRadius: 5.h,
+                              spreadRadius: 2.h,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(35.h)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.h),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(
+                                bottomBarData.length,
+                                (index) => activeIcon(
+                                    "assets/images/bottom_icon1_i.svg",
+                                    index))),
+                      ),
                     ),
-                  ),
-                )
+                  )
                 : const SizedBox()),
       ),
     );
@@ -255,77 +256,77 @@ class _SideMenuState extends State<SideMenu>
         });
         // selectedIndex = index;
       },
-      child: 
-      selectedIndex == index ? Container(
-        height: 50.h,
-        width: 
-        // selectedIndex == index ? 210.w :
-         50.h,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25.h),
-            color: 
-            // selectedIndex == index
-            //     ?
-                 AppColors.buttoncolour,
-                // : AppColors.greyF1F1F1
-                ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 22.h,
-              width: 22.h,
-              child: SvgPicture.asset(
-                bottomBarData[index]["imageUrl"],
-                // height: 35.h,
-                // width: 35.h,
-                color: 
-                // selectedIndex == index
-                //     ? 
-                    AppColors.white,
-                    // : AppColors.buttoncolour,
-                fit: BoxFit.fill,
-                // color: AppColors.greyD3B3F43,
-                // colorFilter: AppColors.greyD3B3F43,
-              ),
-            ),
-
-            // selectedIndex == index ? sizedBoxWidth(10.w) : SizedBox(),
-            // // /
-            // selectedIndex == index
-            //     ? textWhite16(bottomBarData[index]["label"])
-            //     : SizedBox()
-          ],
-        ),
-      ): Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-              height: 22.h,
-              width: 22.h,
-              child: SvgPicture.asset(
-                bottomBarData[index]["imageUrl"],
-                // height: 35.h,
-                // width: 35.h,
-                color: 
-                // selectedIndex == index
-                //     ? 
-                    // AppColors.white,
-                    // : 
+      child: selectedIndex == index
+          ? Container(
+              height: 50.h,
+              width:
+                  // selectedIndex == index ? 210.w :
+                  50.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.h),
+                color:
+                    // selectedIndex == index
+                    //     ?
                     AppColors.buttoncolour,
-                fit: BoxFit.fill,
-                // color: AppColors.greyD3B3F43,
-                // colorFilter: AppColors.greyD3B3F43,
+                // : AppColors.greyF1F1F1
               ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 22.h,
+                    width: 22.h,
+                    child: SvgPicture.asset(
+                      bottomBarData[index]["imageUrl"],
+                      // height: 35.h,
+                      // width: 35.h,
+                      color:
+                          // selectedIndex == index
+                          //     ?
+                          AppColors.white,
+                      // : AppColors.buttoncolour,
+                      fit: BoxFit.fill,
+                      // color: AppColors.greyD3B3F43,
+                      // colorFilter: AppColors.greyD3B3F43,
+                    ),
+                  ),
+
+                  // selectedIndex == index ? sizedBoxWidth(10.w) : SizedBox(),
+                  // // /
+                  // selectedIndex == index
+                  //     ? textWhite16(bottomBarData[index]["label"])
+                  //     : SizedBox()
+                ],
+              ),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 22.h,
+                  width: 22.h,
+                  child: SvgPicture.asset(
+                    bottomBarData[index]["imageUrl"],
+                    // height: 35.h,
+                    // width: 35.h,
+                    color:
+                        // selectedIndex == index
+                        //     ?
+                        // AppColors.white,
+                        // :
+                        AppColors.buttoncolour,
+                    fit: BoxFit.fill,
+                    // color: AppColors.greyD3B3F43,
+                    // colorFilter: AppColors.greyD3B3F43,
+                  ),
+                ),
+
+                sizedBoxHeight(5.h),
+
+                // textWhite16(bottomBarData[index]["label"])
+                textGreen14(bottomBarData[index]["label"])
+              ],
             ),
-
-            sizedBoxHeight(5.h),
-
-            // textWhite16(bottomBarData[index]["label"])
-            textGreen14(bottomBarData[index]["label"])
-            
-        ],
-      ),
     );
   }
 
