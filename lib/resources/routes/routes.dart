@@ -22,8 +22,12 @@ import 'package:farm_flow_sales/View/Warehouse/warehouse.dart';
 import 'package:farm_flow_sales/View/forgot_password.dart';
 import 'package:farm_flow_sales/View/products.dart';
 import 'package:farm_flow_sales/View/reset_password.dart';
+
 import 'package:farm_flow_sales/View/select_frequency.dart';
 import 'package:farm_flow_sales/View/selectfarmer.dart';
+
+import 'package:farm_flow_sales/View/Cart/select_frequency.dart';
+
 import 'package:farm_flow_sales/View/splash_screen.dart';
 import 'package:farm_flow_sales/View/verify_number.dart';
 import 'package:get/get.dart';
@@ -119,8 +123,12 @@ class AppRoutes {
         GetPage(
           name: RouteName.selectfrequency,
           page: () => const selectFrequency(),
+
         ),
-        GetPage(
+
+         
+  GetPage(
+
           name: RouteName.sales,
           page: () => const Sales(),
         ),

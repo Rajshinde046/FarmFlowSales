@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import 'search_item.dart';
+
 class SearchProductCategories extends StatefulWidget {
   const SearchProductCategories({Key? key}) : super(key: key);
 
@@ -181,111 +183,119 @@ class _ProductContainerState extends State<ProductContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          color: Color(0xffF1F1F1),
-          boxShadow: [
-            BoxShadow(
-                color: Color(0x0000001F),
-                offset: Offset(0.0, 0.75),
-                spreadRadius: 2)
-          ]),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset("assets/images/${widget.png}.png", height: 97.h),
-            sizedBoxWidth(26.w),
-            Flexible(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  textBlack18W5000(widget.txt),
-                  sizedBoxHeight(10.h),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return bottomSheetContainer();
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: 110.w,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 3.h, horizontal: 8.w),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: AppColors.buttoncolour, width: 1.h),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20)),
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => SearchItem(
+              png: widget.png,
+              title: widget.txt,
+            ));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: Color(0xffF1F1F1),
+            boxShadow: [
+              BoxShadow(
+                  color: Color(0x0000001F),
+                  offset: Offset(0.0, 0.75),
+                  spreadRadius: 2)
+            ]),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset("assets/images/${widget.png}.png", height: 97.h),
+              sizedBoxWidth(26.w),
+              Flexible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    textBlack18W5000(widget.txt),
+                    sizedBoxHeight(10.h),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return bottomSheetContainer();
+                          },
+                        );
+                      },
+                      child: Container(
+                        width: 110.w,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 3.h, horizontal: 8.w),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: AppColors.buttoncolour, width: 1.h),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(
+                              () => textGreen14(
+                                  '${bagsQuantity.value} ${bagText.value}'),
+                            ),
+                            RotatedBox(
+                                quarterTurns: 3,
+                                child: Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 14.h,
+                                  color: AppColors.buttoncolour,
+                                ))
+                          ],
+                        ),
+                      ),
+                    ),
+                    sizedBoxHeight(10.h),
+                    Flexible(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Obx(
-                            () => textGreen14(
-                                '${bagsQuantity.value} ${bagText.value}'),
-                          ),
-                          RotatedBox(
-                              quarterTurns: 3,
-                              child: Icon(
-                                Icons.arrow_back_ios,
-                                size: 14.h,
-                                color: AppColors.buttoncolour,
-                              ))
+                          Obx(() => textBlack18W700Center('€ ${price.value}')),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (counter > widget.minValue) {
+                                        counter--;
+                                      }
+                                    });
+                                  },
+                                  child: SvgPicture.asset(
+                                      "assets/images/minusbutton.svg")),
+                              sizedBoxWidth(12.w),
+                              SizedBox(
+                                  width: 14.w, child: textblack14M('$counter')),
+                              sizedBoxWidth(8.w),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (counter < widget.maxValue) {
+                                        counter++;
+                                      }
+                                    });
+                                  },
+                                  child: SvgPicture.asset(
+                                      "assets/images/plusreorder.svg")),
+                            ],
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  sizedBoxHeight(10.h),
-                  Flexible(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Obx(() => textBlack18W700Center('€ ${price.value}')),
-                        Row(
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counter > widget.minValue) {
-                                      counter--;
-                                    }
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                    "assets/images/minusbutton.svg")),
-                            sizedBoxWidth(12.w),
-                            SizedBox(
-                                width: 14.w, child: textblack14M('$counter')),
-                            sizedBoxWidth(8.w),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counter < widget.maxValue) {
-                                      counter++;
-                                    }
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                    "assets/images/plusreorder.svg")),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
