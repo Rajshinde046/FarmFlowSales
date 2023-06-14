@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
               scaffoldBackgroundColor: AppColors.white,
               primarySwatch: Colors.blue,
             ),
-            initialRoute: '/selectfrequency',
+            initialRoute: '/',
             getPages: AppRoutes.appRoutes(),
           );
         });

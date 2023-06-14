@@ -82,106 +82,114 @@ class _selectFrequencyState extends State<selectFrequency> {
     }
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 30.h,
-            ),
-            SvgPicture.asset(
-              "assets/images/frequency.svg",
-              width: 360.w,
-            ),
-            SizedBox(
-              height: 25.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
               children: [
-                Text(
-                  "Set As Recurring Order",
-                  style: GoogleFonts.poppins(
-                      fontSize: 20.sp, fontWeight: FontWeight.w500),
+                SizedBox(
+                  height: 30.h,
                 ),
+                SvgPicture.asset(
+                  "assets/images/frequency.svg",
+                  width: 360.w,
+                ),
+                SizedBox(
+                  height: 25.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Set As Recurring Order",
+                      style: GoogleFonts.poppins(
+                          fontSize: 20.sp, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Select Frequency",
+                      style: GoogleFonts.poppins(
+                          fontSize: 18.sp, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                sizedBoxHeight(10.h),
+                DropdownMenu<ColorLabel>(
+                  hintText: "Select Frequrncy",
+                  trailingIcon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.green,
+                  ),
+                  inputDecorationTheme: InputDecorationTheme(
+                    filled: true,
+                    fillColor: Color(0xFFF1F1F1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.red, width: 1),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.red, width: 1),
+                    ),
+                  ),
+                  enabled: true,
+                  width: 350.w,
+                  enableSearch: false,
+                  controller: colorController,
+                  dropdownMenuEntries: colorEntries,
+                  onSelected: (ColorLabel? color) {
+                    setState(() {
+                      selectedColor = color;
+                    });
+                  },
+                ),
+                sizedBoxHeight(25.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Select Start Date",
+                      style: GoogleFonts.poppins(
+                          fontSize: 18.sp, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                Personaldatepicker(
+                  datecontroller: datecontroller,
+                  ontap: () => _presentDatePicker(),
+                ),
+                sizedBoxHeight(150.h),
+                CustomButton(
+                    text: "Confirm",
+                    onTap: () {
+                      Get.toNamed("/discountpage");
+                    })
               ],
             ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Select Frequency",
-                  style: GoogleFonts.poppins(
-                      fontSize: 18.sp, fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-            sizedBoxHeight(10.h),
-            DropdownMenu<ColorLabel>(
-              hintText: "Select Frequrncy",
-              trailingIcon: Icon(
-                Icons.arrow_drop_down,
-                color: Colors.green,
-              ),
-              inputDecorationTheme: InputDecorationTheme(
-                filled: true,
-                fillColor: Color(0xFFF1F1F1),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(
-                      color: Color(0xFF707070).withOpacity(0), width: 1),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(
-                      color: Color(0xFF707070).withOpacity(0), width: 1),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(
-                      color: Color(0xFF707070).withOpacity(0), width: 1),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Colors.red, width: 1),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Colors.red, width: 1),
-                ),
-              ),
-              enabled: true,
-              width: 350.w,
-              enableSearch: false,
-              controller: colorController,
-              dropdownMenuEntries: colorEntries,
-              onSelected: (ColorLabel? color) {
-                setState(() {
-                  selectedColor = color;
-                });
-              },
-            ),
-            sizedBoxHeight(25.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Select Start Date",
-                  style: GoogleFonts.poppins(
-                      fontSize: 18.sp, fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-            Personaldatepicker(
-              datecontroller: datecontroller,
-              ontap: () => _presentDatePicker(),
-            ),
-            sizedBoxHeight(150.h),
-            CustomButton(text: "Confirm")
-          ],
+          ),
         ),
       ),
     );
@@ -269,22 +277,15 @@ class Personaldatepicker extends StatelessWidget {
             borderSide: const BorderSide(color: Colors.red, width: 1),
           ),
           suffixIcon: Padding(
-            padding: EdgeInsets.only(right: 10.w),
+            padding: EdgeInsets.only(right: 5.w),
             child: CircleAvatar(
               radius: 20.h,
-              backgroundColor: AppColors.white,
+              backgroundColor: Color(0xffF1F1F1),
               child: Center(
-                child: Padding(
-                  padding: EdgeInsets.only(right: 8.w),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.date_range,
-                      color: Color(0xFF0E5F02),
-                    ),
-                    onPressed: () {
-                      ontap();
-                    },
-                  ),
+                child: SvgPicture.asset(
+                  "assets/images/datepicker.svg",
+                  // width: 7.w,
+                  // height: 7.h,
                 ),
               ),
             ),
