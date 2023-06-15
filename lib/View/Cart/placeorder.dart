@@ -129,6 +129,22 @@ class _PlacedorderState extends State<Placedorder> {
     );
   }
 
+  double? discount;
+  String? curren;
+  bool? change;
+  final double mRP = 500.0;
+
+
+  @override
+  void initState() {
+    discount = Get.arguments["discountpercent"];
+    curren = Get.arguments["currency"];
+    change = Get.arguments["bool"];
+    print(Get.arguments["bool"]);
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +158,7 @@ class _PlacedorderState extends State<Placedorder> {
             children: [
               SvgPicture.asset(
                 "assets/images/placedorder.svg",
-                 width: 360.w,
+                width: 360.w,
                 // height: 45.h,
               ),
               sizedBoxHeight(28.h),
@@ -412,11 +428,12 @@ class _PlacedorderState extends State<Placedorder> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      // "assets/images/minusbutton.svg",
-                                      "assets/images/minus1.svg"
-                                      // width: 20.w,
-                                      // height: 40.h,
-                                      ),
+                                    // "assets/images/minusbutton.svg",
+                                    "assets/images/minus1.svg",
+                                    width: 20.w,
+                                    // width: 20.w,
+                                    // height: 40.h,
+                                  ),
                                 ),
                               ),
                               sizedBoxWidth(12.w),
@@ -447,11 +464,12 @@ class _PlacedorderState extends State<Placedorder> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      // "assets/images/plusreorder.svg",
-                                      "assets/images/plus1.svg"
-                                      // width: 20.w,
-                                      // height: 40.h,
-                                      ),
+                                    // "assets/images/plusreorder.svg",
+                                    "assets/images/plus1.svg",
+                                    width: 20.w,
+                                    // width: 20.w,
+                                    // height: 40.h,
+                                  ),
                                 ),
                               ),
                             ],
@@ -534,11 +552,11 @@ class _PlacedorderState extends State<Placedorder> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      // "assets/images/minusbutton.svg",
-                                      "assets/images/minus1.svg"
-                                      // width: 20.w,
-                                      // height: 40.h,
-                                      ),
+                                    // "assets/images/minusbutton.svg",
+                                    "assets/images/minus1.svg",
+                                    width: 20.w,
+                                    // height: 40.h,
+                                  ),
                                 ),
                               ),
                               sizedBoxWidth(12.w),
@@ -569,11 +587,11 @@ class _PlacedorderState extends State<Placedorder> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      // "assets/images/plusreorder.svg",
-                                      "assets/images/plus1.svg"
-                                      // width: 20.w,
-                                      // height: 40.h,
-                                      ),
+                                    // "assets/images/plusreorder.svg",
+                                    "assets/images/plus1.svg",
+                                    width: 20.w,
+                                    // height: 40.h,
+                                  ),
                                 ),
                               ),
                             ],
@@ -656,11 +674,11 @@ class _PlacedorderState extends State<Placedorder> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      // "assets/images/minusbutton.svg",
-                                      "assets/images/minus1.svg"
-                                      // width: 20.w,
-                                      // height: 40.h,
-                                      ),
+                                    // "assets/images/minusbutton.svg",
+                                    "assets/images/minus1.svg",
+                                    width: 20.w,
+                                    // height: 40.h,
+                                  ),
                                 ),
                               ),
                               sizedBoxWidth(12.w),
@@ -691,11 +709,11 @@ class _PlacedorderState extends State<Placedorder> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      // "assets/images/plusreorder.svg",
-                                      "assets/images/plus1.svg"
-                                      // width: 20.w,
-                                      // height: 40.h,
-                                      ),
+                                    // "assets/images/plusreorder.svg",
+                                    "assets/images/plus1.svg",
+                                    width: 20.w,
+                                    // height: 40.h,
+                                  ),
                                 ),
                               ),
                             ],
@@ -723,7 +741,7 @@ class _PlacedorderState extends State<Placedorder> {
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    "€ 500",
+                    "€ $mRP",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
                         color: Color(0xff4D4D4D),
@@ -743,7 +761,7 @@ class _PlacedorderState extends State<Placedorder> {
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    "- 10%",
+                    change! ? "- ${discount.toString()} %" : "€ ${curren}",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
                         color: Color(0xff4D4D4D),
@@ -768,7 +786,10 @@ class _PlacedorderState extends State<Placedorder> {
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    "€ 450",
+                    change!
+                    ? "€ ${mRP -((mRP * discount!) / 100)}"
+                    :"€ ${mRP - discount!}",
+                    // "€ 450",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
                         color: AppColors.buttoncolour,

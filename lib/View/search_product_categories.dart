@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'search_item.dart';
 
@@ -22,6 +23,30 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 200.h),
+        child: SizedBox(
+          width: 100.w,
+          height: 50.h,
+          child: FloatingActionButton(
+              shape: BeveledRectangleBorder(
+                  borderRadius: BorderRadius.circular(3)),
+              backgroundColor: AppColors.buttoncolour,
+              onPressed: () {
+                Get.toNamed('/sideMenu', arguments: 3);
+                // Get.to(() => const SearchProductCategories());
+              },
+              tooltip: 'View Cart',
+              child: Text(
+                "View Cart",
+                style: GoogleFonts.poppins(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.white),
+              )),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -271,7 +296,9 @@ class _ProductContainerState extends State<ProductContainer> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      "assets/images/minusbutton.svg")),
+                                    "assets/images/minusbutton.svg",
+                                    width: 20.w,
+                                  )),
                               sizedBoxWidth(12.w),
                               SizedBox(
                                   width: 14.w, child: textblack14M('$counter')),
@@ -285,7 +312,9 @@ class _ProductContainerState extends State<ProductContainer> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      "assets/images/plusreorder.svg")),
+                                    "assets/images/plusreorder.svg",
+                                    width: 20.w,
+                                  )),
                             ],
                           )
                         ],
