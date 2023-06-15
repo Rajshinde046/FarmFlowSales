@@ -44,7 +44,7 @@ class _WarehouseState extends State<Warehouse> {
                       children: [
                         GestureDetector(
                           onTap: (){
-                            Get.toNamed("/products");
+                            Get.toNamed("/sideMenu", arguments: 1);
                           },
                           child: warehousecard(
                             warehousedata[index]["image"],
