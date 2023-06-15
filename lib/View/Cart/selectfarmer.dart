@@ -9,6 +9,31 @@ import 'package:get/get.dart';
 import 'package:getwidget/components/accordion/gf_accordion.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+final TextEditingController colorController = TextEditingController();
+final TextEditingController addController = TextEditingController();
+
+enum ColorLabel {
+  blue('Kevin Mounsey'),
+  pink('Aron Smith'),
+  green('Kevin Mounsey'),
+  yellow('Aron Smith'),
+  grey('Kevin Mounsey');
+
+  const ColorLabel(this.label);
+  final String label;
+}
+
+enum addLabel {
+  blue(' 64 martens place, dunwich, queensland, 4183, Ireland'),
+  pink(' 64 martens place, dunwich, queensland, 4183, Ireland'),
+  green(' 64 martens place, dunwich, queensland, 4183, Ireland'),
+  yellow(' 64 martens place, dunwich, queensland, 4183, Ireland'),
+  grey(' 64 martens place, dunwich, queensland, 4183, Ireland');
+
+  const addLabel(this.label);
+  final String label;
+}
+
 class selectFarmer extends StatefulWidget {
   const selectFarmer({super.key});
 
@@ -17,8 +42,31 @@ class selectFarmer extends StatefulWidget {
 }
 
 class _selectFarmerState extends State<selectFarmer> {
+  ColorLabel? selectedColor;
+  addLabel? selectedAdd;
   @override
   Widget build(BuildContext context) {
+    final List<DropdownMenuEntry<ColorLabel>> colorEntries =
+        <DropdownMenuEntry<ColorLabel>>[];
+    for (final ColorLabel color in ColorLabel.values) {
+      colorEntries.add(
+        DropdownMenuEntry<ColorLabel>(
+          value: color,
+          label: color.label,
+        ),
+      );
+    }
+
+    final List<DropdownMenuEntry<addLabel>> addEntries =
+        <DropdownMenuEntry<addLabel>>[];
+    for (final addLabel add in addLabel.values) {
+      addEntries.add(
+        DropdownMenuEntry<addLabel>(
+          value: add,
+          label: add.label,
+        ),
+      );
+    }
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -46,27 +94,96 @@ class _selectFarmerState extends State<selectFarmer> {
                 ],
               ),
               sizedBoxHeight(10.h),
-              ListView.builder(
-                  // physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: newsData.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        newslistCard(
-                          newsData[index]["recipeimage"],
-                          newsData[index]["title"],
-                          newsData[index]["street"],
-                          index,
-                          newsData[index]["city"],
-                          newsData[index]["state"],
-                          newsData[index]["phone"],
-                          newsData[index]["zipcode"],
-                          newsData[index]["country"],
-                        )
-                      ],
-                    );
-                  }),
+              DropdownMenu<ColorLabel>(
+                hintText: "Select Farmer",
+                trailingIcon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.green,
+                ),
+                inputDecorationTheme: InputDecorationTheme(
+                  filled: true,
+                  fillColor: Color(0xFFF1F1F1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: Colors.red, width: 1),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: Colors.red, width: 1),
+                  ),
+                ),
+                enabled: true,
+                width: 350.w,
+                enableSearch: false,
+                controller: colorController,
+                dropdownMenuEntries: colorEntries,
+                onSelected: (ColorLabel? color) {
+                  setState(() {
+                    selectedColor = color;
+                  });
+                },
+              ),
+              sizedBoxHeight(30),
+              DropdownMenu<addLabel>(
+                hintText: "Select Address",
+                trailingIcon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.green,
+                ),
+                inputDecorationTheme: InputDecorationTheme(
+                  filled: true,
+                  fillColor: Color(0xFFF1F1F1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    borderSide: BorderSide(
+                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: Colors.red, width: 1),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: Colors.red, width: 1),
+                  ),
+                ),
+                enabled: true,
+                width: 350.w,
+                enableSearch: false,
+                controller: addController,
+                dropdownMenuEntries: addEntries,
+                onSelected: (addLabel? add) {
+                  setState(() {
+                    selectedAdd = add;
+                  });
+                },
+              ),
+              sizedBoxHeight(30),
               CustomButton(
                   text: "Deliver To This Address",
                   onTap: () {
