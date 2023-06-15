@@ -9,17 +9,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-TextEditingController datecontroller = TextEditingController();
-final TextEditingController colorController = TextEditingController();
-
-enum ColorLabel {
+enum FrequencyLabel {
   blue('Weekly'),
   pink('Monthly'),
   green('Quaterly'),
   yellow('half Yearly'),
   grey('yearly');
 
-  const ColorLabel(this.label);
+  const FrequencyLabel(this.label);
   final String label;
 }
 
@@ -32,7 +29,10 @@ class selectFrequency extends StatefulWidget {
 
 class _selectFrequencyState extends State<selectFrequency> {
   DateTime? _selectedDate;
-  ColorLabel? selectedColor;
+  FrequencyLabel? selectedColor;
+  TextEditingController datecontroller = TextEditingController();
+  TextEditingController frequencyController = TextEditingController();
+
   @override
   void _presentDatePicker() {
     // showDatePicker is a pre-made funtion of Flutter
@@ -70,11 +70,11 @@ class _selectFrequencyState extends State<selectFrequency> {
   }
 
   Widget build(BuildContext context) {
-    final List<DropdownMenuEntry<ColorLabel>> colorEntries =
-        <DropdownMenuEntry<ColorLabel>>[];
-    for (final ColorLabel color in ColorLabel.values) {
+    final List<DropdownMenuEntry<FrequencyLabel>> colorEntries =
+        <DropdownMenuEntry<FrequencyLabel>>[];
+    for (final FrequencyLabel color in FrequencyLabel.values) {
       colorEntries.add(
-        DropdownMenuEntry<ColorLabel>(
+        DropdownMenuEntry<FrequencyLabel>(
           value: color,
           label: color.label,
         ),
@@ -122,7 +122,7 @@ class _selectFrequencyState extends State<selectFrequency> {
                   ],
                 ),
                 sizedBoxHeight(10.h),
-                DropdownMenu<ColorLabel>(
+                DropdownMenu<FrequencyLabel>(
                   hintText: "Select Frequrncy",
                   trailingIcon: Icon(
                     Icons.arrow_drop_down,
@@ -158,9 +158,9 @@ class _selectFrequencyState extends State<selectFrequency> {
                   enabled: true,
                   width: 350.w,
                   enableSearch: false,
-                  controller: colorController,
+                  controller: frequencyController,
                   dropdownMenuEntries: colorEntries,
-                  onSelected: (ColorLabel? color) {
+                  onSelected: (FrequencyLabel? color) {
                     setState(() {
                       selectedColor = color;
                     });
