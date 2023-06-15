@@ -49,20 +49,20 @@ class SearchItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        sizedBoxWidth(10.w),
-                        Expanded(
-                            child: CupertinoSearchTextField(
-                          prefixInsets:
-                              EdgeInsetsDirectional.fromSTEB(15.w, 0, 0, 0),
-                          prefixIcon: const Icon(
-                            CupertinoIcons.search,
-                            color: Colors.black,
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border:
-                                  Border.all(color: AppColors.buttoncolour)),
-                        )),
+                        // sizedBoxWidth(10.w),
+                        // Expanded(
+                        //     child: CupertinoSearchTextField(
+                        //   prefixInsets:
+                        //       EdgeInsetsDirectional.fromSTEB(15.w, 0, 0, 0),
+                        //   prefixIcon: const Icon(
+                        //     CupertinoIcons.search,
+                        //     color: Colors.black,
+                        //   ),
+                        //   decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(20),
+                        //       border:
+                        //           Border.all(color: AppColors.buttoncolour)),
+                        // )),
                       ],
                     ),
                   ),
@@ -152,11 +152,11 @@ class SearchItem extends StatelessWidget {
                     ),
                   ),
                   sizedBoxHeight(30.h),
-                  customButtonCurve(text: 'Add to Cart',
-                   onTap: (){
-                    Get.toNamed('/sideMenu', arguments: 3);
-                   }
-                   )
+                  customButtonCurve(
+                      text: 'Add to Cart',
+                      onTap: () {
+                        Get.toNamed('/sideMenu', arguments: 3);
+                      })
                 ],
               ),
             )

@@ -413,7 +413,8 @@ class _PlacedorderState extends State<Placedorder> {
                                   },
                                   child: SvgPicture.asset(
                                       // "assets/images/minusbutton.svg",
-                                      "assets/images/minus1.svg"
+                                      "assets/images/minus1.svg",
+                                      width: 20.w,
                                       // width: 20.w,
                                       // height: 40.h,
                                       ),
@@ -448,7 +449,8 @@ class _PlacedorderState extends State<Placedorder> {
                                   },
                                   child: SvgPicture.asset(
                                       // "assets/images/plusreorder.svg",
-                                      "assets/images/plus1.svg"
+                                      "assets/images/plus1.svg",
+                                      width: 20.w,
                                       // width: 20.w,
                                       // height: 40.h,
                                       ),
@@ -535,8 +537,8 @@ class _PlacedorderState extends State<Placedorder> {
                                   },
                                   child: SvgPicture.asset(
                                       // "assets/images/minusbutton.svg",
-                                      "assets/images/minus1.svg"
-                                      // width: 20.w,
+                                      "assets/images/minus1.svg",
+                                       width: 20.w,
                                       // height: 40.h,
                                       ),
                                 ),
@@ -570,8 +572,8 @@ class _PlacedorderState extends State<Placedorder> {
                                   },
                                   child: SvgPicture.asset(
                                       // "assets/images/plusreorder.svg",
-                                      "assets/images/plus1.svg"
-                                      // width: 20.w,
+                                      "assets/images/plus1.svg",
+                                       width: 20.w,
                                       // height: 40.h,
                                       ),
                                 ),
@@ -657,8 +659,8 @@ class _PlacedorderState extends State<Placedorder> {
                                   },
                                   child: SvgPicture.asset(
                                       // "assets/images/minusbutton.svg",
-                                      "assets/images/minus1.svg"
-                                      // width: 20.w,
+                                      "assets/images/minus1.svg",
+                                       width: 20.w,
                                       // height: 40.h,
                                       ),
                                 ),
@@ -692,8 +694,8 @@ class _PlacedorderState extends State<Placedorder> {
                                   },
                                   child: SvgPicture.asset(
                                       // "assets/images/plusreorder.svg",
-                                      "assets/images/plus1.svg"
-                                      // width: 20.w,
+                                      "assets/images/plus1.svg",
+                                       width: 20.w,
                                       // height: 40.h,
                                       ),
                                 ),
