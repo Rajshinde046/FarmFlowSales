@@ -1,4 +1,3 @@
-
 import 'package:farm_flow_sales/Common/CommonTextFormField.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
@@ -54,6 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           top: -18 * fem,
                           child: SvgPicture.asset(
                             "assets/grass.svg",
+                            // fit: BoxFit.fill,
+                            // width: MediaQuery.of(context).size.width,
+                            width: 430.w,
                           ),
                         ),
                         Positioned(
