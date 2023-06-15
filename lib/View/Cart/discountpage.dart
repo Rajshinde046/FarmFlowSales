@@ -42,7 +42,6 @@ class Discount extends StatelessWidget {
                 sizedBoxHeight(9.h),
                 Obx(
                   () => Row(
-
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       GestureDetector(
@@ -145,6 +144,7 @@ class Discount extends StatelessWidget {
                 const Divider(thickness: 1, color: AppColors.buttoncolour),
                 sizedBoxHeight(3.h),
                 Row(
+
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     text18w5004D4D4D("Total Amount"),
@@ -164,7 +164,11 @@ class Discount extends StatelessWidget {
                     text: "Proceed",
                     onTap: () {
                       if (_form.currentState!.validate()) {
-                        Get.toNamed("/placeordermain");
+                        Get.toNamed("/placeordermain", arguments: {
+                          "discountpercent":discountController.discountValue,
+                          "currency": discountValueConttroller.text,
+                          "bool": discountBool.value,
+                        });
                         // investAmountPopUp();
                       }
                     })
