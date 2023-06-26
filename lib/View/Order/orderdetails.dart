@@ -167,7 +167,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Pre calve gain gold",
+                                "Elite Dairy 15% BULK",
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     color: Color(0XFF141414),

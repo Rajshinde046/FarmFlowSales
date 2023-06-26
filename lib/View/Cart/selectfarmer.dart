@@ -9,8 +9,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/components/accordion/gf_accordion.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final TextEditingController colorController = TextEditingController();
-final TextEditingController addController = TextEditingController();
+
 
 enum ColorLabel {
   blue('Kevin Mounsey'),
@@ -44,6 +43,8 @@ class selectFarmer extends StatefulWidget {
 class _selectFarmerState extends State<selectFarmer> {
   ColorLabel? selectedColor;
   addLabel? selectedAdd;
+  final TextEditingController colorController = TextEditingController();
+final TextEditingController addController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final List<DropdownMenuEntry<ColorLabel>> colorEntries =
@@ -69,7 +70,7 @@ class _selectFarmerState extends State<selectFarmer> {
     }
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
