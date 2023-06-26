@@ -321,13 +321,13 @@ class _Dashboard extends State<Dashboard> {
                                 child: Row(
                                   children: [
                                     deliveriesCard("assets/images/timer.png",
-                                        "In Progress Delivery", "3", 0),
+                                        "In Progress Deliveries", "3", 0),
                                     sizedBoxWidth(3.w),
                                     deliveriesCard("assets/images/clock.png",
-                                        "Pending Delivery", "19", 1),
+                                        "Pending Deliveries", "19", 1),
                                     sizedBoxWidth(3.w),
                                     deliveriesCard("assets/images/calender.png",
-                                        "In Progress Delivery", "3", 2),
+                                        "In Progress Deliveries", "3", 2),
                                   ],
                                 ),
                               )
