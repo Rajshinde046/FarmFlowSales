@@ -134,7 +134,6 @@ class _PlacedorderState extends State<Placedorder> {
   bool? change;
   final double mRP = 500.0;
 
-
   @override
   void initState() {
     discount = Get.arguments["discountpercent"];
@@ -240,14 +239,14 @@ class _PlacedorderState extends State<Placedorder> {
                         sizedBoxHeight(4.h),
                         RichText(
                           text: TextSpan(
-                            text: "street : ",
+                            text: "First Line Of Address : ",
                             style: GoogleFonts.montserrat(
                                 fontSize: 16.sp,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
                             children: [
                               TextSpan(
-                                text: "64 martens place",
+                                text: "64 martens \nplace",
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16.sp,
                                     color: Color(0xff4D4D4D),
@@ -259,7 +258,7 @@ class _PlacedorderState extends State<Placedorder> {
                         sizedBoxHeight(5.h),
                         RichText(
                           text: TextSpan(
-                            text: "city : ",
+                            text: "Second Line Of Address : ",
                             style: GoogleFonts.montserrat(
                                 fontSize: 16.sp,
                                 color: AppColors.black,
@@ -278,7 +277,7 @@ class _PlacedorderState extends State<Placedorder> {
                         sizedBoxHeight(5.h),
                         RichText(
                           text: TextSpan(
-                            text: "state/province/area : ",
+                            text: "Country : ",
                             style: GoogleFonts.montserrat(
                                 fontSize: 16.sp,
                                 color: AppColors.black,
@@ -316,7 +315,7 @@ class _PlacedorderState extends State<Placedorder> {
                         sizedBoxHeight(5.h),
                         RichText(
                           text: TextSpan(
-                            text: "zip code : ",
+                            text: "Eircode : ",
                             style: GoogleFonts.montserrat(
                                 fontSize: 16.sp,
                                 color: AppColors.black,
@@ -332,25 +331,25 @@ class _PlacedorderState extends State<Placedorder> {
                             ],
                           ),
                         ),
-                        sizedBoxHeight(5.h),
-                        RichText(
-                          text: TextSpan(
-                            text: "country : ",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                            children: [
-                              TextSpan(
-                                text: "Ireland",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // sizedBoxHeight(5.h),
+                        // RichText(
+                        //   text: TextSpan(
+                        //     text: "country : ",
+                        //     style: GoogleFonts.montserrat(
+                        //         fontSize: 16.sp,
+                        //         color: AppColors.black,
+                        //         fontWeight: FontWeight.w600),
+                        //     children: [
+                        //       TextSpan(
+                        //         text: "Ireland",
+                        //         style: GoogleFonts.montserrat(
+                        //             fontSize: 16.sp,
+                        //             color: Color(0xff4D4D4D),
+                        //             fontWeight: FontWeight.w400),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     )
                   ],
@@ -787,8 +786,8 @@ class _PlacedorderState extends State<Placedorder> {
                   ),
                   Text(
                     change!
-                    ? "€ ${mRP -((mRP * discount!) / 100)}"
-                    :"€ ${mRP - discount!}",
+                        ? "€ ${mRP - ((mRP * discount!) / 100)}"
+                        : "€ ${mRP - discount!}",
                     // "€ 450",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,

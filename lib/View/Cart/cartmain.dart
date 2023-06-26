@@ -108,7 +108,7 @@ class _CartmainState extends State<Cartmain> {
             // CustomButton(text: "Proceed To Buy (3 Items)", onTap: () {}),
             InkWell(
               onTap: () {
-                Get.toNamed("/selectfarmer"); 
+                Get.toNamed("/selectfarmer");
               },
               child: Container(
                 height: 50.h,
@@ -156,7 +156,7 @@ class _CartmainState extends State<Cartmain> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Pre-Calver Gain Gold",
+                          "Elite Dairy 15% BULK ",
                           style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
@@ -194,12 +194,12 @@ class _CartmainState extends State<Cartmain> {
                                   });
                                 },
                                 child: SvgPicture.asset(
-                                    // "assets/images/minusbutton.svg",
-                                    "assets/images/minus1.svg",
-                                    width: 20.w,
-                                    // width: 20.w,
-                                    // height: 40.h,
-                                    ),
+                                  // "assets/images/minusbutton.svg",
+                                  "assets/images/minus1.svg",
+                                  width: 20.w,
+                                  // width: 20.w,
+                                  // height: 40.h,
+                                ),
                               ),
                             ),
                             sizedBoxWidth(12.w),
@@ -230,12 +230,12 @@ class _CartmainState extends State<Cartmain> {
                                   });
                                 },
                                 child: SvgPicture.asset(
-                                    // "assets/images/plusreorder.svg",
-                                    "assets/images/plus1.svg",
-                                    width: 20.w,
-                                    // width: 20.w,
-                                    // height: 40.h,
-                                    ),
+                                  // "assets/images/plusreorder.svg",
+                                  "assets/images/plus1.svg",
+                                  width: 20.w,
+                                  // width: 20.w,
+                                  // height: 40.h,
+                                ),
                               ),
                             ),
                           ],
@@ -316,12 +316,12 @@ class _CartmainState extends State<Cartmain> {
                                   });
                                 },
                                 child: SvgPicture.asset(
-                                    // "assets/images/minusbutton.svg",
-                                    "assets/images/minus1.svg",
-                                    width: 20.w,
-                                    // width: 20.w,
-                                    // height: 40.h,
-                                    ),
+                                  // "assets/images/minusbutton.svg",
+                                  "assets/images/minus1.svg",
+                                  width: 20.w,
+                                  // width: 20.w,
+                                  // height: 40.h,
+                                ),
                               ),
                             ),
                             sizedBoxWidth(12.w),
@@ -352,12 +352,12 @@ class _CartmainState extends State<Cartmain> {
                                   });
                                 },
                                 child: SvgPicture.asset(
-                                    // "assets/images/plusreorder.svg",
-                                    "assets/images/plus1.svg",
-                                    width: 20.w,
-                                    // width: 20.w,
-                                    // height: 40.h,
-                                    ),
+                                  // "assets/images/plusreorder.svg",
+                                  "assets/images/plus1.svg",
+                                  width: 20.w,
+                                  // width: 20.w,
+                                  // height: 40.h,
+                                ),
                               ),
                             ),
                           ],
@@ -438,12 +438,12 @@ class _CartmainState extends State<Cartmain> {
                                   });
                                 },
                                 child: SvgPicture.asset(
-                                    // "assets/images/minusbutton.svg",
-                                    "assets/images/minus1.svg",
-                                    width: 20.w,
-                                    // width: 20.w,
-                                    // height: 40.h,
-                                    ),
+                                  // "assets/images/minusbutton.svg",
+                                  "assets/images/minus1.svg",
+                                  width: 20.w,
+                                  // width: 20.w,
+                                  // height: 40.h,
+                                ),
                               ),
                             ),
                             sizedBoxWidth(12.w),
@@ -474,12 +474,12 @@ class _CartmainState extends State<Cartmain> {
                                   });
                                 },
                                 child: SvgPicture.asset(
-                                    // "assets/images/plusreorder.svg",
-                                    "assets/images/plus1.svg",
-                                    width: 20.w,
-                                    // width: 20.w,
-                                    // height: 40.h,
-                                    ),
+                                  // "assets/images/plusreorder.svg",
+                                  "assets/images/plus1.svg",
+                                  width: 20.w,
+                                  // width: 20.w,
+                                  // height: 40.h,
+                                ),
                               ),
                             ),
                           ],

@@ -158,44 +158,44 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   hintText: "Male",
                 ),
               ),
-              sizedBoxHeight(17.h),
-              Text("Age",
-                  style: GoogleFonts.poppins(
-                    fontSize: 18.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  )),
-              sizedBoxHeight(3.h),
-              TextFormField(
-                readOnly: true,
-                decoration: InputDecoration(
-                  errorStyle: TextStyle(fontSize: 16.sp),
-                  contentPadding: EdgeInsets.all(17.h),
-                  filled: true,
-                  fillColor: Color(0xFFF1F1F1),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
-                  ),
-                  hintStyle: TextStyle(
-                      color: const Color(0xFF4D4D4D),
-                      fontWeight: FontWeight.w400,
-                      fontFamily: "Poppins",
-                      fontSize: 16.sp),
-                  hintText: "40",
-                ),
-              ),
+              // sizedBoxHeight(17.h),
+              // Text("Age",
+              //     style: GoogleFonts.poppins(
+              //       fontSize: 18.sp,
+              //       color: Colors.black,
+              //       fontWeight: FontWeight.w500,
+              //     )),
+              // sizedBoxHeight(3.h),
+              // TextFormField(
+              //   readOnly: true,
+              //   decoration: InputDecoration(
+              //     errorStyle: TextStyle(fontSize: 16.sp),
+              //     contentPadding: EdgeInsets.all(17.h),
+              //     filled: true,
+              //     fillColor: Color(0xFFF1F1F1),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: BorderSide(
+              //           color: Color(0xFF707070).withOpacity(0), width: 1),
+              //     ),
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: BorderSide(
+              //           color: Color(0xFF707070).withOpacity(0), width: 1),
+              //     ),
+              //     focusedBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: BorderSide(
+              //           color: Color(0xFF707070).withOpacity(0), width: 1),
+              //     ),
+              //     hintStyle: TextStyle(
+              //         color: const Color(0xFF4D4D4D),
+              //         fontWeight: FontWeight.w400,
+              //         fontFamily: "Poppins",
+              //         fontSize: 16.sp),
+              //     hintText: "40",
+              //   ),
+              // ),
               sizedBoxHeight(17.h),
               Text("Farm Address",
                   style: GoogleFonts.poppins(
@@ -235,7 +235,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                 ),
               ),
               sizedBoxHeight(17.h),
-              Text("Street",
+              Text("First Line Of Address",
                   style: GoogleFonts.poppins(
                     fontSize: 18.sp,
                     color: Colors.black,
@@ -273,7 +273,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                 ),
               ),
               sizedBoxHeight(17.h),
-              Text("City",
+              Text("Second Line Of Address",
                   style: GoogleFonts.poppins(
                     fontSize: 18.sp,
                     color: Colors.black,
@@ -311,7 +311,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                 ),
               ),
               sizedBoxHeight(17.h),
-              Text("State/Province/Area",
+              Text("Country",
                   style: GoogleFonts.poppins(
                     fontSize: 18.sp,
                     color: Colors.black,
@@ -349,7 +349,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                 ),
               ),
               sizedBoxHeight(17.h),
-              Text("Zip code",
+              Text("Eircode",
                   style: GoogleFonts.poppins(
                     fontSize: 18.sp,
                     color: Colors.black,
@@ -387,43 +387,43 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                 ),
               ),
               sizedBoxHeight(17.h),
-              Text("Country",
-                  style: GoogleFonts.poppins(
-                    fontSize: 18.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  )),
-              sizedBoxHeight(3.h),
-              TextFormField(
-                readOnly: true,
-                decoration: InputDecoration(
-                  errorStyle: TextStyle(fontSize: 16.sp),
-                  contentPadding: EdgeInsets.all(17.h),
-                  filled: true,
-                  fillColor: Color(0xFFF1F1F1),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
-                  ),
-                  hintStyle: TextStyle(
-                      color: const Color(0xFF4D4D4D),
-                      fontWeight: FontWeight.w400,
-                      fontFamily: "Poppins",
-                      fontSize: 16.sp),
-                  hintText: "Ireland",
-                ),
-              ),
+              // Text("Country",
+              //     style: GoogleFonts.poppins(
+              //       fontSize: 18.sp,
+              //       color: Colors.black,
+              //       fontWeight: FontWeight.w500,
+              //     )),
+              // sizedBoxHeight(3.h),
+              // TextFormField(
+              //   readOnly: true,
+              //   decoration: InputDecoration(
+              //     errorStyle: TextStyle(fontSize: 16.sp),
+              //     contentPadding: EdgeInsets.all(17.h),
+              //     filled: true,
+              //     fillColor: Color(0xFFF1F1F1),
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: BorderSide(
+              //           color: Color(0xFF707070).withOpacity(0), width: 1),
+              //     ),
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: BorderSide(
+              //           color: Color(0xFF707070).withOpacity(0), width: 1),
+              //     ),
+              //     focusedBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: BorderSide(
+              //           color: Color(0xFF707070).withOpacity(0), width: 1),
+              //     ),
+              //     hintStyle: TextStyle(
+              //         color: const Color(0xFF4D4D4D),
+              //         fontWeight: FontWeight.w400,
+              //         fontFamily: "Poppins",
+              //         fontSize: 16.sp),
+              //     hintText: "Ireland",
+              //   ),
+              // ),
             ],
           ),
         ),

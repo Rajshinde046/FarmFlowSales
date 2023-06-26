@@ -106,7 +106,7 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
               ),
               sizedBoxHeight(18.h),
               const ProductContainer(
-                  txt: "Pre-Calver Gain Gold", png: 'redreorder'),
+                  txt: "Elite Dairy 15% BULK", png: 'redreorder'),
               sizedBoxHeight(15.h),
               const ProductContainer(
                   txt: "Agrofeed Ruminant Feed", png: 'yellowreorder'),
@@ -332,6 +332,7 @@ class _ProductContainerState extends State<ProductContainer> {
 
   Widget bottomSheetContainer() {
     return Container(
+      // height: 600.h,
       padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 20.h),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -360,7 +361,7 @@ class _ProductContainerState extends State<ProductContainer> {
               ),
             ),
           ),
-          sizedBoxHeight(18.h),
+          sizedBoxHeight(5.h),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
             decoration: BoxDecoration(
@@ -389,6 +390,7 @@ class _ProductContainerState extends State<ProductContainer> {
                 insideDetContainer(2, 300),
                 sizedBoxHeight(10.h),
                 insideDetContainer(1, 50, bag: 'pallet'),
+                // sizedBoxHeight(10.h),
               ],
             ),
           ),
