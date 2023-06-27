@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 enum FrequencyLabel {
+  black('One Time'),
   blue('Weekly'),
   pink('Monthly'),
   green('Quaterly'),
