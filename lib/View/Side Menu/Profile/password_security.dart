@@ -348,48 +348,48 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
                         final isValid = _pin.currentState?.validate();
                         if (isValid!) {
                           Get.back();
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    sizedBoxHeight(15.h),
-                                    textBlack18W7000('4 Digit Pin'),
-                                    sizedBoxHeight(10.h),
-                                    textGrey4D4D4D_14(
-                                        'Use Your 4 Digit Pin to easily log in!'),
-                                    sizedBoxHeight(20.h),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w, vertical: 15.h),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                            color: AppColors.buttoncolour),
-                                      ),
-                                      child: Center(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            textBlack18('Enter PIN'),
-                                            const Icon(
-                                              Icons.arrow_circle_right_outlined,
-                                              color: AppColors.buttoncolour,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    sizedBoxHeight(60.h)
-                                  ],
-                                ),
-                              );
-                            },
-                          );
+                          // showDialog(
+                          //   context: context,
+                          //   builder: (context) {
+                          //     return AlertDialog(
+                          //       content: Column(
+                          //         mainAxisSize: MainAxisSize.min,
+                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                          //         children: [
+                          //           sizedBoxHeight(15.h),
+                          //           textBlack18W7000('4 Digit Pin'),
+                          //           sizedBoxHeight(10.h),
+                          //           textGrey4D4D4D_14(
+                          //               'Use Your 4 Digit Pin to easily log in!'),
+                          //           sizedBoxHeight(20.h),
+                          //           Container(
+                          //             padding: EdgeInsets.symmetric(
+                          //                 horizontal: 20.w, vertical: 15.h),
+                          //             decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.circular(5),
+                          //               border: Border.all(
+                          //                   color: AppColors.buttoncolour),
+                          //             ),
+                          //             child: Center(
+                          //               child: Row(
+                          //                 mainAxisAlignment:
+                          //                     MainAxisAlignment.spaceBetween,
+                          //                 children: [
+                          //                   textBlack18('Enter PIN'),
+                          //                   const Icon(
+                          //                     Icons.arrow_circle_right_outlined,
+                          //                     color: AppColors.buttoncolour,
+                          //                   )
+                          //                 ],
+                          //               ),
+                          //             ),
+                          //           ),
+                          //           sizedBoxHeight(60.h)
+                          //         ],
+                          //       ),
+                          //     );
+                          //   },
+                          // );
                         } else {
                           Get.snackbar("Error", "Please Enter Required Fields",
                               margin: const EdgeInsets.all(8),
