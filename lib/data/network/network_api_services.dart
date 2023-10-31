@@ -90,7 +90,8 @@ class NetworkApiServices extends BaseApiServices {
     try {
       response = await dio.get(url,
           options: Options(headers: {
-            'authorization': "Bearer $token",
+            'authorization':
+                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiYjI0OTIzNTc0ZmVhZjM1MzA1ODE1ZGY4Y2FjNjU1MzVjYTgxMDU4YWM2NGI2ZjNkZjYxYjU4YTliNDlhM2EwOTAyZjQyY2ZmNTg0YTBiMTQiLCJpYXQiOjE2OTg3NDk0NzEuMzA0NjA5MDYwMjg3NDc1NTg1OTM3NSwibmJmIjoxNjk4NzQ5NDcxLjMwNDYxMDk2NzYzNjEwODM5ODQzNzUsImV4cCI6MTczMDM3MTg3MS4zMDMzODE5MTk4NjA4Mzk4NDM3NSwic3ViIjoiMTcyIiwic2NvcGVzIjpbIioiXX0.Hu49xgbGPnzh4U5kFF7xePfO4NhbnvT6gWzipfsrM_fGo57uAuJcN73DoX0ixMpycE7RP2t1uSxHk_mZumZ8aIeFA077zwDOz-irJOfEZjsjLuFJijet_LpMN6V56TvYRRN1F-sb1k8QJVuHJdp5tgNo40SLyLFSnxqzqmCuTEDrLGC5U7Gh2iRjnKWiFqrbOSbALyKi9If5KPH9ZtlOGqFAz3D64bb1dkw_wq8UO47enCGqedvJOwYiAYdIJD_UxmwBA1cUbYfz9w4EPyWlNrJ7iqrYu_I0dRTIwq0CeZ1X-L3G4H0f56NPoTsZAj_A0uxUeYan4Gbe32B_ebuLAmyXW0QyiBelfCmIOT3xxpqwLJdSBgG_evBQiQ3TNmwsfDNKQljCoiuU1qK0JqMrQVV_BICeuOYB_wMnBgg91Rf0TIt4knlGxyhQXLLQjdtKa41l-I4E8X7YEkDQbNnFbD4zAdgKd1KZi3zDdhQCoXGiwYuFHMorYvT_6GIiPYJsMpQV_B3C3pTcKcT-kC8tvtlnhRQLuOze0sRgkpACIccNCUPmq2dWzQTK7DWLqS3JNAaT-DOKuu7qfmlG9ZWwbAw5m-wYRveDTCAdFSkuxK30Jdsu9HOk9SRLnV7YCEe6LbonHO_5j7Ej10a3jR0RfiCC-mRjTL3E1sWhh0_1-5s",
 
             // "device-id": deviceId
           }));
