@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import 'search_product_categories.dart';
@@ -19,8 +20,17 @@ class Dashboard extends StatefulWidget {
 class _Dashboard extends State<Dashboard> {
   bool lowFeed = true;
   bool saved = false;
+  Stream<DateTime>? _clockStream;
 
   int selectedCurrentFeed = 0;
+
+  @override
+  void initState() {
+    _clockStream = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
+      return DateTime.now();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,8 +210,30 @@ class _Dashboard extends State<Dashboard> {
                                                       ],
                                                     ),
                                                     textGreen50Bold("22° C"),
-                                                    textBlack18W5000(
-                                                        "Sat, 3 Nov -12.32PM"),
+                                                    StreamBuilder<DateTime>(
+                                                      stream: _clockStream,
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        if (snapshot.hasData) {
+                                                          String
+                                                              formattedDateTime =
+                                                              DateFormat(
+                                                                      'E, d MMM - hh:mm a')
+                                                                  .format(snapshot
+                                                                      .data!);
+
+                                                          return Center(
+                                                            child:
+                                                                textBlack18W5000(
+                                                              formattedDateTime,
+                                                            ),
+                                                          );
+                                                        } else {
+                                                          return textBlack18W5000(
+                                                              'Loading...');
+                                                        }
+                                                      },
+                                                    ),
                                                   ],
                                                 ),
                                               ],
