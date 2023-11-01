@@ -1,11 +1,10 @@
-
 import 'package:dio/dio.dart';
-import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' as getx;
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'dart:typed_data';
+import 'package:farm_flow_sales/Utils/colors.dart';
 
 class Utils {
   static Future<MultipartFile> networkImageToMultipartFile(
@@ -65,14 +64,6 @@ class Utils {
     } catch (e) {
       // Handle any errors, e.g., invalid date format
       return 'Invalid Date';
-
-
-
-
-  static showToast(String? msg) {
-    if (msg != null && msg != "null" && msg.isNotEmpty) {
-      Fluttertoast.showToast(msg: msg);
-
     }
   }
-
+}
