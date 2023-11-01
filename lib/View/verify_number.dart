@@ -1,13 +1,17 @@
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/data/network/network_api_services.dart';
+import 'package:farm_flow_sales/view_models/onBoarding/VerifyNumberAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 
 class VerifyNumber extends StatefulWidget {
   const VerifyNumber({super.key});
@@ -20,12 +24,35 @@ class _VerifyNumberState extends State<VerifyNumber> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController pincode = TextEditingController();
   String? phoneNumber;
+  int? id;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    phoneNumber = Get.arguments;
+    phoneNumber = Get.arguments["phonenumber"];
+    id = Get.arguments["id"];
+  }
+
+  NetworkApiServices networkApiServices = NetworkApiServices();
+  _verifycheck() async {
+    final isValid = _form.currentState?.validate();
+    if (isValid!) {
+      Map<String, String> updata = {
+        "id": id.toString(),
+        "otp": pincode.text,
+      };
+      final resp = await VerifyNumberAPI(updata).verifynumberApi();
+      if (resp.status == ResponseStatus.SUCCESS) {
+        // int? id = resp.data['data']['id'];
+        Get.toNamed('/ResetPassword', arguments: {'id': id.toString()});
+      } else if (resp.status == ResponseStatus.PRIVATE) {
+        String? message = resp.data['data'];
+        utils.showToast("$message");
+      } else {
+        utils.showToast(resp.message);
+      }
+    }
   }
 
   @override
@@ -127,10 +154,11 @@ class _VerifyNumberState extends State<VerifyNumber> {
                 customButtonCurve(
                     text: "Verify",
                     onTap: () {
-                      final isValid = _form.currentState?.validate();
-                      if (isValid!) {
-                        Get.toNamed('/ResetPassword');
-                      }
+                      _verifycheck();
+                      // final isValid = _form.currentState?.validate();
+                      // if (isValid!) {
+                      //   Get.toNamed('/ResetPassword');
+                      // }
                       // else {
                       //   Get.snackbar("Error", "Please Enter OTP",
                       //     margin: EdgeInsets.all(8),

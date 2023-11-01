@@ -3,4 +3,6 @@ class ApiUrls {
   static const baseImageUrl = "https://farmflow.betadelivery.com/public";
   static const dashboardApi = "${base}sales/dashboard";
   static const weatherApi = "http://api.weatherapi.com/v1/current.json";
+
+  static const loginApi = "https://farmflow.betadelivery.com/api/login";
 }
