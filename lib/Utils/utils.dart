@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,14 @@ class Utils {
     } catch (e) {
       // Handle any errors, e.g., invalid date format
       return 'Invalid Date';
+
+
+
+
+  static showToast(String? msg) {
+    if (msg != null && msg != "null" && msg.isNotEmpty) {
+      Fluttertoast.showToast(msg: msg);
+
     }
   }
-}
+
