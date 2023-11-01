@@ -58,6 +58,8 @@ dependencies:
   dio: ^5.1.2
   shared_preferences: ^2.0.15
   intl: ^0.18.1
+  timeago: ^3.5.0
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:

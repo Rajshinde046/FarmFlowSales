@@ -1,11 +1,16 @@
 import 'package:farm_flow_sales/Common/CommonTextFormField.dart';
+import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
+import 'package:farm_flow_sales/Utils/global.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/view_models/onBoarding/LoginAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,9 +24,33 @@ ScrollController? _scrollviewcontroller;
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  TextEditingController tecEmail =
-      TextEditingController(text: "kevin@gmail.com");
-  TextEditingController tecPassword = TextEditingController(text: "kevin@1234");
+  TextEditingController tecEmail = TextEditingController();
+  TextEditingController tecPassword = TextEditingController();
+
+  _logincheck() async {
+    final isValid = _form.currentState?.validate();
+    if (isValid!) {
+      Map<String, String> updata = {
+        "email": tecEmail.text,
+        "password": tecPassword.text
+      };
+      final resp = await LoginAPI(updata).loginApi();
+      if (resp.status == ResponseStatus.SUCCESS) {
+        print("reslo ${resp.data}");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        // print("token " + jsonResp["data"]["accessToken"]);
+        await prefs.setString('accessToken', resp.data["data"]["access_token"]);
+
+        token = resp.data["data"]["access_token"];
+        Get.toNamed('/sideMenu');
+      } else if (resp.status == ResponseStatus.PRIVATE) {
+        String? message = resp.data['data'];
+        utils.showToast("$message");
+      } else {
+        utils.showToast(resp.message);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,10 +221,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         CustomButton(
                             text: "Login",
                             onTap: () {
-                              final isValid = _form.currentState?.validate();
-                              if (isValid!) {
-                                Get.toNamed("/sideMenu");
-                              }
+                              _logincheck();
+                              // final isValid = _form.currentState?.validate();
+                              // if (isValid!) {
+                              //   Get.toNamed("/sideMenu");
+                              // }
                             }),
                         SizedBox(
                           height: 15.h,

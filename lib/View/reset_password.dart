@@ -1,14 +1,17 @@
-
 import 'package:farm_flow_sales/Common/CommonTextFormField.dart';
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/data/network/network_api_services.dart';
+import 'package:farm_flow_sales/view_models/onBoarding/ResetPasswordAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -19,8 +22,44 @@ class ResetPassword extends StatefulWidget {
 
 class _ResetPasswordState extends State<ResetPassword> {
   // TextEditingController phoneController = TextEditingController();
+  String? id;
   TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController confirmpasscontroller = TextEditingController();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var args = Get.arguments;
+    id = args['id'];
+
+    // feedBackData = Get.arguments;
+  }
+
+  NetworkApiServices networkApiServices = NetworkApiServices();
+  _verifycheck() async {
+    final isValid = _form.currentState?.validate();
+    if (isValid!) {
+      Map<String, String> updata = {
+        "id": id.toString(),
+        "password": passwordcontroller.text,
+        "c_password": confirmpasscontroller.text
+      };
+      final resp = await ResetPasswordAPI(updata).resetpasswordApi();
+      if (resp.status == ResponseStatus.SUCCESS) {
+        // int? id = resp.data['data']['id'];
+        Get.toNamed(
+          '/loginScreen',
+        );
+      } else if (resp.status == ResponseStatus.PRIVATE) {
+        String? message = resp.data['data'];
+        utils.showToast("$message");
+      } else {
+        utils.showToast(resp.message);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +144,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     ),
                     sizedBoxHeight(8.h),
                     CustomTextFormField(
+                      textEditingController: confirmpasscontroller,
                       hintText: "",
                       validatorText: "",
                       isInputPassword: true,
@@ -122,10 +162,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     customButtonCurve(
                         text: "Next",
                         onTap: () {
-                          final isValid = _form.currentState?.validate();
-                          if (isValid!) {
-                            Get.toNamed('/loginScreen');
-                          }
+                          _verifycheck();
                         }),
                     sizedBoxHeight(40.h),
                   ],
