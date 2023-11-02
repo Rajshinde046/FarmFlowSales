@@ -1,7 +1,7 @@
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
-import 'package:farm_flow_sales/models/loginModel.dart';
+import 'package:farm_flow_sales/Model/loginModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginAPI {
