@@ -2,8 +2,6 @@ import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -52,7 +50,7 @@ class _selectFrequencyState extends State<selectFrequency> {
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: AppColors.buttoncolour,
+                  foregroundColor: AppColors.buttoncolour,
                 ),
               ),
             ),
@@ -125,27 +123,30 @@ class _selectFrequencyState extends State<selectFrequency> {
                 sizedBoxHeight(10.h),
                 DropdownMenu<FrequencyLabel>(
                   hintText: "Select Frequrncy",
-                  trailingIcon: Icon(
+                  trailingIcon: const Icon(
                     Icons.arrow_drop_down,
                     color: Colors.green,
                   ),
                   inputDecorationTheme: InputDecorationTheme(
                     filled: true,
-                    fillColor: Color(0xFFF1F1F1),
+                    fillColor: const Color(0xFFF1F1F1),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                          color: const Color(0xFF707070).withOpacity(0),
+                          width: 1),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                          color: const Color(0xFF707070).withOpacity(0),
+                          width: 1),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                          color: const Color(0xFF707070).withOpacity(0),
+                          width: 1),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -281,7 +282,7 @@ class Personaldatepicker extends StatelessWidget {
             padding: EdgeInsets.only(right: 5.w),
             child: CircleAvatar(
               radius: 20.h,
-              backgroundColor: Color(0xffF1F1F1),
+              backgroundColor: const Color(0xffF1F1F1),
               child: Center(
                 child: SvgPicture.asset(
                   "assets/images/datepicker.svg",

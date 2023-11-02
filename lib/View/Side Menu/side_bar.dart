@@ -1,4 +1,3 @@
-import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Profile/profile.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +153,7 @@ class _SideBarState extends State<SideBar> {
                             // if (index == 4) {
                             //   buildprofilelogoutdialog(context);
                             // } else {
-                              Get.toNamed(sideBarData[index]["route"]);
+                            Get.toNamed(sideBarData[index]["route"]);
                             // }
                           },
                         );

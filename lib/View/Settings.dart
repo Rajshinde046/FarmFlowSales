@@ -86,7 +86,7 @@ class _SettingsState extends State<Settings> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(7.h),
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 16.w),
                 child: CustomListTile(
@@ -419,7 +419,7 @@ class _CustomListTileState extends State<CustomListTile> {
                   fontSize: 20.sp,
                   fontFamily: "Poppins",
                   fontWeight: FontWeight.w400,
-                  color: Color(0xff4D4D4D)),
+                  color: const Color(0xff4D4D4D)),
             ),
             const Spacer(),
             FlutterSwitch(

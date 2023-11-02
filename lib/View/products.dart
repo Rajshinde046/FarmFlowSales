@@ -1,4 +1,3 @@
-import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +57,7 @@ class _ProductspageState extends State<Productspage> {
                     width: 358.w,
                     child: Card(
                       elevation: 2,
-                      color: Color(0xffF1F1F1),
+                      color: const Color(0xffF1F1F1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -78,7 +77,7 @@ class _ProductspageState extends State<Productspage> {
                                   style: TextStyle(
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: Color(0xff141414),
+                                      color: const Color(0xff141414),
                                       fontFamily: "Poppins"),
                                 ),
                                 sizedBoxHeight(3.h),
@@ -87,7 +86,7 @@ class _ProductspageState extends State<Productspage> {
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w600,
-                                      color: Color(0xff141414),
+                                      color: const Color(0xff141414),
                                       fontFamily: "Poppins"),
                                 ),
                                 sizedBoxHeight(3.h),
@@ -100,7 +99,7 @@ class _ProductspageState extends State<Productspage> {
                                       child: Text("5 Lbs",
                                           style: GoogleFonts.poppins(
                                             fontSize: 14.sp,
-                                            color: Color(0xff4D4D4D),
+                                            color: const Color(0xff4D4D4D),
                                           )),
                                     ),
                                     sizedBoxWidth(64.w),
@@ -108,7 +107,7 @@ class _ProductspageState extends State<Productspage> {
                                       "Quantity : 800",
                                       style: GoogleFonts.poppins(
                                           fontSize: 16.sp,
-                                          color: Color(0xff0E5F02),
+                                          color: const Color(0xff0E5F02),
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ],
@@ -145,7 +144,7 @@ class _ProductspageState extends State<Productspage> {
       width: 358.w,
       child: Card(
         elevation: 2,
-        color: Color(0xffF1F1F1),
+        color: const Color(0xffF1F1F1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -165,7 +164,7 @@ class _ProductspageState extends State<Productspage> {
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff141414),
+                        color: const Color(0xff141414),
                         fontFamily: "Poppins"),
                   ),
                   sizedBoxHeight(3.h),
@@ -174,7 +173,7 @@ class _ProductspageState extends State<Productspage> {
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff141414),
+                        color: const Color(0xff141414),
                         fontFamily: "Poppins"),
                   ),
                   sizedBoxHeight(3.h),
@@ -187,7 +186,7 @@ class _ProductspageState extends State<Productspage> {
                         child: Text("5 Lbs",
                             style: GoogleFonts.poppins(
                               fontSize: 14.sp,
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                             )),
                       ),
                       sizedBoxWidth(64.w),
@@ -195,7 +194,7 @@ class _ProductspageState extends State<Productspage> {
                         "Quantity : 1000",
                         style: GoogleFonts.poppins(
                             fontSize: 16.sp,
-                            color: Color(0xff0E5F02),
+                            color: const Color(0xff0E5F02),
                             fontWeight: FontWeight.w500),
                       ),
                     ],
@@ -220,7 +219,7 @@ class _ProductspageState extends State<Productspage> {
       width: 358.w,
       child: Card(
         elevation: 2,
-        color: Color(0xffF1F1F1),
+        color: const Color(0xffF1F1F1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -240,7 +239,7 @@ class _ProductspageState extends State<Productspage> {
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff141414),
+                        color: const Color(0xff141414),
                         fontFamily: "Poppins"),
                   ),
                   sizedBoxHeight(3.h),
@@ -249,7 +248,7 @@ class _ProductspageState extends State<Productspage> {
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff141414),
+                        color: const Color(0xff141414),
                         fontFamily: "Poppins"),
                   ),
                   sizedBoxHeight(3.h),
@@ -262,7 +261,7 @@ class _ProductspageState extends State<Productspage> {
                         child: Text("5 Lbs",
                             style: GoogleFonts.poppins(
                               fontSize: 14.sp,
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                             )),
                       ),
                       sizedBoxWidth(64.w),
@@ -270,7 +269,7 @@ class _ProductspageState extends State<Productspage> {
                         "Quantity : 1200",
                         style: GoogleFonts.poppins(
                             fontSize: 16.sp,
-                            color: Color(0xff0E5F02),
+                            color: const Color(0xff0E5F02),
                             fontWeight: FontWeight.w500),
                       ),
                     ],

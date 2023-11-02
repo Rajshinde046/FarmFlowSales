@@ -29,7 +29,6 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     var args = Get.arguments;
     id = args['id'];

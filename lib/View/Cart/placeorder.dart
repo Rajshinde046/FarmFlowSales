@@ -2,9 +2,6 @@ import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -65,11 +62,12 @@ class _PlacedorderState extends State<Placedorder> {
           //   ),
           // ),
           AlertDialog(
-            insetPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            insetPadding:
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
             backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-            contentPadding: EdgeInsets.fromLTRB(15, 30, 15, 24),
+            contentPadding: const EdgeInsets.fromLTRB(15, 30, 15, 24),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               side: BorderSide(
                   color: Get.isDarkMode ? Colors.grey : Colors.white),
             ),
@@ -90,13 +88,13 @@ class _PlacedorderState extends State<Placedorder> {
                         "Your Order Has Been Placed Successfully!",
                         style: GoogleFonts.poppins(
                             fontSize: 20.sp,
-                            color: Color(0xff4D4D4D),
+                            color: const Color(0xff4D4D4D),
                             fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 InkWell(
@@ -118,7 +116,7 @@ class _PlacedorderState extends State<Placedorder> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 )
               ],
@@ -140,7 +138,7 @@ class _PlacedorderState extends State<Placedorder> {
     curren = Get.arguments["currency"];
     change = Get.arguments["bool"];
     print(Get.arguments["bool"]);
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -174,7 +172,7 @@ class _PlacedorderState extends State<Placedorder> {
                 // height: 48.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(left: 19.w, top: 12, bottom: 11),
@@ -193,7 +191,7 @@ class _PlacedorderState extends State<Placedorder> {
                 height: 263.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -249,7 +247,7 @@ class _PlacedorderState extends State<Placedorder> {
                                 text: "64 martens \nplace",
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
+                                    color: const Color(0xff4D4D4D),
                                     fontWeight: FontWeight.w400),
                               ),
                             ],
@@ -268,7 +266,7 @@ class _PlacedorderState extends State<Placedorder> {
                                 text: "dunwich",
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
+                                    color: const Color(0xff4D4D4D),
                                     fontWeight: FontWeight.w400),
                               ),
                             ],
@@ -287,7 +285,7 @@ class _PlacedorderState extends State<Placedorder> {
                                 text: "queensland",
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
+                                    color: const Color(0xff4D4D4D),
                                     fontWeight: FontWeight.w400),
                               ),
                             ],
@@ -306,7 +304,7 @@ class _PlacedorderState extends State<Placedorder> {
                                 text: "(07) 3830 6616",
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
+                                    color: const Color(0xff4D4D4D),
                                     fontWeight: FontWeight.w400),
                               ),
                             ],
@@ -325,7 +323,7 @@ class _PlacedorderState extends State<Placedorder> {
                                 text: "4183",
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
+                                    color: const Color(0xff4D4D4D),
                                     fontWeight: FontWeight.w400),
                               ),
                             ],
@@ -359,7 +357,7 @@ class _PlacedorderState extends State<Placedorder> {
               Container(
                 width: 358.w,
                 // height: 120.h,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Color(0xffF1F1F1),
                     boxShadow: [
@@ -391,7 +389,7 @@ class _PlacedorderState extends State<Placedorder> {
                             style: GoogleFonts.poppins(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xff141414),
+                              color: const Color(0xff141414),
                             ),
                           ),
                           sizedBoxHeight(3.h),
@@ -399,7 +397,7 @@ class _PlacedorderState extends State<Placedorder> {
                             "lorem ipsum is simply dummy",
                             style: GoogleFonts.poppins(
                                 fontSize: 15.sp,
-                                color: Color(0xff4D4D4D),
+                                color: const Color(0xff4D4D4D),
                                 fontWeight: FontWeight.w300),
                           ),
                           sizedBoxHeight(7.h),
@@ -444,7 +442,7 @@ class _PlacedorderState extends State<Placedorder> {
                                     "$counter",
                                     style: TextStyle(
                                         fontSize: 14.sp,
-                                        color: Color(0xff141414),
+                                        color: const Color(0xff141414),
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -483,7 +481,7 @@ class _PlacedorderState extends State<Placedorder> {
               Container(
                 width: 358.w,
                 // height: 120.h,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Color(0xffF1F1F1),
                     boxShadow: [
@@ -515,7 +513,7 @@ class _PlacedorderState extends State<Placedorder> {
                             style: GoogleFonts.poppins(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xff141414),
+                              color: const Color(0xff141414),
                             ),
                           ),
                           sizedBoxHeight(3.h),
@@ -523,7 +521,7 @@ class _PlacedorderState extends State<Placedorder> {
                             "lorem ipsum is simply dummy",
                             style: GoogleFonts.poppins(
                                 fontSize: 15.sp,
-                                color: Color(0xff4D4D4D),
+                                color: const Color(0xff4D4D4D),
                                 fontWeight: FontWeight.w300),
                           ),
                           sizedBoxHeight(7.h),
@@ -567,7 +565,7 @@ class _PlacedorderState extends State<Placedorder> {
                                     "$counter1",
                                     style: TextStyle(
                                         fontSize: 14.sp,
-                                        color: Color(0xff141414),
+                                        color: const Color(0xff141414),
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -605,7 +603,7 @@ class _PlacedorderState extends State<Placedorder> {
               Container(
                 width: 358.w,
                 // height: 120.h,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Color(0xffF1F1F1),
                     boxShadow: [
@@ -637,7 +635,7 @@ class _PlacedorderState extends State<Placedorder> {
                             style: GoogleFonts.poppins(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xff141414),
+                              color: const Color(0xff141414),
                             ),
                           ),
                           sizedBoxHeight(2.h),
@@ -645,7 +643,7 @@ class _PlacedorderState extends State<Placedorder> {
                             "lorem ipsum is simply dummy",
                             style: GoogleFonts.poppins(
                                 fontSize: 15.sp,
-                                color: Color(0xff4D4D4D),
+                                color: const Color(0xff4D4D4D),
                                 fontWeight: FontWeight.w300),
                           ),
                           sizedBoxHeight(7.h),
@@ -689,7 +687,7 @@ class _PlacedorderState extends State<Placedorder> {
                                     "$counter2",
                                     style: TextStyle(
                                         fontSize: 14.sp,
-                                        color: Color(0xff141414),
+                                        color: const Color(0xff141414),
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -724,7 +722,7 @@ class _PlacedorderState extends State<Placedorder> {
                 ),
               ),
               sizedBoxHeight(3.h),
-              Divider(
+              const Divider(
                 thickness: 1,
                 color: AppColors.buttoncolour,
               ),
@@ -736,14 +734,14 @@ class _PlacedorderState extends State<Placedorder> {
                     "Total MRP",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
                     "€ $mRP",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontWeight: FontWeight.w500),
                   ),
                 ],
@@ -756,20 +754,20 @@ class _PlacedorderState extends State<Placedorder> {
                     "Discount on MRP",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    change! ? "- ${discount.toString()} %" : "€ ${curren}",
+                    change! ? "- ${discount.toString()} %" : "€ $curren",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
               sizedBoxHeight(3.h),
-              Divider(
+              const Divider(
                 thickness: 1,
                 color: AppColors.buttoncolour,
               ),
