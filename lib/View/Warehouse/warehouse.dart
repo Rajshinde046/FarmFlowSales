@@ -36,14 +36,14 @@ class _WarehouseState extends State<Warehouse> {
                   separatorBuilder: (context, index) {
                     return sizedBoxHeight(13.h);
                   },
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: warehousedata.length,
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.toNamed("/sideMenu", arguments: 1);
                           },
                           child: warehousecard(
@@ -73,7 +73,7 @@ class _WarehouseState extends State<Warehouse> {
       child: Card(
         elevation: 2,
         // shadowColor: Color(0XFF00000029),
-        color: Color(0xffF1F1F1),
+        color: const Color(0xffF1F1F1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -122,7 +122,7 @@ class _WarehouseState extends State<Warehouse> {
                               text: location,
                               style: GoogleFonts.poppins(
                                   fontSize: 14.sp,
-                                  color: Color(0xff4D4D4D),
+                                  color: const Color(0xff4D4D4D),
                                   fontWeight: FontWeight.w400)),
                         )
                       ],

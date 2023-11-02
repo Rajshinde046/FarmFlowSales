@@ -1,8 +1,6 @@
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/Utils/texts.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -161,7 +159,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -189,7 +187,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -217,7 +215,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -245,7 +243,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -273,7 +271,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -301,7 +299,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -329,7 +327,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -357,7 +355,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -385,7 +383,7 @@ class SearchItem extends StatelessWidget {
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff4D4D4D)),
+                                color: const Color(0xff4D4D4D)),
                           ),
                         ],
                       ),
@@ -415,7 +413,7 @@ class SearchItem extends StatelessWidget {
                               style: GoogleFonts.poppins(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w400,
-                                  color: Color(0xff4D4D4D)),
+                                  color: const Color(0xff4D4D4D)),
                             ),
                           ),
                         ],
@@ -428,7 +426,7 @@ class SearchItem extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff4D4D4D)),
+                            color: const Color(0xff4D4D4D)),
                       ),
                     ),
                     sizedBoxHeight(3.h),
@@ -439,7 +437,7 @@ class SearchItem extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff4D4D4D)),
+                            color: const Color(0xff4D4D4D)),
                       ),
                     ),
                     Divider(thickness: 1.h),
@@ -473,7 +471,7 @@ class SearchItem extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff4D4D4D)),
+                            color: const Color(0xff4D4D4D)),
                       ),
                     ),
                     Divider(thickness: 1.h),
@@ -496,7 +494,7 @@ class SearchItem extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff4D4D4D)),
+                            color: const Color(0xff4D4D4D)),
                       ),
                     ),
                     Divider(thickness: 1.h),
@@ -519,7 +517,7 @@ class SearchItem extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff4D4D4D)),
+                            color: const Color(0xff4D4D4D)),
                       ),
                     ),
                     Divider(thickness: 1.h),
@@ -542,7 +540,7 @@ class SearchItem extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff4D4D4D)),
+                            color: const Color(0xff4D4D4D)),
                       ),
                     ),
                     sizedBoxHeight(80.h),

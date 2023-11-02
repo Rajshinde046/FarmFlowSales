@@ -23,7 +23,7 @@ class _ContactUsState extends State<ContactUs> {
     return showDialog(
         context: context,
         builder: (context) {
-          Future.delayed(Duration(seconds: 3), () {
+          Future.delayed(const Duration(seconds: 3), () {
             Get.toNamed('/sideMenu');
             // Navigator.of(context).pop(true);
           });
@@ -31,14 +31,16 @@ class _ContactUsState extends State<ContactUs> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AlertDialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 16),
+                insetPadding: const EdgeInsets.symmetric(horizontal: 16),
                 backgroundColor:
-                    Get.isDarkMode ? Colors.black : Color(0XFFFFFFFF),
+                    Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
                 contentPadding: EdgeInsets.fromLTRB(90.w, 47.h, 89.w, 64.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
                   side: BorderSide(
-                      color: Get.isDarkMode ? Colors.grey : Color(0XFFFFFFFF)),
+                      color: Get.isDarkMode
+                          ? Colors.grey
+                          : const Color(0XFFFFFFFF)),
                 ),
                 content: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -61,7 +63,7 @@ class _ContactUsState extends State<ContactUs> {
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             fontSize: 22.sp,
-                            color: Color(0xff4D4D4D),
+                            color: const Color(0xff4D4D4D),
                           )),
                     ),
                     // sizedBoxHeight(44.h)
@@ -99,14 +101,14 @@ class _ContactUsState extends State<ContactUs> {
                         },
                         child: CircleAvatar(
                           radius: 20.h,
-                          backgroundColor: Color(0XFFF1F1F1),
+                          backgroundColor: const Color(0XFFF1F1F1),
                           child: Center(
                             child: Padding(
                               padding: EdgeInsets.only(left: 8.w),
                               child: Icon(
                                 Icons.arrow_back_ios,
                                 size: 25.h,
-                                color: Color(0XFF141414),
+                                color: const Color(0XFF141414),
                               ),
                             ),
                           ),
@@ -116,7 +118,7 @@ class _ContactUsState extends State<ContactUs> {
                       Text(
                         "Contact us",
                         style: TextStyle(
-                          color: Color(0XFF141414),
+                          color: const Color(0XFF141414),
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -271,23 +273,23 @@ class _ContactUsState extends State<ContactUs> {
                           errorStyle: TextStyle(fontSize: 16.sp),
                           contentPadding: EdgeInsets.all(17.h),
                           filled: true,
-                          fillColor: Color(0xFFF1F1F1),
+                          fillColor: const Color(0xFFF1F1F1),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.r),
                             borderSide: BorderSide(
-                                color: Color(0xFF707070).withOpacity(0),
+                                color: const Color(0xFF707070).withOpacity(0),
                                 width: 1),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.r),
                             borderSide: BorderSide(
-                                color: Color(0xFF707070).withOpacity(0),
+                                color: const Color(0xFF707070).withOpacity(0),
                                 width: 1),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.r),
                             borderSide: BorderSide(
-                                color: Color(0xFF707070).withOpacity(0),
+                                color: const Color(0xFF707070).withOpacity(0),
                                 width: 1),
                           ),
                           errorBorder: OutlineInputBorder(
@@ -383,21 +385,21 @@ class ContactTextformfield extends StatelessWidget {
           suffixIconConstraints: const BoxConstraints(),
           contentPadding: EdgeInsets.all(17.h),
           filled: true,
-          fillColor: Color(0xFFF1F1F1),
+          fillColor: const Color(0xFFF1F1F1),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.r),
-            borderSide:
-                BorderSide(color: Color(0xFF707070).withOpacity(0), width: 1),
+            borderSide: BorderSide(
+                color: const Color(0xFF707070).withOpacity(0), width: 1),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.r),
-            borderSide:
-                BorderSide(color: Color(0xFF707070).withOpacity(0), width: 1),
+            borderSide: BorderSide(
+                color: const Color(0xFF707070).withOpacity(0), width: 1),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.r),
-            borderSide:
-                BorderSide(color: Color(0xFF707070).withOpacity(0), width: 1),
+            borderSide: BorderSide(
+                color: const Color(0xFF707070).withOpacity(0), width: 1),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),

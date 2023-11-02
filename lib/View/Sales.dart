@@ -2,11 +2,8 @@ import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/View/SalesData.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Sales extends StatefulWidget {
@@ -22,20 +19,20 @@ class _SalesState extends State<Sales> {
     return Scaffold(
       appBar: AppBar(
         title: customAppBar(text: "Sales"),
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFFFFFFF),
         elevation: 0,
         automaticallyImplyLeading: false,
         titleSpacing: 0,
       ),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(16, 30, 16, 20),
+        padding: const EdgeInsets.fromLTRB(16, 30, 16, 20),
         child: Column(
           children: [
             Container(
               height: 125.h,
               width: 358.w,
               decoration: BoxDecoration(
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.grey,
                       blurRadius: 6.0, // soften the shadow
@@ -46,7 +43,7 @@ class _SalesState extends State<Sales> {
                       ),
                     )
                   ],
-                  color: Color(0xFFE3FFE9),
+                  color: const Color(0xFFE3FFE9),
                   borderRadius: BorderRadius.circular(10)),
               child: Row(
                 children: [
@@ -80,7 +77,7 @@ class _SalesState extends State<Sales> {
                       ],
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Column(
@@ -132,14 +129,14 @@ class _SalesState extends State<Sales> {
               height: 370.h,
               width: 360.w,
               decoration: BoxDecoration(
-                color: Color(0xFFF1F1F1),
+                color: const Color(0xFFF1F1F1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(23, 5, 23, 0),
                 child: ListView.builder(
                   shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: salesMainData.length,
                   itemBuilder: (_, index) {
                     return SalesMainTile(
@@ -164,7 +161,7 @@ Widget SalesMainTile(
     padding: const EdgeInsets.only(top: 10.0),
     child: Container(
       //width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),
@@ -220,7 +217,7 @@ Widget SalesMainTile(
                             text: number,
                             // "0225845855",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),
@@ -245,7 +242,7 @@ Widget SalesMainTile(
                             text: location,
                             // "Canada",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -8,7 +7,6 @@ import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:farm_flow_sales/View/Cart/cartmain.dart';
 import 'package:farm_flow_sales/View/Connectfarmer.dart';
 import 'package:farm_flow_sales/View/Order/ordersmain.dart';
-import 'package:farm_flow_sales/View/Side%20Menu/Faqs/faqs.dart';
 import 'package:farm_flow_sales/View/dashboard.dart';
 import 'package:farm_flow_sales/View/products.dart';
 import 'package:flutter/material.dart';
@@ -119,132 +117,127 @@ class _SideMenuState extends State<SideMenu>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        // color: Colors.transparent,
-        child: Scaffold(
-            // ex
-            // backgroundColor: Colors.transparent,
-            // backgroundColor: AppColors.transparent,
-            // resizeToAvoidBottomInset: false,
-            extendBody: true,
-            body: Container(
-              color: AppColors.transparent,
-              child: Stack(
-                children: [
-                  AnimatedPositioned(
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.fastOutSlowIn,
-                    left: isSideMenuClosed ? -300.w : 0,
-                    width: 300.w,
-                    height: MediaQuery.of(context).size.height,
-                    child: const SideBar(),
-                  ),
-                  Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()
-                      ..setEntry(3, 2, 0.001)
-                      ..rotateY(
-                          animation.value - 30 * animation.value * pi / 180),
-                    child: Transform.translate(
-                      offset: Offset(animation.value * 300.w, 0),
-                      child: Transform.scale(
-                        scale: scaleAnimation.value,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(isSideMenuClosed ? 0 : 24)),
-                            child: screens[selectedIndex]
-                            // const
-                            // Center(child: Home()),
-                            ),
-                      ),
-                    ),
-                  ),
-                  selectedIndex == 2
-                      ? AnimatedPositioned(
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.fastOutSlowIn,
-                          top: 5.h,
-                          left: 4.w,
-                          child: IconButton(
-                            iconSize: 50.h,
-                            onPressed: () {
-                              if (isSideMenuClosed) {
-                                _animationController.forward();
-                              } else {
-                                _animationController.reverse();
-                              }
-                              setState(() {
-                                isSideMenuClosed = !isSideMenuClosed;
-                              });
-                            },
-                            icon: isSideMenuClosed
-                                ? Container(
-                                    height: 42.h,
-                                    width: 42.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(25.h),
-                                      color: AppColors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.shade400,
-                                          blurRadius: 5.h,
-                                          spreadRadius: 2.h,
-                                        )
-                                      ],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/images/menu.svg",
-                                          height: 18.h,
-                                          width: 18.h,
-                                          color: AppColors.black,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.cancel,
-                                    size: 29.w,
-                                    color: Colors.white,
-                                  ),
+      child: Scaffold(
+          // ex
+          // backgroundColor: Colors.transparent,
+          // backgroundColor: AppColors.transparent,
+          // resizeToAvoidBottomInset: false,
+          extendBody: true,
+          body: Container(
+            color: AppColors.transparent,
+            child: Stack(
+              children: [
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.fastOutSlowIn,
+                  left: isSideMenuClosed ? -300.w : 0,
+                  width: 300.w,
+                  height: MediaQuery.of(context).size.height,
+                  child: const SideBar(),
+                ),
+                Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.001)
+                    ..rotateY(
+                        animation.value - 30 * animation.value * pi / 180),
+                  child: Transform.translate(
+                    offset: Offset(animation.value * 300.w, 0),
+                    child: Transform.scale(
+                      scale: scaleAnimation.value,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(isSideMenuClosed ? 0 : 24)),
+                          child: screens[selectedIndex]
+                          // const
+                          // Center(child: Home()),
                           ),
-                        )
-                      : SizedBox(),
-                ],
-              ),
-            ),
-            bottomNavigationBar: isSideMenuClosed
-                ? Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: Container(
-                      height: 70.h,
-                      decoration: BoxDecoration(
-                          color: AppColors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade400,
-                              blurRadius: 5.h,
-                              spreadRadius: 2.h,
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(35.h)),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.h),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(
-                                bottomBarData.length,
-                                (index) => activeIcon(
-                                    "assets/images/bottom_icon1_i.svg",
-                                    index))),
-                      ),
                     ),
-                  )
-                : const SizedBox()),
-      ),
+                  ),
+                ),
+                selectedIndex == 2
+                    ? AnimatedPositioned(
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.fastOutSlowIn,
+                        top: 5.h,
+                        left: 4.w,
+                        child: IconButton(
+                          iconSize: 50.h,
+                          onPressed: () {
+                            if (isSideMenuClosed) {
+                              _animationController.forward();
+                            } else {
+                              _animationController.reverse();
+                            }
+                            setState(() {
+                              isSideMenuClosed = !isSideMenuClosed;
+                            });
+                          },
+                          icon: isSideMenuClosed
+                              ? Container(
+                                  height: 42.h,
+                                  width: 42.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(25.h),
+                                    color: AppColors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade400,
+                                        blurRadius: 5.h,
+                                        spreadRadius: 2.h,
+                                      )
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/images/menu.svg",
+                                        height: 18.h,
+                                        width: 18.h,
+                                        color: AppColors.black,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.cancel,
+                                  size: 29.w,
+                                  color: Colors.white,
+                                ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ],
+            ),
+          ),
+          bottomNavigationBar: isSideMenuClosed
+              ? Padding(
+                  padding: EdgeInsets.only(bottom: 10.h),
+                  child: Container(
+                    height: 70.h,
+                    decoration: BoxDecoration(
+                        color: AppColors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade400,
+                            blurRadius: 5.h,
+                            spreadRadius: 2.h,
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(35.h)),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.h),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: List.generate(
+                              bottomBarData.length,
+                              (index) => activeIcon(
+                                  "assets/images/bottom_icon1_i.svg", index))),
+                    ),
+                  ),
+                )
+              : const SizedBox()),
     );
   }
 

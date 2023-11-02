@@ -97,7 +97,7 @@ class _NotificationState extends State<Notification> {
                         textAlign: TextAlign.left,
                         style: GoogleFonts.nunito(
                             fontSize: 22.sp,
-                            color: Color(0xff131313),
+                            color: const Color(0xff131313),
                             fontWeight: FontWeight.w500),
                       )),
                 ],
@@ -162,7 +162,7 @@ class _NotificationState extends State<Notification> {
                         textAlign: TextAlign.left,
                         style: GoogleFonts.nunito(
                             fontSize: 22.sp,
-                            color: Color(0xff131313),
+                            color: const Color(0xff131313),
                             fontWeight: FontWeight.w500)
                         // TextStyle(
                         //     fontSize: 16.sp,

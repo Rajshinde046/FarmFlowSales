@@ -36,7 +36,7 @@ class _FarmerState extends State<Farmer> {
                   separatorBuilder: (context, index) {
                     return sizedBoxHeight(13.h);
                   },
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: farmerdata.length,
                   itemBuilder: (context, index) {
@@ -73,7 +73,7 @@ class _FarmerState extends State<Farmer> {
       child: Card(
         elevation: 2,
         // shadowColor: Color(0XFF00000029),
-        color: Color(0xffF1F1F1),
+        color: const Color(0xffF1F1F1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -122,14 +122,14 @@ class _FarmerState extends State<Farmer> {
                               text: number,
                               style: GoogleFonts.poppins(
                                   fontSize: 14.sp,
-                                  color: Color(0xff4D4D4D),
+                                  color: const Color(0xff4D4D4D),
                                   fontWeight: FontWeight.w400)),
                         )
                       ],
                     ),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
                   padding:
                       EdgeInsets.only(right: 15.w, top: 15.h, bottom: 15.h),

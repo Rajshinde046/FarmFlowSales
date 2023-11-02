@@ -28,7 +28,6 @@ import 'package:farm_flow_sales/View/Cart/selectfarmer.dart';
 
 import 'package:farm_flow_sales/View/Cart/select_frequency.dart';
 
-import 'package:farm_flow_sales/View/search_item.dart';
 import 'package:farm_flow_sales/View/search_product_categories.dart';
 
 import 'package:farm_flow_sales/View/splash_screen.dart';
@@ -77,15 +76,15 @@ class AppRoutes {
         ),
         GetPage(
           name: RouteName.feedBack,
-          page: () => FeedBack(),
+          page: () => const FeedBack(),
         ),
         GetPage(
           name: RouteName.feedBackform,
-          page: () => Feedbackform(),
+          page: () => const Feedbackform(),
         ),
         GetPage(
           name: RouteName.contactus,
-          page: () => ContactUs(),
+          page: () => const ContactUs(),
         ),
         GetPage(
           name: RouteName.notification,
@@ -126,12 +125,8 @@ class AppRoutes {
         GetPage(
           name: RouteName.selectfrequency,
           page: () => const selectFrequency(),
-
         ),
-
-         
-  GetPage(
-
+        GetPage(
           name: RouteName.sales,
           page: () => const Sales(),
         ),
@@ -145,20 +140,15 @@ class AppRoutes {
         ),
         GetPage(
           name: RouteName.discount,
-          page: () =>  Discount(),
+          page: () => Discount(),
         ),
-
-        
-         GetPage(
+        GetPage(
           name: RouteName.searchpage,
           page: () => const SearchProductCategories(),
         ),
-
-
         GetPage(
           name: RouteName.selectfarmer,
           page: () => const selectFarmer(),
         ),
-
       ];
 }

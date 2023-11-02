@@ -1,9 +1,6 @@
 import 'package:farm_flow_sales/Utils/colors.dart';
-import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -128,7 +125,7 @@ class _CartmainState extends State<Cartmain> {
             Container(
               width: 358.w,
               // height: 120.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   color: Color(0xffF1F1F1),
                   boxShadow: [
@@ -160,7 +157,7 @@ class _CartmainState extends State<Cartmain> {
                           style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff141414),
+                            color: const Color(0xff141414),
                           ),
                         ),
                         sizedBoxHeight(7.h),
@@ -211,7 +208,7 @@ class _CartmainState extends State<Cartmain> {
                                   "$counter",
                                   style: TextStyle(
                                       fontSize: 14.sp,
-                                      color: Color(0xff141414),
+                                      color: const Color(0xff141414),
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -250,7 +247,7 @@ class _CartmainState extends State<Cartmain> {
             Container(
               width: 358.w,
               // height: 120.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   color: Color(0xffF1F1F1),
                   boxShadow: [
@@ -282,7 +279,7 @@ class _CartmainState extends State<Cartmain> {
                           style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff141414),
+                            color: const Color(0xff141414),
                           ),
                         ),
                         sizedBoxHeight(7.h),
@@ -333,7 +330,7 @@ class _CartmainState extends State<Cartmain> {
                                   "$counter1",
                                   style: TextStyle(
                                       fontSize: 14.sp,
-                                      color: Color(0xff141414),
+                                      color: const Color(0xff141414),
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -372,7 +369,7 @@ class _CartmainState extends State<Cartmain> {
             Container(
               width: 358.w,
               // height: 120.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   color: Color(0xffF1F1F1),
                   boxShadow: [
@@ -404,7 +401,7 @@ class _CartmainState extends State<Cartmain> {
                           style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff141414),
+                            color: const Color(0xff141414),
                           ),
                         ),
                         sizedBoxHeight(7.h),
@@ -455,7 +452,7 @@ class _CartmainState extends State<Cartmain> {
                                   "$counter2",
                                   style: TextStyle(
                                       fontSize: 14.sp,
-                                      color: Color(0xff141414),
+                                      color: const Color(0xff141414),
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.bold),
                                 ),

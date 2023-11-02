@@ -1,8 +1,6 @@
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -32,14 +30,14 @@ class _FaqscontentState extends State<Faqscontent> {
                   },
                   child: CircleAvatar(
                     radius: 20.h,
-                    backgroundColor: Color(0XFFF1F1F1),
+                    backgroundColor: const Color(0XFFF1F1F1),
                     child: Center(
                       child: Padding(
                         padding: EdgeInsets.only(left: 8.w),
                         child: Icon(
                           Icons.arrow_back_ios,
                           size: 25.h,
-                          color: Color(0XFF141414),
+                          color: const Color(0XFF141414),
                         ),
                       ),
                     ),
@@ -49,7 +47,7 @@ class _FaqscontentState extends State<Faqscontent> {
                 Text(
                   "FAQ's",
                   style: TextStyle(
-                    color: Color(0XFF141414),
+                    color: const Color(0XFF141414),
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -134,7 +132,7 @@ class _FaqExpandedState extends State<FaqExpanded> {
                 'What Is Feed Flow?',
                 style: TextStyle(
                     fontSize: 16.sp,
-                    color: Color(0xFF141414),
+                    color: const Color(0xFF141414),
                     fontWeight: FontWeight.w600),
               ),
             ],
@@ -143,7 +141,7 @@ class _FaqExpandedState extends State<FaqExpanded> {
             Container(
               width: 370.w,
               height: 30.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.white,
               ),
             ),
@@ -153,7 +151,7 @@ class _FaqExpandedState extends State<FaqExpanded> {
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
                 style: TextStyle(
                   fontSize: 16.sp,
-                  color: Color(0xFF4D4D4D),
+                  color: const Color(0xFF4D4D4D),
                 ),
               ),
             )

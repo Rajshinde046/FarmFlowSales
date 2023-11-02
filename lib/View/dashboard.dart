@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
@@ -13,10 +11,9 @@ import 'package:location/location.dart' as ls;
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 
 import '../Model/dashboardModel/dashboard_model.dart';
-import '../Utils/custom_button.dart';
-import '../Utils/utils.dart';
 import '../controller/dashboard_controller.dart';
 import '../view_models/weatherApi/weather_api.dart';
 
@@ -71,20 +68,26 @@ class _Dashboard extends State<Dashboard> {
       if (await location.requestPermission() != ls.PermissionStatus.granted) {
         dashboardController.permissionStatus.value = permissionGranted.name;
         return;
+      } else if (await location.hasPermission() ==
+          ls.PermissionStatus.granted) {
+        final permissionGranted = await location.hasPermission();
+
+        dashboardController.permissionStatus.value = permissionGranted.name;
       }
     }
-    if (permissionGranted == ls.PermissionStatus.granted) {
-      print(permissionGranted.name);
+    if (await location.hasPermission() == ls.PermissionStatus.granted) {
+      final permissionGranted = await location.hasPermission();
+
       dashboardController.permissionStatus.value = permissionGranted.name;
     }
 
-    dashboardController.isLocationFetching.value = true;
+    // dashboardController.isLocationFetching.value = true;
     final locationData = await location.getLocation();
 
     await getCurrentWeatherData(
         locationData.latitude!, locationData.longitude!);
 
-    dashboardController.isLocationFetching.value = false;
+    // dashboardController.isLocationFetching.value = false;
   }
 
   @override
@@ -335,7 +338,7 @@ class _Dashboard extends State<Dashboard> {
                                         Obx(
                                           () => dashboardController.permissionStatus.value ==
                                                   "denied"
-                                              ? SizedBox()
+                                              ? const SizedBox()
                                               : Align(
                                                   alignment: Alignment
                                                       .centerRight,
@@ -514,12 +517,12 @@ class _Dashboard extends State<Dashboard> {
                                                                           15.h),
                                                                     ],
                                                                   )
-                                                                : SizedBox(),
+                                                                : const SizedBox(),
                                                             dashboardController
                                                                         .permissionStatus
                                                                         .value ==
                                                                     "denied"
-                                                                ? SizedBox()
+                                                                ? const SizedBox()
                                                                 : Row(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
@@ -546,14 +549,14 @@ class _Dashboard extends State<Dashboard> {
                                                                         .permissionStatus
                                                                         .value ==
                                                                     "denied"
-                                                                ? SizedBox()
+                                                                ? const SizedBox()
                                                                 : textGreen50Bold(
                                                                     "${dashboardController.tempValue.value}° C"),
                                                             Obx(() => dashboardController
                                                                         .permissionStatus
                                                                         .value ==
                                                                     "denied"
-                                                                ? SizedBox()
+                                                                ? const SizedBox()
                                                                 : Column(
                                                                     crossAxisAlignment:
                                                                         CrossAxisAlignment
@@ -820,7 +823,7 @@ class _Dashboard extends State<Dashboard> {
 
       setState(() {});
     } catch (e) {
-      Utils.showToast("Error fetching location or weather data");
+      utils.showToast("Error fetching location or weather data");
     }
   }
 
@@ -915,7 +918,7 @@ class _Dashboard extends State<Dashboard> {
                   ),
 
               // sizedBoxHeight(10.h),
-              Spacer(),
+              const Spacer(),
 
               textGreen20W7000Mon(number)
             ],
