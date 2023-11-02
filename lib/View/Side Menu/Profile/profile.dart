@@ -5,6 +5,8 @@ import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../Utils/api_urls.dart';
+import '../../../controller/profile_controller.dart';
 import 'password_security.dart';
 import 'personalinfo.dart';
 
@@ -28,6 +30,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final ProfileImageController editProfileImage =
       Get.put(ProfileImageController());
+  ProfileController profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -89,19 +92,23 @@ class _ProfileState extends State<Profile> {
                             radius: 35.h,
                             child: ClipOval(
                               child: SizedBox.fromSize(
-                                  size: Size.fromRadius(33.r),
-                                  child: editProfileImage
-                                              .profilePicPath.value !=
-                                          ''
-                                      ? Image(
-                                          image: FileImage(File(editProfileImage
-                                              .profilePicPath.value)),
-                                          // fit: BoxFit.fitHeight,
-                                          // width: 200.w,
-                                          // height: 200.h,
-                                        )
-                                      : Image.asset(
-                                          "assets/images/person.png")),
+                                size: Size.fromRadius(33.r),
+                                child: editProfileImage.profilePicPath.value !=
+                                        ''
+                                    ? Image(
+                                        image: FileImage(File(editProfileImage
+                                            .profilePicPath.value)),
+                                        fit: BoxFit.cover,
+                                        width: 50.w,
+                                        height: 50.h,
+                                      )
+                                    : profileController.profileInfoModel.value
+                                            .data!.profilePhoto!.isEmpty
+                                        ? Image.asset(
+                                            "assets/images/profile.png")
+                                        : Image.network(
+                                            "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}"),
+                              ),
                             ),
                           ),
                         ),
