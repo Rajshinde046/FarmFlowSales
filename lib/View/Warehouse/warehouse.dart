@@ -1,7 +1,8 @@
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
+import 'package:farm_flow_sales/Model/WarehouseModel.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/View/Warehouse/warehousedata.dart';
+import 'package:farm_flow_sales/view_models/WarehouseAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,113 +29,119 @@ class _WarehouseState extends State<Warehouse> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+          padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 20.h),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView.separated(
+            child: FutureBuilder<WarehouseModel>(
+              future: WarehouseAPI().warehouseApi(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (snapshot.data?.data == null ||
+                    snapshot.data!.data!.isEmpty) {
+                  return Center(child: Text('No warehouse available'));
+                }
+                return ListView.separated(
                   separatorBuilder: (context, index) {
                     return sizedBoxHeight(13.h);
                   },
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: warehousedata.length,
+                  itemCount: snapshot.data!.data!.length,
                   itemBuilder: (context, index) {
+                    Data warehouseData = snapshot.data!.data![index];
                     return Column(
                       children: [
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.toNamed("/sideMenu", arguments: 1);
                           },
-                          child: warehousecard(
-                            warehousedata[index]["image"],
-                            warehousedata[index]["tittle"],
-                            warehousedata[index]["location"],
-                            index,
+                          child: SizedBox(
+                            width: 358.w,
+                            child: Card(
+                              elevation: 2,
+                              // shadowColor: Color(0XFF00000029),
+                              color: Color(0xffF1F1F1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  sizedBoxHeight(11.h),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 21.w),
+                                        child: Image.asset(
+                                          "assets/images/warehouse.png",
+                                          width: 47.w,
+                                          height: 47.h,
+                                        ),
+                                      ),
+                                      sizedBoxWidth(24.w),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          RichText(
+                                            // overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              text: warehouseData.title,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 3.h),
+                                                child: SvgPicture.asset(
+                                                  "assets/images/locationconnect.svg",
+                                                  width: 11.w,
+                                                  height: 15.w,
+                                                ),
+                                              ),
+                                              sizedBoxWidth(7.w),
+                                              RichText(
+                                                text: TextSpan(
+                                                    text: warehouseData
+                                                        .location!.name,
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 14.sp,
+                                                        color:
+                                                            Color(0xff4D4D4D),
+                                                        fontWeight:
+                                                            FontWeight.w400)),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 11.h,
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                         )
                       ],
                     );
                   },
-                ),
-                sizedBoxHeight(20.h),
-              ],
+                );
+              },
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget warehousecard(
-      dynamic image, dynamic tittle, dynamic location, int index) {
-    return SizedBox(
-      width: 358.w,
-      child: Card(
-        elevation: 2,
-        // shadowColor: Color(0XFF00000029),
-        color: Color(0xffF1F1F1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          children: [
-            sizedBoxHeight(11.h),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 21.w),
-                  child: Image.asset(
-                    image,
-                    width: 47.w,
-                    height: 47.h,
-                  ),
-                ),
-                sizedBoxWidth(24.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    RichText(
-                      // overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                        text: tittle,
-                        style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
-                      ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 3.h),
-                          child: SvgPicture.asset(
-                            "assets/images/locationconnect.svg",
-                            width: 11.w,
-                            height: 15.w,
-                          ),
-                        ),
-                        sizedBoxWidth(7.w),
-                        RichText(
-                          text: TextSpan(
-                              text: location,
-                              style: GoogleFonts.poppins(
-                                  fontSize: 14.sp,
-                                  color: Color(0xff4D4D4D),
-                                  fontWeight: FontWeight.w400)),
-                        )
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-            SizedBox(
-              height: 11.h,
-            )
-          ],
         ),
       ),
     );

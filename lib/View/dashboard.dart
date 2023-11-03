@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
@@ -13,10 +11,8 @@ import 'package:location/location.dart' as ls;
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../Model/dashboardModel/dashboard_model.dart';
-import '../Utils/custom_button.dart';
-import '../Utils/utils.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 import '../controller/dashboard_controller.dart';
 import '../view_models/weatherApi/weather_api.dart';
 
@@ -820,7 +816,7 @@ class _Dashboard extends State<Dashboard> {
 
       setState(() {});
     } catch (e) {
-      Utils.showToast("Error fetching location or weather data");
+      utils.showToast("Error fetching location or weather data");
     }
   }
 
