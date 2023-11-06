@@ -131,8 +131,7 @@ class NetworkApiServices extends BaseApiServices {
           options: (token == null || token == "")
               ? Options(
                   headers: {
-                    "Authorization":
-                        "Basic KzIkcVBiSlIzNncmaGUoalMmV0R6ZkpqdEVoSlVLVXA6dCRCZHEmSnQmc3Y0eUdqY0VVcTg5aEVZZHVSalhIMnU=",
+                    "Authorization": "Basic $token",
                   },
                 )
               : Options(headers: {

@@ -22,13 +22,15 @@ class _ContactState extends State<Contact> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 16),
-            backgroundColor: Get.isDarkMode ? Colors.black : Color(0XFFFFFFFF),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+            backgroundColor:
+                Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
             //contentPadding: EdgeInsets.fromLTRB(96, 32, 96, 28),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
               side: BorderSide(
-                  color: Get.isDarkMode ? Colors.grey : Color(0XFFFFFFFF)),
+                  color:
+                      Get.isDarkMode ? Colors.grey : const Color(0XFFFFFFFF)),
             ),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -90,7 +92,7 @@ class _ContactState extends State<Contact> {
                         height: 48.h,
                         width: 140.w,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Color(0XFF0E5F02)),
+                            border: Border.all(color: const Color(0XFF0E5F02)),
                             borderRadius: BorderRadius.circular(10.h),
                             color: AppColors.white),
                         child: Center(
@@ -119,13 +121,15 @@ class _ContactState extends State<Contact> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 16),
-            backgroundColor: Get.isDarkMode ? Colors.black : Color(0XFFFFFFFF),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+            backgroundColor:
+                Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
             //contentPadding: EdgeInsets.fromLTRB(96, 32, 96, 28),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
               side: BorderSide(
-                  color: Get.isDarkMode ? Colors.grey : Color(0XFFFFFFFF)),
+                  color:
+                      Get.isDarkMode ? Colors.grey : const Color(0XFFFFFFFF)),
             ),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -149,7 +153,7 @@ class _ContactState extends State<Contact> {
                     "Send the Gmail request",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color(0xFF4D4D4D),
+                      color: const Color(0xFF4D4D4D),
                       fontSize: 22.sp,
                       fontWeight: FontWeight.w400,
                     ),
@@ -185,7 +189,7 @@ class _ContactState extends State<Contact> {
                         height: 48.h,
                         width: 140.w,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Color(0XFF0E5F02)),
+                            border: Border.all(color: const Color(0XFF0E5F02)),
                             borderRadius: BorderRadius.circular(10.h),
                             color: AppColors.white),
                         child: Center(
@@ -214,13 +218,15 @@ class _ContactState extends State<Contact> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 16),
-            backgroundColor: Get.isDarkMode ? Colors.black : Color(0XFFFFFFFF),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+            backgroundColor:
+                Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
             //    contentPadding: EdgeInsets.fromLTRB(96, 32, 96, 28),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
               side: BorderSide(
-                  color: Get.isDarkMode ? Colors.grey : Color(0XFFFFFFFF)),
+                  color:
+                      Get.isDarkMode ? Colors.grey : const Color(0XFFFFFFFF)),
             ),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -255,7 +261,7 @@ class _ContactState extends State<Contact> {
                     Text(
                       "0861238765",
                       style: TextStyle(
-                        color: Color(0XFF585858),
+                        color: const Color(0XFF585858),
                         fontSize: 20.sp,
                       ),
                     )
@@ -271,7 +277,7 @@ class _ContactState extends State<Contact> {
                     Text(
                       "romad@gmail.com",
                       style: TextStyle(
-                        color: Color(0XFF585858),
+                        color: const Color(0XFF585858),
                         fontSize: 20.sp,
                       ),
                     )
@@ -342,7 +348,7 @@ class _ContactState extends State<Contact> {
         // backgroundColor: AppColors.white,
         title: customAppBar(text: "Contacts"),
 
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFFFFFFF),
         elevation: 0,
         // shadowColor: Colors.black,
         automaticallyImplyLeading: false,
@@ -352,8 +358,8 @@ class _ContactState extends State<Contact> {
         child: Column(
           children: [
             Padding(
-              padding:
-                  EdgeInsets.only(left: 16, right: 16, top: 25, bottom: 25),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 25, bottom: 25),
               child: Column(
                 children: [
                   Row(
@@ -374,10 +380,12 @@ class _ContactState extends State<Contact> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         border: Border.all(
-                            color: Color(0XFf0E5F02).withOpacity(1), width: 1),
-                        color: Color(0xFFFFFFFF),
+                            color: const Color(0XFf0E5F02).withOpacity(1),
+                            width: 1),
+                        color: const Color(0xFFFFFFFF),
                       ),
                       child: Column(
                         children: [
@@ -437,7 +445,7 @@ class _ContactState extends State<Contact> {
                                             text: "0861238765",
                                             // "0225845855",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -468,7 +476,7 @@ class _ContactState extends State<Contact> {
                                             text: "Newton, Athenry",
                                             // "Canada",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -544,10 +552,12 @@ class _ContactState extends State<Contact> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         border: Border.all(
-                            color: Color(0XFf0E5F02).withOpacity(1), width: 1),
-                        color: Color(0xFFFFFFFF),
+                            color: const Color(0XFf0E5F02).withOpacity(1),
+                            width: 1),
+                        color: const Color(0xFFFFFFFF),
                       ),
                       child: Column(
                         children: [
@@ -607,7 +617,7 @@ class _ContactState extends State<Contact> {
                                             text: "0861238765",
                                             // "0225845855",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -638,7 +648,7 @@ class _ContactState extends State<Contact> {
                                             text: "Newton, Athenry",
                                             // "Canada",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -726,10 +736,12 @@ class _ContactState extends State<Contact> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         border: Border.all(
-                            color: Color(0XFf0E5F02).withOpacity(1), width: 1),
-                        color: Color(0xFFFFFFFF),
+                            color: const Color(0XFf0E5F02).withOpacity(1),
+                            width: 1),
+                        color: const Color(0xFFFFFFFF),
                       ),
                       child: Column(
                         children: [
@@ -741,23 +753,12 @@ class _ContactState extends State<Contact> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(left: 16.w),
-                                child: Container(
-                                  // decoration: BoxDecoration(
-                                  //   border: Border.all(
-                                  //       width: 3,
-                                  //       color: isConnect == 0
-                                  //           ? Colors.amber
-                                  //           : Colors.white),
-                                  //   borderRadius:
-                                  //       BorderRadius.circular(100), //<-- SEE HERE
-                                  // ),
-                                  child: Image.asset(
-                                    "assets/images/Contactoerson.png",
-                                    // image,
-                                    // "assets/images/connect2.png",
-                                    width: 66.w,
-                                    height: 66.w,
-                                  ),
+                                child: Image.asset(
+                                  "assets/images/Contactoerson.png",
+                                  // image,
+                                  // "assets/images/connect2.png",
+                                  width: 66.w,
+                                  height: 66.w,
                                 ),
                               ),
 
@@ -794,7 +795,7 @@ class _ContactState extends State<Contact> {
                                             text: "0614149881",
                                             // "0225845855",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -824,7 +825,7 @@ class _ContactState extends State<Contact> {
                                             text: "ronaldt@gmail.com",
                                             // "Canada",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -911,10 +912,12 @@ class _ContactState extends State<Contact> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         border: Border.all(
-                            color: Color(0XFf0E5F02).withOpacity(1), width: 1),
-                        color: Color(0xFFFFFFFF),
+                            color: const Color(0XFf0E5F02).withOpacity(1),
+                            width: 1),
+                        color: const Color(0xFFFFFFFF),
                       ),
                       child: Column(
                         children: [
@@ -926,25 +929,12 @@ class _ContactState extends State<Contact> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(left: 16.w),
-                                child: Container(
-                                  // decoration: BoxDecoration(
-                                  //   border:
-                                  //  Border.all(
-                                  //      width: 3,
-                                  //     color: isConnect == 0
-                                  //         ? Colors.amber
-                                  //         : Colors.white
-                                  //     ),
-                                  // borderRadius:
-                                  //     BorderRadius.circular(100), //<-- SEE HERE
-                                  // ),
-                                  child: Image.asset(
-                                    "assets/images/Contactoerson.png",
-                                    // image,
-                                    // "assets/images/connect2.png",
-                                    width: 66.w,
-                                    height: 66.w,
-                                  ),
+                                child: Image.asset(
+                                  "assets/images/Contactoerson.png",
+                                  // image,
+                                  // "assets/images/connect2.png",
+                                  width: 66.w,
+                                  height: 66.w,
                                 ),
                               ),
 
@@ -981,7 +971,7 @@ class _ContactState extends State<Contact> {
                                             text: "0825463597",
                                             // "0225845855",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -1011,7 +1001,7 @@ class _ContactState extends State<Contact> {
                                             text: "abigail@gmail.com",
                                             // "Canada",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -1080,10 +1070,12 @@ class _ContactState extends State<Contact> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         border: Border.all(
-                            color: Color(0XFf0E5F02).withOpacity(1), width: 1),
-                        color: Color(0xFFFFFFFF),
+                            color: const Color(0XFf0E5F02).withOpacity(1),
+                            width: 1),
+                        color: const Color(0xFFFFFFFF),
                       ),
                       child: Column(
                         children: [
@@ -1095,25 +1087,12 @@ class _ContactState extends State<Contact> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(left: 16.w),
-                                child: Container(
-                                  // decoration: BoxDecoration(
-                                  //   border:
-                                  //  Border.all(
-                                  //      width: 3,
-                                  //     color: isConnect == 0
-                                  //         ? Colors.amber
-                                  //         : Colors.white
-                                  //     ),
-                                  // borderRadius:
-                                  //     BorderRadius.circular(100), //<-- SEE HERE
-                                  // ),
-                                  child: Image.asset(
-                                    "assets/images/Contactoerson.png",
-                                    // image,
-                                    // "assets/images/connect2.png",
-                                    width: 66.w,
-                                    height: 66.w,
-                                  ),
+                                child: Image.asset(
+                                  "assets/images/Contactoerson.png",
+                                  // image,
+                                  // "assets/images/connect2.png",
+                                  width: 66.w,
+                                  height: 66.w,
                                 ),
                               ),
 
@@ -1150,7 +1129,7 @@ class _ContactState extends State<Contact> {
                                             text: "085634826",
                                             // "0225845855",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),
@@ -1180,7 +1159,7 @@ class _ContactState extends State<Contact> {
                                             text: "james@gmail.com",
                                             // "Canada",
                                             style: TextStyle(
-                                              color: Color(0XFF585858),
+                                              color: const Color(0XFF585858),
                                               fontSize: 16.sp,
                                             ),
                                           ),

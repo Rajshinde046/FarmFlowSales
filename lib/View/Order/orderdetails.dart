@@ -2,7 +2,6 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,14 +35,14 @@ class _OrderdetailsState extends State<Orderdetails> {
                     },
                     child: CircleAvatar(
                       radius: 20.h,
-                      backgroundColor: Color(0XFFF1F1F1),
+                      backgroundColor: const Color(0XFFF1F1F1),
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(left: 8.w),
                           child: Icon(
                             Icons.arrow_back_ios,
                             size: 25.h,
-                            color: Color(0XFF141414),
+                            color: const Color(0XFF141414),
                           ),
                         ),
                       ),
@@ -53,7 +52,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                   Text(
                     "Order Details",
                     style: TextStyle(
-                      color: Color(0XFF141414),
+                      color: const Color(0XFF141414),
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
                     ),
@@ -68,7 +67,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                 "Order Id : 54545645465",
                 style: TextStyle(
                   fontSize: 18.sp,
-                  color: Color(0XFF141414),
+                  color: const Color(0XFF141414),
                   fontWeight: FontWeight.w400,
                   fontFamily: "Poppins",
                 ),
@@ -107,7 +106,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                       style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w300,
-                                          color: Color(0xff4D4D4D),
+                                          color: const Color(0xff4D4D4D),
                                           fontFamily: "Poppins"),
                                     ),
                                   ],
@@ -117,21 +116,21 @@ class _OrderdetailsState extends State<Orderdetails> {
                                   "22b baker street St, Marylebone, \nIreland",
                                   style: TextStyle(
                                       fontSize: 16.sp,
-                                      color: Color(0XFF141414),
+                                      color: const Color(0XFF141414),
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Padding(
                             padding: EdgeInsets.only(top: 8.h),
                             child: Text(
                               "Edit",
                               style: TextStyle(
                                   fontSize: 16.sp,
-                                  color: Color(0XFF0E5F02),
+                                  color: const Color(0XFF0E5F02),
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.bold),
                             ),
@@ -152,7 +151,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.h),
                                 border: Border.all(
-                                  color: Color(0xff918E8E),
+                                  color: const Color(0xff918E8E),
                                 ),
                                 color: AppColors.white),
                             child: Image.asset(
@@ -170,7 +169,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 "Elite Dairy 15% BULK",
                                 style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Color(0XFF141414),
+                                    color: const Color(0XFF141414),
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "Poppins"),
                               ),
@@ -180,7 +179,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w300,
-                                    color: Color(0XFF4D4D4D),
+                                    color: const Color(0XFF4D4D4D),
                                     fontFamily: "Poppins"),
                               ),
                               sizedBoxHeight(2.h),
@@ -189,7 +188,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0XFF141414),
+                                    color: const Color(0XFF141414),
                                     fontFamily: "Poppins"),
                               ),
                             ],
@@ -210,7 +209,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.h),
                                 border: Border.all(
-                                  color: Color(0XFF918E8E),
+                                  color: const Color(0XFF918E8E),
                                 ),
                                 color: AppColors.white),
                             child: Image.asset(
@@ -228,7 +227,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 "Agrofeed Ruminant Feed",
                                 style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Color(0XFF141414),
+                                    color: const Color(0XFF141414),
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "Poppins"),
                               ),
@@ -237,7 +236,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 "Quantity : 5",
                                 style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Color(0XFF4D4D4D),
+                                    color: const Color(0XFF4D4D4D),
                                     fontWeight: FontWeight.w300,
                                     fontFamily: "Poppins"),
                               ),
@@ -246,7 +245,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 "€ 500",
                                 style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Color(0XFF141414),
+                                    color: const Color(0XFF141414),
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "Poppins"),
                               ),
@@ -268,7 +267,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.h),
                                 border: Border.all(
-                                  color: Color(0XFF918E8E),
+                                  color: const Color(0XFF918E8E),
                                 ),
                                 color: AppColors.white),
                             child: Image.asset(
@@ -286,7 +285,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 "Agrofeed Ruminant Feed",
                                 style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Color(0XFF141414),
+                                    color: const Color(0XFF141414),
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "Poppins"),
                               ),
@@ -295,7 +294,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 "Quantity : 5",
                                 style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Color(0XFF4D4D4D),
+                                    color: const Color(0XFF4D4D4D),
                                     fontWeight: FontWeight.w300,
                                     fontFamily: "Poppins"),
                               ),
@@ -304,7 +303,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 "€ 500",
                                 style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Color(0XFF141414),
+                                    color: const Color(0XFF141414),
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "Poppins"),
                               ),
@@ -324,7 +323,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                             "Order",
                             style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Color(0XFF4D4D4D),
+                                color: const Color(0XFF4D4D4D),
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500),
                           ),
@@ -332,7 +331,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                             "Cow Feed",
                             style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Color(0xff141414),
+                                color: const Color(0xff141414),
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500),
                           ),
@@ -350,16 +349,16 @@ class _OrderdetailsState extends State<Orderdetails> {
                             "Total Amount",
                             style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Color(0XFF4D4D4D),
+                                color: const Color(0XFF4D4D4D),
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Text(
                             "€ 5000",
                             style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Color(0XFF141414),
+                                color: const Color(0XFF141414),
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500),
                           ),
@@ -370,7 +369,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                               "(3 Items)",
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                color: Color(0XFF4D4D4D),
+                                color: const Color(0XFF4D4D4D),
                                 fontWeight: FontWeight.w400,
                                 fontFamily: "Poppins",
                               ),
@@ -387,7 +386,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                         height: 35.h,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Color(0XFF918E8E),
+                            color: const Color(0XFF918E8E),
                           ),
                           color: AppColors.white,
                         ),
@@ -406,7 +405,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                               style: TextStyle(
                                   fontSize: 14.sp,
                                   fontFamily: "Poppins",
-                                  color: Color(0XFF0E5F02),
+                                  color: const Color(0XFF0E5F02),
                                   fontWeight: FontWeight.w500),
                             )
                           ],
@@ -426,7 +425,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                             children: [
                               sizedBoxHeight(8.h),
                               status(),
-                              DottedLine(
+                              const DottedLine(
                                 direction: Axis.vertical,
                                 lineLength: 47,
                                 lineThickness: 2.0,
@@ -434,14 +433,14 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 dashColor: Color(0XFF0E5F02),
                               ),
                               status(),
-                              Dash(
+                              const Dash(
                                   direction: Axis.vertical,
                                   length: 25,
                                   dashLength: 49,
                                   dashGap: 0,
                                   dashColor: Color(0XFF0E5F02)),
                               status(),
-                              Dash(
+                              const Dash(
                                   direction: Axis.vertical,
                                   length: 25,
                                   dashLength: 39,
@@ -461,7 +460,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff141414),
+                                    color: const Color(0xff141414),
                                     fontFamily: "Poppins"),
                               ),
                               Text(
@@ -469,7 +468,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff4D4D4D),
+                                    color: const Color(0xff4D4D4D),
                                     fontFamily: "Poppins"),
                               ),
                               sizedBoxHeight(22.h),
@@ -478,7 +477,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff141414),
+                                    color: const Color(0xff141414),
                                     fontFamily: "Poppins"),
                               ),
                               Row(
@@ -487,7 +486,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                   Text(
                                     "Tuesday",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: "Poppins"),
@@ -502,7 +501,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                   Text(
                                     "Jan 30, 10.12 PM",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: "Poppins"),
@@ -515,7 +514,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff141414),
+                                    color: const Color(0xff141414),
                                     fontFamily: "Poppins"),
                               ),
                               Row(
@@ -524,7 +523,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                   Text(
                                     "Wednesday",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: "Poppins"),
@@ -539,7 +538,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                   Text(
                                     "Jan 30, 10.12 PM",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: "Poppins"),
@@ -552,7 +551,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff141414),
+                                    color: const Color(0xff141414),
                                     fontFamily: "Poppins"),
                               ),
                               Row(
@@ -561,7 +560,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                   Text(
                                     "Friday",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: "Poppins"),
@@ -576,7 +575,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                   Text(
                                     "Jan 30, 10.12 PM",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 14.sp,
                                         fontFamily: "Poppins"),
@@ -617,7 +616,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                       child: Container(
                         width: 358.w,
                         // height: 115.h,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             color: Color(0xffF1F1F1),
                             boxShadow: [
@@ -651,7 +650,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                       "Order Summary",
                                       style: TextStyle(
                                           fontSize: 20.sp,
-                                          color: Color(0xff141414),
+                                          color: const Color(0xff141414),
                                           fontWeight: FontWeight.w600,
                                           fontFamily: "Poppins"),
                                     ),
@@ -660,7 +659,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                       "Order g: 408-0073624-7437935",
                                       style: TextStyle(
                                           fontSize: 14.sp,
-                                          color: Color(0XFF141414),
+                                          color: const Color(0XFF141414),
                                           fontWeight: FontWeight.w400,
                                           fontFamily: "Poppins"),
                                     ),
@@ -669,7 +668,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                       "Ordered February 5, 2023 8:01 pm",
                                       style: TextStyle(
                                           fontSize: 14.sp,
-                                          color: Color(0XFF141414),
+                                          color: const Color(0XFF141414),
                                           fontWeight: FontWeight.w400,
                                           fontFamily: "Poppins"),
                                     ),

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Utils/colors.dart';
+import 'Utils/global.dart';
 import 'resources/routes/routes.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  token = prefs.getString('token');
   runApp(const MyApp());
 }
 
@@ -24,9 +30,7 @@ class MyApp extends StatelessWidget {
               scaffoldBackgroundColor: AppColors.white,
               primarySwatch: Colors.blue,
             ),
-
-            initialRoute: '/',
-
+            initialRoute: (token == null || token == "") ? '/' : '/sideMenu',
             getPages: AppRoutes.appRoutes(),
           );
         });

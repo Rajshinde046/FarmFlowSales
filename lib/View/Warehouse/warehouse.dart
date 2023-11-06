@@ -46,7 +46,7 @@ class _WarehouseState extends State<Warehouse> {
                   separatorBuilder: (context, index) {
                     return sizedBoxHeight(13.h);
                   },
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: snapshot.data!.data!.length,
                   itemBuilder: (context, index) {
@@ -146,4 +146,5 @@ class _WarehouseState extends State<Warehouse> {
       ),
     );
   }
+
 }

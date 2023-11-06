@@ -30,14 +30,14 @@ class _FaqState extends State<Faq> {
                   },
                   child: CircleAvatar(
                     radius: 20.h,
-                    backgroundColor: Color(0XFFF1F1F1),
+                    backgroundColor: const Color(0XFFF1F1F1),
                     child: Center(
                       child: Padding(
                         padding: EdgeInsets.only(left: 8.w),
                         child: Icon(
                           Icons.arrow_back_ios,
                           size: 25.h,
-                          color: Color(0XFF141414),
+                          color: const Color(0XFF141414),
                         ),
                       ),
                     ),
@@ -47,7 +47,7 @@ class _FaqState extends State<Faq> {
                 Text(
                   "FAQ's",
                   style: TextStyle(
-                    color: Color(0XFF141414),
+                    color: const Color(0XFF141414),
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -67,7 +67,7 @@ class _FaqState extends State<Faq> {
                 height: 220.h,
                 child: Card(
                   // elevation: 2,
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                   // shadowColor: Color(0XFF00000029),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -123,7 +123,7 @@ class _FaqState extends State<Faq> {
                 width: 358.w,
                 height: 220.h,
                 child: Card(
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                   // shadowColor: Color(0XFF00000029),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -164,7 +164,7 @@ class _FaqState extends State<Faq> {
                 width: 358.w,
                 height: 220.h,
                 child: Card(
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                   // shadowColor: Color(0XFF00000029),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

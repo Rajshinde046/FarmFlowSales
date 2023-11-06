@@ -11,8 +11,14 @@ import 'package:location/location.dart' as ls;
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../Model/dashboardModel/dashboard_model.dart';
 import 'package:farm_flow_sales/common/limit_range.dart';
+
+import 'package:farm_flow_sales/common/limit_range.dart';
+
+import '../Model/dashboardModel/dashboard_model.dart';
+
 import '../controller/dashboard_controller.dart';
 import '../view_models/weatherApi/weather_api.dart';
 
@@ -41,19 +47,24 @@ class _Dashboard extends State<Dashboard> {
   @override
   void initState() {
     dashboardController.isDashboardApiLoading.value = true;
-    _clockStream = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
-      return DateTime.now();
-    });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _clockStream = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
+        return DateTime.now();
+      });
       await getCurrentAddress();
 
-      DashboardApi().getDashboardData().then((value) async {
+      await DashboardApi().getDashboardData().then((value) async {
         dashboardController.dashboardModel =
             DashboardModel.fromJson(value.data);
         dashboardController.isDashboardApiLoading.value = false;
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future getCurrentAddress() async {
@@ -67,20 +78,26 @@ class _Dashboard extends State<Dashboard> {
       if (await location.requestPermission() != ls.PermissionStatus.granted) {
         dashboardController.permissionStatus.value = permissionGranted.name;
         return;
+      } else if (await location.hasPermission() ==
+          ls.PermissionStatus.granted) {
+        final permissionGranted = await location.hasPermission();
+
+        dashboardController.permissionStatus.value = permissionGranted.name;
       }
     }
-    if (permissionGranted == ls.PermissionStatus.granted) {
-      print(permissionGranted.name);
+    if (await location.hasPermission() == ls.PermissionStatus.granted) {
+      final permissionGranted = await location.hasPermission();
+
       dashboardController.permissionStatus.value = permissionGranted.name;
     }
 
-    dashboardController.isLocationFetching.value = true;
+    // dashboardController.isLocationFetching.value = true;
     final locationData = await location.getLocation();
 
     await getCurrentWeatherData(
         locationData.latitude!, locationData.longitude!);
 
-    dashboardController.isLocationFetching.value = false;
+    // dashboardController.isLocationFetching.value = false;
   }
 
   @override
@@ -331,7 +348,7 @@ class _Dashboard extends State<Dashboard> {
                                         Obx(
                                           () => dashboardController.permissionStatus.value ==
                                                   "denied"
-                                              ? SizedBox()
+                                              ? const SizedBox()
                                               : Align(
                                                   alignment: Alignment
                                                       .centerRight,
@@ -453,8 +470,16 @@ class _Dashboard extends State<Dashboard> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            textBlack20W7000Mon(
-                                                                "Welcome Back ${dashboardController.dashboardModel.data!.name}"),
+                                                            SizedBox(
+                                                              width: Get.width /
+                                                                  1.3,
+                                                              child: FittedBox(
+                                                                fit: BoxFit
+                                                                    .contain,
+                                                                child: textBlack20W7000Mon(
+                                                                    "Welcome Back ${dashboardController.dashboardModel.data!.name}"),
+                                                              ),
+                                                            ),
                                                             sizedBoxHeight(
                                                                 15.h),
                                                             dashboardController
@@ -510,12 +535,12 @@ class _Dashboard extends State<Dashboard> {
                                                                           15.h),
                                                                     ],
                                                                   )
-                                                                : SizedBox(),
+                                                                : const SizedBox(),
                                                             dashboardController
                                                                         .permissionStatus
                                                                         .value ==
                                                                     "denied"
-                                                                ? SizedBox()
+                                                                ? const SizedBox()
                                                                 : Row(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
@@ -542,14 +567,14 @@ class _Dashboard extends State<Dashboard> {
                                                                         .permissionStatus
                                                                         .value ==
                                                                     "denied"
-                                                                ? SizedBox()
+                                                                ? const SizedBox()
                                                                 : textGreen50Bold(
                                                                     "${dashboardController.tempValue.value}° C"),
                                                             Obx(() => dashboardController
                                                                         .permissionStatus
                                                                         .value ==
                                                                     "denied"
-                                                                ? SizedBox()
+                                                                ? const SizedBox()
                                                                 : Column(
                                                                     crossAxisAlignment:
                                                                         CrossAxisAlignment
@@ -911,7 +936,7 @@ class _Dashboard extends State<Dashboard> {
                   ),
 
               // sizedBoxHeight(10.h),
-              Spacer(),
+              const Spacer(),
 
               textGreen20W7000Mon(number)
             ],

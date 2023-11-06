@@ -9,8 +9,6 @@ import 'package:get/get.dart';
 import 'package:getwidget/components/accordion/gf_accordion.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-
 enum ColorLabel {
   blue('Kevin Mounsey'),
   pink('Aron Smith'),
@@ -44,7 +42,7 @@ class _selectFarmerState extends State<selectFarmer> {
   ColorLabel? selectedColor;
   addLabel? selectedAdd;
   final TextEditingController colorController = TextEditingController();
-final TextEditingController addController = TextEditingController();
+  final TextEditingController addController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final List<DropdownMenuEntry<ColorLabel>> colorEntries =
@@ -97,27 +95,30 @@ final TextEditingController addController = TextEditingController();
               sizedBoxHeight(10.h),
               DropdownMenu<ColorLabel>(
                 hintText: "Select Farmer",
-                trailingIcon: Icon(
+                trailingIcon: const Icon(
                   Icons.arrow_drop_down,
                   color: Colors.green,
                 ),
                 inputDecorationTheme: InputDecorationTheme(
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -142,27 +143,30 @@ final TextEditingController addController = TextEditingController();
               sizedBoxHeight(30),
               DropdownMenu<addLabel>(
                 hintText: "Select Address",
-                trailingIcon: Icon(
+                trailingIcon: const Icon(
                   Icons.arrow_drop_down,
                   color: Colors.green,
                 ),
                 inputDecorationTheme: InputDecorationTheme(
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -190,7 +194,7 @@ final TextEditingController addController = TextEditingController();
                   onTap: () {
                     Get.toNamed("/selectfrequency");
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               InkWell(
@@ -226,11 +230,12 @@ final TextEditingController addController = TextEditingController();
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AlertDialog(
-            insetPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            insetPadding:
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
             backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-            contentPadding: EdgeInsets.fromLTRB(15, 30, 15, 24),
+            contentPadding: const EdgeInsets.fromLTRB(15, 30, 15, 24),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               side: BorderSide(
                   color: Get.isDarkMode ? Colors.grey : Colors.white),
             ),
@@ -262,17 +267,17 @@ final TextEditingController addController = TextEditingController();
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide:
-                          BorderSide(color: Color(0xFF707070), width: 1),
+                          const BorderSide(color: Color(0xFF707070), width: 1),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide:
-                          BorderSide(color: Color(0xFF707070), width: 1),
+                          const BorderSide(color: Color(0xFF707070), width: 1),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide:
-                          BorderSide(color: Color(0xFF707070), width: 1),
+                          const BorderSide(color: Color(0xFF707070), width: 1),
                     ),
                     hintStyle: TextStyle(
                         color: const Color(0xFF4D4D4D), fontSize: 16.sp),
@@ -320,7 +325,7 @@ final TextEditingController addController = TextEditingController();
                         height: 48.h,
                         width: 140.w,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Color(0XFF0E5F02)),
+                            border: Border.all(color: const Color(0XFF0E5F02)),
                             borderRadius: BorderRadius.circular(10.h),
                             color: AppColors.white),
                         child: Center(
@@ -334,7 +339,7 @@ final TextEditingController addController = TextEditingController();
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 )
               ],
@@ -388,7 +393,7 @@ Widget newslistCard(
           ),
           contentChild: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.radio_button_checked,
                 color: AppColors.buttoncolour,
               ),

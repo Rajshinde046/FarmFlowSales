@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Container(
                 height: 250.h,
-                color: Color(0xFF0E5F02),
+                color: const Color(0xFF0E5F02),
                 child: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Container(
-                color: Color(0xFF0E5F02),
+                color: const Color(0xFF0E5F02),
                 child: Container(
                   // height: double.infinity,
                   decoration: const BoxDecoration(

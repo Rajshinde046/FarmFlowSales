@@ -1,9 +1,7 @@
-import 'package:farm_flow_sales/Common/CommonTextFormField.dart';
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -65,7 +63,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
               SizedBox(
                 width: 358.w,
                 child: Card(
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -90,7 +88,8 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               width: 109.w,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Color(0xff9E9E9E)),
+                                border:
+                                    Border.all(color: const Color(0xff9E9E9E)),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
@@ -125,7 +124,8 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               // width: 210.w,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Color(0xff9E9E9E)),
+                                border:
+                                    Border.all(color: const Color(0xff9E9E9E)),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
@@ -174,21 +174,24 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   errorStyle: TextStyle(fontSize: 16.sp),
                   contentPadding: EdgeInsets.all(17.h),
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   hintStyle: TextStyle(
                       color: const Color(0xFF4D4D4D),
@@ -213,21 +216,24 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   errorStyle: TextStyle(fontSize: 16.sp),
                   contentPadding: EdgeInsets.all(17.h),
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   hintStyle: TextStyle(
                       color: const Color(0xFF4D4D4D),
@@ -252,21 +258,24 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   errorStyle: TextStyle(fontSize: 16.sp),
                   contentPadding: EdgeInsets.all(17.h),
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   hintStyle: TextStyle(
                       color: const Color(0xFF4D4D4D),
@@ -328,21 +337,24 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   errorStyle: TextStyle(fontSize: 16.sp),
                   contentPadding: EdgeInsets.all(17.h),
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   hintStyle: TextStyle(
                       color: const Color(0xFF4D4D4D),
@@ -366,21 +378,24 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   errorStyle: TextStyle(fontSize: 16.sp),
                   contentPadding: EdgeInsets.all(17.h),
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   hintStyle: TextStyle(
                       color: const Color(0xFF4D4D4D),
@@ -404,21 +419,24 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   errorStyle: TextStyle(fontSize: 16.sp),
                   contentPadding: EdgeInsets.all(17.h),
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   hintStyle: TextStyle(
                       color: const Color(0xFF4D4D4D),
@@ -442,21 +460,24 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   errorStyle: TextStyle(fontSize: 16.sp),
                   contentPadding: EdgeInsets.all(17.h),
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   hintStyle: TextStyle(
                       color: const Color(0xFF4D4D4D),
@@ -480,21 +501,24 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                   errorStyle: TextStyle(fontSize: 16.sp),
                   contentPadding: EdgeInsets.all(17.h),
                   filled: true,
-                  fillColor: Color(0xFFF1F1F1),
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
-                        color: Color(0xFF707070).withOpacity(0), width: 1),
+                        color: const Color(0xFF707070).withOpacity(0),
+                        width: 1),
                   ),
                   hintStyle: TextStyle(
                       color: const Color(0xFF4D4D4D),
@@ -562,7 +586,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
         decoration: BoxDecoration(
             // dec
             color: selectedCurrentFeed == index
-                ? Color.fromARGB(255, 236, 248, 239)
+                ? const Color.fromARGB(255, 236, 248, 239)
                 : AppColors.white,
             borderRadius: BorderRadius.circular(5.h),
             border: Border.all(

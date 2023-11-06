@@ -1,9 +1,16 @@
-import 'package:farm_flow_sales/Utils/colors.dart';
+import 'dart:io';
+
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
+import '../../Model/ProfileModel/profile_info_model.dart';
+import '../../Utils/api_urls.dart';
+import '../../controller/profile_controller.dart';
+import '../../view_models/profileApi/ProfileAPI.dart';
+import 'Profile/personalinfo.dart';
 
 class SideBar extends StatefulWidget {
   const SideBar({
@@ -16,6 +23,12 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
+  ProfileController profileController = Get.put(ProfileController());
+
+  final ProfileImageController editProfileImage =
+      Get.put(ProfileImageController());
+  RxBool isLoading = false.obs;
+
   List sideBarData = [
     {
       "icon": Image.asset(
@@ -65,6 +78,17 @@ class _SideBarState extends State<SideBar> {
   ];
 
   @override
+  void initState() {
+    isLoading.value = true;
+    ProfileAPI().getProfileInfo().then((value) {
+      profileController.profileInfoModel.value =
+          ProfileInfoModel.fromJson(value.data);
+      isLoading.value = false;
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -84,58 +108,55 @@ class _SideBarState extends State<SideBar> {
                     },
                     child: Row(
                       children: [
-                        Stack(
-                          children: [
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: SizedBox(
-                                height: 26.h,
-                                width: 26.h,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Container(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 65.w,
-                              width: 65.w,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Image.asset(
-                                  'assets/images/person.png',
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 5.h,
-                              right: 5,
-                              child: Icon(
-                                Icons.add_a_photo_outlined,
-                                color: const Color(0xff0E5F02),
-                                size: 15.h,
-                              ),
-                            ),
-                          ],
-                        ),
+                        SizedBox(
+                            height: 65.w,
+                            width: 65.w,
+                            child: Obx(
+                              () => isLoading.value
+                                  ? const SizedBox()
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: editProfileImage
+                                                  .profilePicPath.value !=
+                                              ''
+                                          ? Image(
+                                              image: FileImage(File(
+                                                  editProfileImage
+                                                      .profilePicPath.value)),
+                                              fit: BoxFit.cover,
+                                              width: 50.w,
+                                              height: 50.h,
+                                            )
+                                          : profileController
+                                                  .profileInfoModel
+                                                  .value
+                                                  .data!
+                                                  .profilePhoto!
+                                                  .isEmpty
+                                              ? Image.asset(
+                                                  "assets/images/profile.png")
+                                              : Image.network(
+                                                  "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}"),
+                                    ),
+                            )),
                         sizedBoxWidth(15.w),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Kevin Mounsey',
-                              style: TextStyle(fontSize: 18.sp),
-                            ),
-                            sizedBoxHeight(4.h),
-                            Text(
-                              "0863621359",
-                              style: TextStyle(fontSize: 16.sp),
-                            )
-                          ],
+                        Obx(
+                          () => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                profileController
+                                    .profileInfoModel.value.data!.userName!,
+                                style: TextStyle(fontSize: 18.sp),
+                              ),
+                              sizedBoxHeight(4.h),
+                              Text(
+                                profileController
+                                    .profileInfoModel.value.data!.phoneNumber!,
+                                style: TextStyle(fontSize: 16.sp),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -154,7 +175,7 @@ class _SideBarState extends State<SideBar> {
                             // if (index == 4) {
                             //   buildprofilelogoutdialog(context);
                             // } else {
-                              Get.toNamed(sideBarData[index]["route"]);
+                            Get.toNamed(sideBarData[index]["route"]);
                             // }
                           },
                         );

@@ -40,7 +40,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         String? message = resp.data['data']['phone_number'].first;
         utils.showToast("$message");
       } else {
-        utils.showToast("${resp.message}");
+        utils.showToast(resp.message);
       }
     }
   }

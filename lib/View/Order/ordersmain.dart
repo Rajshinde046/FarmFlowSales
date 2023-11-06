@@ -52,7 +52,7 @@ class _OrderMainState extends State<OrderMain> {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(16, 9, 16, 20),
+                  padding: const EdgeInsets.fromLTRB(16, 9, 16, 20),
                   child: Column(
                     children: [
                       Row(
@@ -70,14 +70,14 @@ class _OrderMainState extends State<OrderMain> {
                         height: 370.h,
                         width: 360.w,
                         decoration: BoxDecoration(
-                          color: Color(0xFFF1F1F1),
+                          color: const Color(0xFFF1F1F1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(23, 5, 23, 0),
                           child: ListView.builder(
                             shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             itemCount: salesOrderMainData.length,
                             itemBuilder: (_, index) {
                               return InkWell(
@@ -104,7 +104,7 @@ class _OrderMainState extends State<OrderMain> {
                             style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w500, fontSize: 18.sp),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           PopupMenuButton(
                             offset: const Offset(0, 50),
                             color: const Color(0xFFFFFFFF),
@@ -196,14 +196,14 @@ class _OrderMainState extends State<OrderMain> {
                         height: 370.h,
                         width: 360.w,
                         decoration: BoxDecoration(
-                          color: Color(0xFFF1F1F1),
+                          color: const Color(0xFFF1F1F1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(23, 5, 23, 0),
                           child: ListView.builder(
                             shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             itemCount: ongoingOrderMainData.length,
                             itemBuilder: (_, index) {
                               return InkWell(
@@ -239,7 +239,7 @@ Widget SalesOrderMainTile(
   return Padding(
     padding: const EdgeInsets.only(top: 10.0),
     child: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),
@@ -294,7 +294,7 @@ Widget SalesOrderMainTile(
                             text: number,
                             // "0225845855",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),
@@ -319,7 +319,7 @@ Widget SalesOrderMainTile(
                             text: location,
                             // "Canada",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),
@@ -346,7 +346,7 @@ Widget OngoingOrderMainTile(
     padding: const EdgeInsets.only(top: 10.0),
     child: Container(
       //width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),
@@ -402,7 +402,7 @@ Widget OngoingOrderMainTile(
                             text: number,
                             // "0225845855",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),
@@ -427,7 +427,7 @@ Widget OngoingOrderMainTile(
                             text: location,
                             // "Canada",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),
