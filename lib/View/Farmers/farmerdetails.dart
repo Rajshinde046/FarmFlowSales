@@ -129,7 +129,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 7.w, vertical: 9.h),
+                                    horizontal: 6.w, vertical: 9.h),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [

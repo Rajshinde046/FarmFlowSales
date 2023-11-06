@@ -4,7 +4,7 @@ import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/View/Farmers/farmerdata.dart';
 import 'package:farm_flow_sales/models/farmerListModel.dart';
-import 'package:farm_flow_sales/view_models/FarmerListAPI.dart';
+import 'package:farm_flow_sales/view_models/farmer/FarmerListAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
