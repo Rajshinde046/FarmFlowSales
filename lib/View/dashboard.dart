@@ -42,19 +42,24 @@ class _Dashboard extends State<Dashboard> {
   @override
   void initState() {
     dashboardController.isDashboardApiLoading.value = true;
-    _clockStream = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
-      return DateTime.now();
-    });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _clockStream = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
+        return DateTime.now();
+      });
       await getCurrentAddress();
 
-      DashboardApi().getDashboardData().then((value) async {
+      await DashboardApi().getDashboardData().then((value) async {
         dashboardController.dashboardModel =
             DashboardModel.fromJson(value.data);
         dashboardController.isDashboardApiLoading.value = false;
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future getCurrentAddress() async {
@@ -460,8 +465,16 @@ class _Dashboard extends State<Dashboard> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            textBlack20W7000Mon(
-                                                                "Welcome Back ${dashboardController.dashboardModel.data!.name}"),
+                                                            SizedBox(
+                                                              width: Get.width /
+                                                                  1.3,
+                                                              child: FittedBox(
+                                                                fit: BoxFit
+                                                                    .contain,
+                                                                child: textBlack20W7000Mon(
+                                                                    "Welcome Back ${dashboardController.dashboardModel.data!.name}"),
+                                                              ),
+                                                            ),
                                                             sizedBoxHeight(
                                                                 15.h),
                                                             dashboardController
