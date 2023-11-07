@@ -1,6 +1,9 @@
+import 'package:farm_flow_sales/Common/limit_range.dart';
+import 'package:farm_flow_sales/Model/farmerModel/farmer_address_model.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,27 +12,8 @@ import 'package:get/get.dart';
 import 'package:getwidget/components/accordion/gf_accordion.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-enum ColorLabel {
-  blue('Kevin Mounsey'),
-  pink('Aron Smith'),
-  green('Kevin Mounsey'),
-  yellow('Aron Smith'),
-  grey('Kevin Mounsey');
-
-  const ColorLabel(this.label);
-  final String label;
-}
-
-enum addLabel {
-  blue(' 64 martens place, dunwich, queensland, 4183, Ireland'),
-  pink(' 64 martens place, dunwich, queensland, 4183, Ireland'),
-  green(' 64 martens place, dunwich, queensland, 4183, Ireland'),
-  yellow(' 64 martens place, dunwich, queensland, 4183, Ireland'),
-  grey(' 64 martens place, dunwich, queensland, 4183, Ireland');
-
-  const addLabel(this.label);
-  final String label;
-}
+import '../../Common/custom_dropdown.dart';
+import '../../view_models/farmer/FarmerListAPI.dart';
 
 class selectFarmer extends StatefulWidget {
   const selectFarmer({super.key});
@@ -39,33 +23,38 @@ class selectFarmer extends StatefulWidget {
 }
 
 class _selectFarmerState extends State<selectFarmer> {
-  ColorLabel? selectedColor;
-  addLabel? selectedAdd;
-  final TextEditingController colorController = TextEditingController();
-  final TextEditingController addController = TextEditingController();
+  String? selectedFarmer;
+  String? selectedAddress;
+
+  List<String> farmerList = [];
+  List<String> farmerAddressList = [];
+  List<int> farmerId = [];
+
+  List<int> farmerAddressId = [];
+
+  CartController cartController = Get.put(CartController());
+  TextEditingController customNoteText = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await FarmerListAPI().farmerApi().then((value) {
+        cartController.farmerListModel = value;
+        for (var a in value.data!) {
+          farmerList.add(a.userName!);
+          farmerId.add(a.id!);
+        }
+        setState(() {});
+      });
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuEntry<ColorLabel>> colorEntries =
-        <DropdownMenuEntry<ColorLabel>>[];
-    for (final ColorLabel color in ColorLabel.values) {
-      colorEntries.add(
-        DropdownMenuEntry<ColorLabel>(
-          value: color,
-          label: color.label,
-        ),
-      );
-    }
-
-    final List<DropdownMenuEntry<addLabel>> addEntries =
-        <DropdownMenuEntry<addLabel>>[];
-    for (final addLabel add in addLabel.values) {
-      addEntries.add(
-        DropdownMenuEntry<addLabel>(
-          value: add,
-          label: add.label,
-        ),
-      );
-    }
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -93,106 +82,90 @@ class _selectFarmerState extends State<selectFarmer> {
                 ],
               ),
               sizedBoxHeight(10.h),
-              DropdownMenu<ColorLabel>(
-                hintText: "Select Farmer",
-                trailingIcon: const Icon(
-                  Icons.arrow_drop_down,
-                  color: Colors.green,
-                ),
-                inputDecorationTheme: InputDecorationTheme(
-                  filled: true,
-                  fillColor: const Color(0xFFF1F1F1),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: const Color(0xFF707070).withOpacity(0),
-                        width: 1),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: const Color(0xFF707070).withOpacity(0),
-                        width: 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: const Color(0xFF707070).withOpacity(0),
-                        width: 1),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.red, width: 1),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.red, width: 1),
-                  ),
-                ),
-                enabled: true,
-                width: 350.w,
-                enableSearch: false,
-                controller: colorController,
-                dropdownMenuEntries: colorEntries,
-                onSelected: (ColorLabel? color) {
-                  setState(() {
-                    selectedColor = color;
-                  });
-                },
+              DropdownBtn(
+                hint: "Select Farmer",
+                // items: ,
+                items: farmerList
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          onTap: () async {
+                            setState(() {
+                              selectedFarmer = e;
+                            });
+                            farmerAddressList.clear();
+                            farmerAddressId.clear();
+                            selectedAddress = null;
+                            await FarmerListAPI()
+                                .getFarmerAddressApi(
+                                    farmerId[farmerList.indexOf(e)])
+                                .then((value) {
+                              FarmerAddressModel farmerAddressModel =
+                                  FarmerAddressModel.fromJson(value.data);
+                              cartController.farmerAddressModel =
+                                  farmerAddressModel;
+                              for (var a in farmerAddressModel.data!) {
+                                farmerAddressId.add(a.id!);
+                                farmerAddressList.add(
+                                    "${a.farmAddress!}, ${a.street}, ${a.city}, ${a.province}, ${a.country}, ${a.postalCode}");
+                              }
+                              setState(() {});
+                            });
+                          },
+                          child: Text(
+                            e,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF4D4D4D),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ))
+                    .toList(),
+                value: selectedFarmer,
               ),
               sizedBoxHeight(30),
-              DropdownMenu<addLabel>(
-                hintText: "Select Address",
-                trailingIcon: const Icon(
-                  Icons.arrow_drop_down,
-                  color: Colors.green,
-                ),
-                inputDecorationTheme: InputDecorationTheme(
-                  filled: true,
-                  fillColor: const Color(0xFFF1F1F1),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: const Color(0xFF707070).withOpacity(0),
-                        width: 1),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: const Color(0xFF707070).withOpacity(0),
-                        width: 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(
-                        color: const Color(0xFF707070).withOpacity(0),
-                        width: 1),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.red, width: 1),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.red, width: 1),
-                  ),
-                ),
-                enabled: true,
-                width: 350.w,
-                enableSearch: false,
-                controller: addController,
-                dropdownMenuEntries: addEntries,
-                onSelected: (addLabel? add) {
-                  setState(() {
-                    selectedAdd = add;
-                  });
-                },
+              DropdownBtn(
+                hint: "Select Address",
+                // items: ,
+                items: farmerAddressList
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          onTap: () {
+                            setState(() {
+                              selectedAddress = e;
+                            });
+                          },
+                          child: Text(
+                            e,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF4D4D4D),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ))
+                    .toList(),
+                value: selectedAddress,
               ),
               sizedBoxHeight(30),
               CustomButton(
                   text: "Deliver To This Address",
                   onTap: () {
-                    Get.toNamed("/selectfrequency");
+                    if (selectedFarmer == null) {
+                      utils.showToast("Please Select Farmer");
+                    } else if (selectedAddress == null) {
+                      utils.showToast("Please Select Farmer Address");
+                    } else {
+                      cartController.farmerName = selectedFarmer!;
+
+                      cartController.selectedFarmerId =
+                          farmerId[farmerList.indexOf(selectedFarmer!)];
+                      cartController.selectedFarmAddressId = farmerAddressId[
+                          farmerAddressList.indexOf(selectedAddress!)];
+                      Get.toNamed("/selectfrequency");
+                    }
                   }),
               const SizedBox(
                 height: 20,
@@ -224,6 +197,7 @@ class _selectFarmerState extends State<selectFarmer> {
   }
 
   buildcustomnote() {
+    customNoteText.text = cartController.deliveryInstructionText;
     return showDialog(
       context: context,
       builder: (context) => Column(
@@ -255,42 +229,46 @@ class _selectFarmerState extends State<selectFarmer> {
                       fontWeight: FontWeight.w500),
                 ),
                 sizedBoxHeight(9.h),
-                TextFormField(
-                  style: TextStyle(fontSize: 16.sp),
-                  cursorColor: const Color(0xFF3B3F43),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: InputDecoration(
-                    errorStyle: TextStyle(fontSize: 16.sp),
-                    contentPadding: EdgeInsets.all(17.h),
-                    filled: true,
-                    fillColor: AppColors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF707070), width: 1),
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: customNoteText,
+                    style: TextStyle(fontSize: 16.sp),
+                    cursorColor: const Color(0xFF3B3F43),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(fontSize: 16.sp),
+                      contentPadding: EdgeInsets.all(17.h),
+                      filled: true,
+                      fillColor: AppColors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF707070), width: 1),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF707070), width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF707070), width: 1),
+                      ),
+                      hintStyle: TextStyle(
+                          color: const Color(0xFF4D4D4D), fontSize: 16.sp),
+                      hintText: "",
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF707070), width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF707070), width: 1),
-                    ),
-                    hintStyle: TextStyle(
-                        color: const Color(0xFF4D4D4D), fontSize: 16.sp),
-                    hintText: "",
+                    minLines: 3,
+                    maxLines: null,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Message is required';
+                      }
+                      return null;
+                    },
                   ),
-                  minLines: 3,
-                  maxLines: null,
-                  // validator: (value) {
-                  //   if (value!.isEmpty) {
-                  //     return 'Message is required';
-                  //   }
-                  //   return null;
-                  // },
                 ),
                 sizedBoxHeight(41.h),
                 Row(
@@ -298,8 +276,12 @@ class _selectFarmerState extends State<selectFarmer> {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.pop(context);
-                        // Get.toNamed("/cancelorder");
+                        final isValid = _formKey.currentState?.validate();
+                        if (isValid!) {
+                          cartController.deliveryInstructionText =
+                              customNoteText.text;
+                          Navigator.pop(context);
+                        }
                       },
                       child: Container(
                         height: 48.h,
@@ -529,46 +511,3 @@ Widget newslistCard(
     ],
   );
 }
-
-List newsData = [
-  {
-    "recipeimage": "assets/images/cow.png",
-    "title": 'Kevin Mounsey',
-    "street": "64 martens place",
-    "city": "mumbai",
-    "state": "punjab",
-    "phone": "(07) 3830 6616",
-    "zipcode": "4183",
-    "country": "ireland"
-  },
-  {
-    "recipeimage": "assets/images/tractor.png",
-    "title": 'Aron Smith',
-    "street": "85 martens place",
-    "city": "mumbai",
-    "state": "punjab",
-    "phone": "(07) 3830 6616",
-    "zipcode": "4156",
-    "country": "ireland"
-  },
-  {
-    "recipeimage": "assets/images/cow.png",
-    "title": 'Kevin Mounsey',
-    "street": "24 martens place",
-    "city": "mumbai",
-    "state": "punjab",
-    "phone": "(07) 3830 6616",
-    "zipcode": "6495",
-    "country": "ireland"
-  },
-  {
-    "recipeimage": "assets/images/tractor.png",
-    "title": 'Aron Smith',
-    "street": "84 martens place",
-    "city": "mumbai",
-    "state": "punjab",
-    "phone": "(07) 3830 6616",
-    "zipcode": "5144",
-    "country": "ireland"
-  },
-];

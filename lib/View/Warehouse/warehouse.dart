@@ -9,6 +9,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../controller/inventories_controller.dart';
+
 class Warehouse extends StatefulWidget {
   const Warehouse({super.key});
 
@@ -17,6 +19,8 @@ class Warehouse extends StatefulWidget {
 }
 
 class _WarehouseState extends State<Warehouse> {
+  InventoriesController inventoriesController =
+      Get.put(InventoriesController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,12 +39,12 @@ class _WarehouseState extends State<Warehouse> {
               future: WarehouseAPI().warehouseApi(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.data?.data == null ||
                     snapshot.data!.data!.isEmpty) {
-                  return Center(child: Text('No warehouse available'));
+                  return const Center(child: Text('No warehouse available'));
                 }
                 return ListView.separated(
                   separatorBuilder: (context, index) {
@@ -55,14 +59,17 @@ class _WarehouseState extends State<Warehouse> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Get.toNamed("/sideMenu", arguments: 1);
+                            inventoriesController.fromWarehouse = true;
+                            inventoriesController.wareHouseId =
+                                warehouseData.id!;
+                            Get.toNamed('/searchnmain');
                           },
                           child: SizedBox(
                             width: 358.w,
                             child: Card(
                               elevation: 2,
                               // shadowColor: Color(0XFF00000029),
-                              color: Color(0xffF1F1F1),
+                              color: const Color(0xffF1F1F1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -116,8 +123,8 @@ class _WarehouseState extends State<Warehouse> {
                                                         .location!.name,
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 14.sp,
-                                                        color:
-                                                            Color(0xff4D4D4D),
+                                                        color: const Color(
+                                                            0xff4D4D4D),
                                                         fontWeight:
                                                             FontWeight.w400)),
                                               )
@@ -146,5 +153,4 @@ class _WarehouseState extends State<Warehouse> {
       ),
     );
   }
-
 }

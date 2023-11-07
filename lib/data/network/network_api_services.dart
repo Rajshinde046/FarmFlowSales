@@ -131,14 +131,15 @@ class NetworkApiServices extends BaseApiServices {
           options: (token == null || token == "")
               ? Options(
                   headers: {
-                    "Authorization": "Basic $token",
+                    "authorization": basicAuth,
                   },
                 )
               : Options(headers: {
                   "Authorization": "Bearer $token",
                   //'access-token': token,
                 }));
-    } on Exception catch (_) {
+    } on Exception catch (e) {
+      print(e);
       return ResponseData<dynamic>(
           'Oops something Went Wrong', ResponseStatus.FAILED);
     }

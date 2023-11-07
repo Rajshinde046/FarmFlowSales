@@ -12,6 +12,6 @@ class DashboardController extends GetxController {
   RxString locationText = "Unknown".obs;
   RxBool isLocationFetching = false.obs;
   RxString weatherCondition = "".obs;
-  RxBool isDashboardApiLoading = false.obs;
+  RxBool isDashboardApiLoading = true.obs;
   DashboardModel dashboardModel = DashboardModel();
 }

@@ -53,47 +53,19 @@ class Data {
 
 class Cart {
   int? id;
-  int? salesmanXid;
   int? itemMasterLotXid;
   int? quantity;
-  int? active;
-  String? createdBy;
-  String? createdOn;
-  String? modifiedBy;
-  String? modifiedOn;
-  String? createdAt;
-  String? updatedAt;
   List<GetItems>? getItems;
 
-  Cart(
-      {this.id,
-      this.salesmanXid,
-      this.itemMasterLotXid,
-      this.quantity,
-      this.active,
-      this.createdBy,
-      this.createdOn,
-      this.modifiedBy,
-      this.modifiedOn,
-      this.createdAt,
-      this.updatedAt,
-      this.getItems});
+  Cart({this.id, this.itemMasterLotXid, this.quantity, this.getItems});
 
   Cart.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    salesmanXid = json['salesman_xid'];
     itemMasterLotXid = json['item_master_lot_xid'];
     quantity = json['quantity'];
-    active = json['active'];
-    createdBy = json['created_by'] ?? "";
-    createdOn = json['created_on'] ?? "";
-    modifiedBy = json['modified_by'] ?? "";
-    modifiedOn = json['modified_on'] ?? "";
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    if (json['get_items'] != null) {
+    if (json['getItems'] != null) {
       getItems = <GetItems>[];
-      json['get_items'].forEach((v) {
+      json['getItems'].forEach((v) {
         getItems!.add(GetItems.fromJson(v));
       });
     }
@@ -102,87 +74,51 @@ class Cart {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['salesman_xid'] = salesmanXid;
     data['item_master_lot_xid'] = itemMasterLotXid;
     data['quantity'] = quantity;
-    data['active'] = active;
-    data['created_by'] = createdBy;
-    data['created_on'] = createdOn;
-    data['modified_by'] = modifiedBy;
-    data['modified_on'] = modifiedOn;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
     if (getItems != null) {
-      data['get_items'] = getItems!.map((v) => v.toJson()).toList();
+      data['getItems'] = getItems!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class GetItems {
-  int? id;
-  int? itemMasterXid;
+  int? itemMasterLotXid;
   int? itemLotXid;
+  String? lotName;
   int? price;
   int? quantity;
-  int? active;
-  String? createdBy;
-  String? createdOn;
-  String? modifiedBy;
-  String? modifiedOn;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
+  int? prevQuantity;
   Item? item;
 
   GetItems(
-      {this.id,
-      this.itemMasterXid,
+      {this.itemMasterLotXid,
       this.itemLotXid,
+      this.lotName,
       this.price,
       this.quantity,
-      this.active,
-      this.createdBy,
-      this.createdOn,
-      this.modifiedBy,
-      this.modifiedOn,
-      this.createdAt,
-      this.updatedAt,
-      this.deletedAt,
+      this.prevQuantity,
       this.item});
 
   GetItems.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    itemMasterXid = json['item_master_xid'];
+    itemMasterLotXid = json['item_master_lot_xid'];
     itemLotXid = json['item_lot_xid'];
+    lotName = json['lot_name'];
     price = json['price'];
     quantity = json['quantity'];
-    active = json['active'];
-    createdBy = json['created_by'] ?? "";
-    createdOn = json['created_on'] ?? "";
-    modifiedBy = json['modified_by'] ?? "";
-    modifiedOn = json['modified_on'] ?? "";
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'] ?? "";
+    prevQuantity = json['prev_quantity'];
     item = json['item'] != null ? Item.fromJson(json['item']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['item_master_xid'] = itemMasterXid;
+    data['item_master_lot_xid'] = itemMasterLotXid;
     data['item_lot_xid'] = itemLotXid;
+    data['lot_name'] = lotName;
     data['price'] = price;
     data['quantity'] = quantity;
-    data['active'] = active;
-    data['created_by'] = createdBy;
-    data['created_on'] = createdOn;
-    data['modified_by'] = modifiedBy;
-    data['modified_on'] = modifiedOn;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    data['deleted_at'] = deletedAt;
+    data['prev_quantity'] = prevQuantity;
     if (item != null) {
       data['item'] = item!.toJson();
     }
