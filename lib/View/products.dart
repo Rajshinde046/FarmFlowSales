@@ -1,212 +1,190 @@
+import 'dart:developer';
+
+import 'package:farm_flow_sales/Common/limit_range.dart';
+import 'package:farm_flow_sales/Model/cartModel/cartModel.dart';
+import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart';
+import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart';
+import 'package:farm_flow_sales/Model/livestockModel/inventory_livestock_model.dart';
+import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/controller/inventories_controller.dart';
+import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
+import 'package:farm_flow_sales/view_models/inventoriesApi/inventoriesApi.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+
+import 'search_item.dart';
 
 class Productspage extends StatefulWidget {
-  const Productspage({super.key});
+  const Productspage({Key? key}) : super(key: key);
 
   @override
-  State<Productspage> createState() => _ProductspageState();
+  State<Productspage> createState() => ProductspageState();
 }
 
-class _ProductspageState extends State<Productspage> {
+class ProductspageState extends State<Productspage> {
+  InventoriesController inventoriesController =
+      Get.put(InventoriesController());
+  TextEditingController searchController = TextEditingController();
+  List<int> filterList = [];
+  InventoryLivestockModel inventoryLivestockModel = InventoryLivestockModel();
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      inventoriesController.isApiCalling.value = true;
+      await InventoriesApi().getInventoriesData("", [], 0).then((value1) async {
+        inventoriesController.inventoriesDataModel.value =
+            InventoriesDataModel.fromJson(value1.data);
+        await InventoriesApi().getFeedLivestockApi().then((value) {
+          inventoryLivestockModel =
+              InventoryLivestockModel.fromJson(value.data);
+          inventoriesController.isApiCalling.value = false;
+        });
+      });
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      // appBar: AppBar(
-      //   backgroundColor: AppColors.white,
-      //   title: customAppBar(text: "Products"),
-      //   elevation: 0,
-      //   automaticallyImplyLeading: false,
-      //   titleSpacing: 0,
-      // ),
       body: SafeArea(
-          child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Products",
-                  style: TextStyle(
-                    color: const Color(0XFF141414),
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-              child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                children: [
-                  sizedBoxHeight(31.h),
-                  redcard(),
-                  sizedBoxHeight(19.h),
-                  yellowcard(),
-                  sizedBoxHeight(19.h),
-                  SizedBox(
-                    width: 358.w,
-                    child: Card(
-                      elevation: 2,
-                      color: const Color(0xffF1F1F1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Pre-Calver Gain Gold",
-                                  style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: const Color(0xff141414),
-                                      fontFamily: "Poppins"),
-                                ),
-                                sizedBoxHeight(3.h),
-                                Text(
-                                  "€ 500",
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff141414),
-                                      fontFamily: "Poppins"),
-                                ),
-                                sizedBoxHeight(3.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 50,
-                                      child: Text("5 Lbs",
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 14.sp,
-                                            color: const Color(0xff4D4D4D),
-                                          )),
-                                    ),
-                                    sizedBoxWidth(64.w),
-                                    Text(
-                                      "Quantity : 800",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 16.sp,
-                                          color: const Color(0xff0E5F02),
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            sizedBoxWidth(30.w),
-                            Image.asset(
-                              "assets/images/orderwhite.png",
-                              width: 49.w,
-                              height: 87.h,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  sizedBoxHeight(19.h),
-                  redcard(),
-                  sizedBoxHeight(19.h),
-                  yellowcard(),
-                  sizedBoxHeight(19.h),
-                ],
-              ),
-            ),
-          ))
-        ],
-      )),
-    );
-  }
-
-  Widget redcard() {
-    return SizedBox(
-      width: 358.w,
-      child: Card(
-        elevation: 2,
-        color: const Color(0xffF1F1F1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
         child: Padding(
-          padding:
-              EdgeInsets.only(left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Pre-Calver Gain Gold",
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff141414),
-                        fontFamily: "Poppins"),
-                  ),
-                  sizedBoxHeight(3.h),
-                  Text(
-                    "€ 500",
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff141414),
-                        fontFamily: "Poppins"),
-                  ),
-                  sizedBoxHeight(3.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 50,
-                        child: Text("5 Lbs",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14.sp,
-                              color: const Color(0xff4D4D4D),
-                            )),
+              Padding(
+                padding: EdgeInsets.only(top: 20.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: CupertinoSearchTextField(
+                      controller: searchController,
+                      onChanged: (value) async {
+                        if (value.length >= 3) {
+                          inventoriesController.isApiCalling.value = true;
+                          await InventoriesApi()
+                              .getInventoriesData(
+                                  searchController.text, filterList, 0)
+                              .then((value) {
+                            inventoriesController.inventoriesDataModel.value =
+                                InventoriesDataModel.fromJson(value.data);
+                            inventoriesController.isApiCalling.value = false;
+                          });
+                        } else if (value.isEmpty) {
+                          inventoriesController.isApiCalling.value = true;
+                          await InventoriesApi()
+                              .getInventoriesData(
+                                  searchController.text, filterList, 0)
+                              .then((value) {
+                            inventoriesController.inventoriesDataModel.value =
+                                InventoriesDataModel.fromJson(value.data);
+                            inventoriesController.isApiCalling.value = false;
+                          });
+                        }
+                      },
+                      prefixInsets:
+                          EdgeInsetsDirectional.fromSTEB(15.w, 0, 0, 0),
+                      prefixIcon: const Icon(
+                        CupertinoIcons.search,
+                        color: Colors.black,
                       ),
-                      sizedBoxWidth(64.w),
-                      Text(
-                        "Quantity : 1000",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16.sp,
-                            color: const Color(0xff0E5F02),
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                ],
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.buttoncolour)),
+                    )),
+                    filter()
+                  ],
+                ),
               ),
-              sizedBoxWidth(30.w),
-              Image.asset(
-                "assets/images/orderred.png",
-                width: 49.w,
-                height: 87.h,
-              )
+              sizedBoxHeight(20.h),
+              Obx(() => inventoriesController.isApiCalling.value
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Gap(Get.height / 2.7),
+                        const Align(
+                            alignment: Alignment.bottomCenter,
+                            child: CircularProgressIndicator()),
+                      ],
+                    )
+                  : inventoriesController
+                          .inventoriesDataModel.value.data!.isEmpty
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LottieBuilder.asset(
+                                "assets/lotties/no_data_found.json"),
+                            textGrey4D4D4D_22("No Product Found !"),
+                          ],
+                        )
+                      : Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Products",
+                                style: TextStyle(
+                                  color: const Color(0XFF141414),
+                                  fontSize: 22.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              sizedBoxHeight(18.h),
+                              Expanded(
+                                child: ListView.builder(
+                                    itemCount: inventoriesController
+                                        .inventoriesDataModel
+                                        .value
+                                        .data!
+                                        .length,
+                                    itemBuilder: (ctx, index) {
+                                      return ProductContainer(
+                                        txt: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .title!,
+                                        png: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .smallImageUrl!,
+                                        data: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index],
+                                        maxValue: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .lots![0]
+                                            .quantity!,
+                                      );
+                                    }),
+                              )
+                            ],
+                          ),
+                        ))
             ],
           ),
         ),
@@ -214,77 +192,377 @@ class _ProductspageState extends State<Productspage> {
     );
   }
 
-  Widget yellowcard() {
-    return SizedBox(
-      width: 358.w,
-      child: Card(
-        elevation: 2,
-        color: const Color(0xffF1F1F1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+  Widget filter() {
+    return PopupMenuButton(
+      icon: SvgPicture.asset('assets/images/filter.svg'),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+              child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height:
+                    (Get.height * inventoryLivestockModel.data!.length) / 17,
+                width: 200,
+                child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: inventoryLivestockModel.data!.length,
+                    itemBuilder: (ctx, index) {
+                      return index == 0
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                  itemFilter(index),
+                                  GestureDetector(
+                                      onTap: () {
+                                        Get.back();
+                                      },
+                                      child: const Icon(Icons.cancel_outlined))
+                                ])
+                          : itemFilter(index);
+                    }),
+              ),
+              GestureDetector(
+                  onTap: () async {
+                    inventoriesController.isApiCalling.value = true;
+                    Get.back();
+                    await InventoriesApi()
+                        .getInventoriesData(
+                            searchController.text, filterList, 0)
+                        .then((value) async {
+                      inventoriesController.inventoriesDataModel.value =
+                          InventoriesDataModel.fromJson(value.data);
+
+                      inventoriesController.isApiCalling.value = false;
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 30.w, vertical: 25.h),
+                    decoration: BoxDecoration(
+                        color: AppColors.buttoncolour,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Center(child: textWhite16('Apply Now')),
+                  ))
+            ],
+          ))
+        ];
+      },
+    );
+  }
+
+  Widget itemFilter(int index) {
+    RxBool filter = false.obs;
+    if (filterList.contains(inventoryLivestockModel.data![index].id!)) {
+      filter.value = true;
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Obx(
+          () => Checkbox(
+            activeColor: AppColors.buttoncolour,
+            value: filter.value,
+            onChanged: (value) {
+              filter.value = !filter.value;
+              if (value!) {
+                filterList.add(inventoryLivestockModel.data![index].id!);
+              } else {
+                filterList.remove(inventoryLivestockModel.data![index].id!);
+              }
+              log(filterList.toString());
+            },
+          ),
         ),
+        Image.network(
+            '${ApiUrls.baseImageUrl}/${inventoryLivestockModel.data![index].smallImageUrl}',
+            width: 40.w,
+            height: 24.h),
+        sizedBoxWidth(5.w),
+        textblack14M(inventoryLivestockModel.data![index].name!),
+      ],
+    );
+  }
+}
+
+class ProductContainer extends StatefulWidget {
+  final int minValue;
+  final int maxValue;
+  final String txt;
+  final String png;
+  final InventoriesData data;
+  const ProductContainer({
+    super.key,
+    this.minValue = 0,
+    this.maxValue = 9,
+    required this.txt,
+    required this.png,
+    required this.data,
+  });
+
+  @override
+  State<ProductContainer> createState() => _ProductContainerState();
+}
+
+class _ProductContainerState extends State<ProductContainer> {
+  RxInt counter = 0.obs;
+  RxInt bagsQuantity = 0.obs;
+  RxString bagText = ''.obs;
+  RxInt price = 0.obs;
+  RxInt selectedBag = 0.obs;
+  InventoryDetailsModel inventoryDetailsModel = InventoryDetailsModel();
+  InventoriesController inventoriesController =
+      Get.put(InventoriesController());
+
+  @override
+  void initState() {
+    price.value = widget.data.lots![0].price!;
+    bagText.value = widget.data.lots![0].lotName!;
+    bagsQuantity.value = widget.data.lots![0].quantity!;
+    counter.value = widget.data.lots![0].prevQuantity!;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        InventoriesApi()
+            .getInventoryDetailData(widget.data.id.toString())
+            .then((value) async {
+          await Get.to(() => SearchItem(
+                data: InventoryDetailsModel.fromJson(value.data),
+              ));
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 15),
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: Color(0xffF1F1F1),
+            boxShadow: [
+              BoxShadow(
+                  color: Color(0x0000001F),
+                  offset: Offset(0.0, 0.75),
+                  spreadRadius: 2)
+            ]),
         child: Padding(
-          padding:
-              EdgeInsets.only(left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
+          padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Agrofeed Ruminant Feed",
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff141414),
-                        fontFamily: "Poppins"),
-                  ),
-                  sizedBoxHeight(3.h),
-                  Text(
-                    "€ 500",
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff141414),
-                        fontFamily: "Poppins"),
-                  ),
-                  sizedBoxHeight(3.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 50,
-                        child: Text("5 Lbs",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14.sp,
-                              color: const Color(0xff4D4D4D),
-                            )),
+              Image.network("${ApiUrls.baseImageUrl}/${widget.png}",
+                  height: 97.h),
+              sizedBoxWidth(26.w),
+              Flexible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    textBlack18W5000(widget.txt),
+                    sizedBoxHeight(10.h),
+                    GestureDetector(
+                      onTap: () {
+                        InventoriesApi()
+                            .getInventoryDetailData(widget.data.id.toString())
+                            .then((value) {
+                          inventoryDetailsModel =
+                              InventoryDetailsModel.fromJson(value.data);
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return bottomSheetContainer();
+                            },
+                          );
+                        });
+                      },
+                      child: Container(
+                        width: 110.w,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 3.h, horizontal: 8.w),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: AppColors.buttoncolour, width: 1.h),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(
+                              () => textGreen14(' ${bagText.value}'),
+                            ),
+                            RotatedBox(
+                                quarterTurns: 3,
+                                child: Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 14.h,
+                                  color: AppColors.buttoncolour,
+                                ))
+                          ],
+                        ),
                       ),
-                      sizedBoxWidth(64.w),
-                      Text(
-                        "Quantity : 1200",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16.sp,
-                            color: const Color(0xff0E5F02),
-                            fontWeight: FontWeight.w500),
+                    ),
+                    sizedBoxHeight(10.h),
+                    Obx(
+                      () => Flexible(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            textBlack18W700Center('€ ${price.value}'),
+                            Text(
+                              "Quantity : ${bagsQuantity.value}",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 16.sp,
+                                  color: const Color(0xff0E5F02),
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-              sizedBoxWidth(30.w),
-              Image.asset(
-                "assets/images/orderyellow.png",
-                // "assets/images/mail.png",
-                width: 49.w,
-                height: 87.h,
-              )
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget bottomSheetContainer() {
+    return Container(
+      // height: 600.h,
+      padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 20.h),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: CircleAvatar(
+              radius: 15.h,
+              backgroundColor: const Color(0XFFF1F1F1),
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 5.w),
+                  child: Icon(Icons.arrow_back_ios,
+                      size: 18.h, color: const Color(0XFF141414)),
+                ),
+              ),
+            ),
+          ),
+          sizedBoxHeight(5.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color(0xff707070)),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.network("${ApiUrls.baseImageUrl}/${widget.png}",
+                        height: 97.h),
+                    sizedBoxWidth(26.w),
+                    Flexible(
+                      child: textBlack18W5000(widget.txt),
+                    ),
+                  ],
+                ),
+                sizedBoxHeight(10.h),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: widget.data.lots!.length,
+                    itemBuilder: (ctx, index) {
+                      return Container(
+                          margin: EdgeInsets.only(bottom: 10.h),
+                          child: insideDetContainer(
+                            index,
+                            widget.data.lots![index].quantity!,
+                            widget.data.lots![index].price!,
+                            widget.data.lots![index].lotName!,
+                            inventoryDetailsModel
+                                .data!.lots![index].prevQuantity!,
+                            inventoryDetailsModel
+                                .data!.lots![index].itemMasterLotXid!,
+                          ));
+                    }),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget insideDetContainer(
+    int index,
+    int quantity,
+    int amount,
+    String bag,
+    int prevQuantity,
+    id,
+  ) {
+    RxInt counterValue = prevQuantity.obs;
+    return GestureDetector(
+      onTap: () {
+        bagText.value = bag;
+        price.value = amount;
+        bagsQuantity.value = quantity;
+        selectedBag.value = index;
+        counter.value = counterValue.value;
+        Get.back();
+      },
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(9.w, 9.h, 16.w, 20.h),
+        decoration: BoxDecoration(
+            border: Border.all(color: AppColors.buttoncolour, width: 1.h),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            textGreen14(bag),
+            sizedBoxHeight(10.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                textBlack18W700Center('€ $amount'),
+                Text(
+                  "Quantity : $quantity",
+                  style: GoogleFonts.poppins(
+                      fontSize: 16.sp,
+                      color: const Color(0xff0E5F02),
+                      fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );

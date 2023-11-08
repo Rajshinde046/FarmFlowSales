@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:farm_flow_sales/Common/limit_range.dart';
@@ -10,7 +9,6 @@ import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
-import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
 import 'package:farm_flow_sales/view_models/inventoriesApi/inventoriesApi.dart';
@@ -18,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -49,9 +48,9 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
               inventoriesController.fromWarehouse
                   ? inventoriesController.wareHouseId
                   : 0)
-          .then((value) async {
-        inventoriesController.inventoriesDataModel =
-            InventoriesDataModel.fromJson(value.data);
+          .then((value1) async {
+        inventoriesController.inventoriesDataModel.value =
+            InventoriesDataModel.fromJson(value1.data);
         await InventoriesApi().getFeedLivestockApi().then((value) {
           inventoryLivestockModel =
               InventoryLivestockModel.fromJson(value.data);
@@ -104,7 +103,7 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -146,7 +145,7 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                                       ? inventoriesController.wareHouseId
                                       : 0)
                               .then((value) {
-                            inventoriesController.inventoriesDataModel =
+                            inventoriesController.inventoriesDataModel.value =
                                 InventoriesDataModel.fromJson(value.data);
                             inventoriesController.isApiCalling.value = false;
                           });
@@ -160,7 +159,7 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                                       ? inventoriesController.wareHouseId
                                       : 0)
                               .then((value) {
-                            inventoriesController.inventoriesDataModel =
+                            inventoriesController.inventoriesDataModel.value =
                                 InventoriesDataModel.fromJson(value.data);
                             inventoriesController.isApiCalling.value = false;
                           });
@@ -182,10 +181,17 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
               ),
               sizedBoxHeight(20.h),
               Obx(() => inventoriesController.isApiCalling.value
-                  ? const Center(
-                      child: CircularProgressIndicator(),
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Gap(Get.height / 2.7),
+                        const Align(
+                            alignment: Alignment.bottomCenter,
+                            child: CircularProgressIndicator()),
+                      ],
                     )
-                  : inventoriesController.inventoriesDataModel.data!.isEmpty
+                  : inventoriesController
+                          .inventoriesDataModel.value.data!.isEmpty
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -210,21 +216,29 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                               Expanded(
                                 child: ListView.builder(
                                     itemCount: inventoriesController
-                                        .inventoriesDataModel.data!.length,
+                                        .inventoriesDataModel
+                                        .value
+                                        .data!
+                                        .length,
                                     itemBuilder: (ctx, index) {
                                       return ProductContainer(
                                         txt: inventoriesController
                                             .inventoriesDataModel
+                                            .value
                                             .data![index]
                                             .title!,
                                         png: inventoriesController
                                             .inventoriesDataModel
+                                            .value
                                             .data![index]
                                             .smallImageUrl!,
                                         data: inventoriesController
-                                            .inventoriesDataModel.data![index],
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index],
                                         maxValue: inventoriesController
                                             .inventoriesDataModel
+                                            .value
                                             .data![index]
                                             .lots![0]
                                             .quantity!,
@@ -285,7 +299,7 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                                 ? inventoriesController.wareHouseId
                                 : 0)
                         .then((value) async {
-                      inventoriesController.inventoriesDataModel =
+                      inventoriesController.inventoriesDataModel.value =
                           InventoriesDataModel.fromJson(value.data);
 
                       inventoriesController.isApiCalling.value = false;
@@ -385,9 +399,28 @@ class _ProductContainerState extends State<ProductContainer> {
     return GestureDetector(
       onTap: () {
         if (!inventoriesController.fromWarehouse) {
-          Get.to(() => SearchItem(
-                data: widget.data,
-              ));
+          InventoriesApi()
+              .getInventoryDetailData(widget.data.id.toString())
+              .then((value) async {
+            var res = await Get.to(() => SearchItem(
+                  data: InventoryDetailsModel.fromJson(value.data),
+                ));
+            if (res == true) {
+              inventoriesController.isApiCalling.value = true;
+              await InventoriesApi()
+                  .getInventoriesData(
+                      "",
+                      [],
+                      inventoriesController.fromWarehouse
+                          ? inventoriesController.wareHouseId
+                          : 0)
+                  .then((value1) async {
+                inventoriesController.inventoriesDataModel.value =
+                    InventoriesDataModel.fromJson(value1.data);
+                inventoriesController.isApiCalling.value = false;
+              });
+            }
+          });
         }
       },
       child: Container(
@@ -469,7 +502,13 @@ class _ProductContainerState extends State<ProductContainer> {
                           children: [
                             textBlack18W700Center('€ ${price.value}'),
                             inventoriesController.fromWarehouse
-                                ? textblack14M('${bagsQuantity.value} Quantity')
+                                ? Text(
+                                    "Quantity : ${bagsQuantity.value}",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16.sp,
+                                        color: const Color(0xff0E5F02),
+                                        fontWeight: FontWeight.w500),
+                                  )
                                 : Row(
                                     children: [
                                       GestureDetector(
@@ -667,7 +706,13 @@ class _ProductContainerState extends State<ProductContainer> {
               children: [
                 textBlack18W700Center('€ $amount'),
                 inventoriesController.fromWarehouse
-                    ? textblack14M('${quantity} Quantity')
+                    ? Text(
+                        "Quantity : $quantity",
+                        style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            color: const Color(0xff0E5F02),
+                            fontWeight: FontWeight.w500),
+                      )
                     : Obx(
                         () => Row(
                           children: [

@@ -21,4 +21,9 @@ class ApiUrls {
   static const farmerAddressApi = "${base}farmer/address";
   static const frequencyApi = "${base}frequency/list";
   static const placeOrderApi = "${base}order/place";
+  static const connectFarmerApi = "${base}connect/farmer";
+  static const ongoingOrderApi = "${base}ongoing/orders";
+  static const completedOrderApi = "${base}completed/orders";
+  static const salesApi = "${base}sales";
+  static const faqApi = "${base}faq/";
 }

@@ -6,7 +6,8 @@ class InventoriesController extends GetxController {
   RxBool isApiCalling = true.obs;
   RxInt cartSubTotalValue = 0.obs;
   int wareHouseId = 0;
-  InventoriesDataModel inventoriesDataModel = InventoriesDataModel();
+  Rx<InventoriesDataModel> inventoriesDataModel = InventoriesDataModel().obs;
+
   ViewCartModel viewCartModel = ViewCartModel();
   RxBool isLoading = true.obs;
   bool fromWarehouse = false;
