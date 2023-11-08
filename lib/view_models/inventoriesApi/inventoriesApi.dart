@@ -6,11 +6,12 @@ import '../../data/network/network_api_services.dart';
 
 class InventoriesApi {
   Future<ResponseData<dynamic>> getInventoriesData(
-      String searchText, List<int> filterList) async {
+      String searchText, List<int> filterList, int wareHouseId) async {
     final response = await NetworkApiServices().postApi(
       {
         "search_query": searchText,
         "category_ids": filterList,
+        "warehouseId": wareHouseId,
       },
       ApiUrls.inventoriesApi,
     );

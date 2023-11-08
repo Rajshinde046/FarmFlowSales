@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,15 +44,21 @@ class _CartmainState extends State<Cartmain> {
   InventoriesController inventoriesController =
       Get.put(InventoriesController());
 
+  CartController cartController = Get.put(CartController());
+
   @override
   void initState() {
-    inventoriesController.isLoading.value = true;
-    CartApi().getViewCartData().then((value) {
-      inventoriesController.viewCartModel = ViewCartModel.fromJson(value.data);
-      inventoriesController.cartSubTotalValue.value =
-          inventoriesController.viewCartModel.data!.subTotal!;
-      inventoriesController.isLoading.value = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      inventoriesController.isLoading.value = true;
+      CartApi().getViewCartData().then((value) {
+        inventoriesController.viewCartModel =
+            ViewCartModel.fromJson(value.data);
+        inventoriesController.cartSubTotalValue.value =
+            inventoriesController.viewCartModel.data!.subTotal!;
+        inventoriesController.isLoading.value = false;
+      });
     });
+
     super.initState();
   }
 
@@ -150,6 +157,12 @@ class _CartmainState extends State<Cartmain> {
                           // CustomButton(text: "Proceed To Buy (3 Items)", onTap: () {}),
                           InkWell(
                             onTap: () {
+                              List<int> listV = [];
+                              for (var a in inventoriesController
+                                  .viewCartModel.data!.cart!) {
+                                listV.add(a.id!);
+                              }
+                              cartController.cartDataId = listV;
                               Get.toNamed("/selectfarmer");
                             },
                             child: Container(
@@ -175,22 +188,14 @@ class _CartmainState extends State<Cartmain> {
                                 itemCount: inventoriesController
                                     .viewCartModel.data!.cart!.length,
                                 itemBuilder: (ctx, index) {
-                                  return inventoriesController
-                                              .viewCartModel
-                                              .data!
-                                              .cart![index]
-                                              .getItems![0]
-                                              .quantity! ==
-                                          0
-                                      ? const SizedBox()
-                                      : CartCardDetails(
-                                          index: index,
-                                          maxValue: inventoriesController
-                                              .viewCartModel
-                                              .data!
-                                              .cart![index]
-                                              .getItems![0]
-                                              .quantity!);
+                                  return CartCardDetails(
+                                      index: index,
+                                      maxValue: inventoriesController
+                                          .viewCartModel
+                                          .data!
+                                          .cart![index]
+                                          .getItems![0]
+                                          .quantity!);
                                 }),
                           ),
                           sizedBoxHeight(20.h),
@@ -271,7 +276,8 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                 ),
                 sizedBoxHeight(7.h),
                 Text(
-                  "1 bag",
+                  inventoriesController.viewCartModel.data!.cart![widget.index]
+                      .getItems![0].lotName!,
                   style: GoogleFonts.poppins(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.normal,

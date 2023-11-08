@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/view_models/connectFarmerApi/connect_farmer_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,14 +20,21 @@ class Connectfarmer extends StatefulWidget {
 
 class _ConnectfarmerState extends State<Connectfarmer> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  TextEditingController connectCodeController = TextEditingController();
+
+  @override
+  void dispose() {
+    connectCodeController.dispose();
+    super.dispose();
+  }
 
   buildconnectfarmer(context) {
     return showDialog(
         context: context,
         builder: (context) {
-          Future.delayed(const Duration(seconds: 3), () {
+          Future.delayed(const Duration(seconds: 2), () {
+            connectCodeController.text = "";
             Navigator.of(context).pop(true);
-            Get.toNamed("/farmer");
           });
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -143,6 +154,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                           ),
                           sizedBoxHeight(14.h),
                           TextFormField(
+                            controller: connectCodeController,
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
@@ -207,7 +219,21 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                               text: "Connect To Farmer",
                               onTap: () {
                                 if (_form.currentState!.validate()) {
-                                  buildconnectfarmer(context);
+                                  ConnectFarmerApi()
+                                      .connnectFarmerApi(
+                                          connectCodeController.text)
+                                      .then((value) {
+                                    if (value.data.toString().contains(
+                                        "Already Connected to this farmer")) {
+                                      utils.showToast(value.data["message"]);
+                                    } else if (value.data.toString().contains(
+                                        "The selected connect code is invalid")) {
+                                      utils.showToast(value.data["message"]
+                                          ["connect_code"][0]);
+                                    } else {
+                                      buildconnectfarmer(context);
+                                    }
+                                  });
                                 }
                               })
                         ],

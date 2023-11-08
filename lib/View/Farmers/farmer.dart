@@ -2,7 +2,6 @@ import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/View/Farmers/farmerdata.dart';
 import 'package:farm_flow_sales/models/farmerListModel.dart';
 import 'package:farm_flow_sales/view_models/farmer/FarmerListAPI.dart';
 import 'package:flutter/material.dart';
@@ -37,12 +36,12 @@ class _FarmerState extends State<Farmer> {
               future: FarmerListAPI().farmerApi(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.data?.data == null ||
                     snapshot.data!.data!.isEmpty) {
-                  return Center(child: Text('No farmer available'));
+                  return const Center(child: Text('No farmer available'));
                 }
                 return ListView.separated(
                   separatorBuilder: (context, index) {
@@ -67,7 +66,7 @@ class _FarmerState extends State<Farmer> {
                             child: Card(
                               elevation: 2,
                               // shadowColor: Color(0XFF00000029),
-                              color: Color(0xffF1F1F1),
+                              color: const Color(0xffF1F1F1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -81,7 +80,8 @@ class _FarmerState extends State<Farmer> {
                                           child: Imagepath == null
                                               ? CircleAvatar(
                                                   radius: 30.r,
-                                                  foregroundImage: NetworkImage(
+                                                  foregroundImage:
+                                                      const NetworkImage(
                                                     ("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"),
                                                   ),
                                                 )
@@ -131,8 +131,8 @@ class _FarmerState extends State<Farmer> {
                                                         farmerData.phoneNumber,
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 14.sp,
-                                                        color:
-                                                            Color(0xff4D4D4D),
+                                                        color: const Color(
+                                                            0xff4D4D4D),
                                                         fontWeight:
                                                             FontWeight.w400)),
                                               )
@@ -140,7 +140,7 @@ class _FarmerState extends State<Farmer> {
                                           ),
                                         ],
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       Padding(
                                         padding: EdgeInsets.only(
                                             right: 15.w,
@@ -173,4 +173,4 @@ class _FarmerState extends State<Farmer> {
       ),
     );
   }
-
+}

@@ -23,4 +23,34 @@ List salesMainData = [
     "number": "0873457549",
     "location": "Crumlin, Moneygall",
   },
+  {
+    "image": "assets/images/person.png",
+    "name": "Helen Coffey",
+    "number": "0873457549",
+    "location": "Crumlin, Moneygall",
+  },
+  {
+    "image": "assets/images/person.png",
+    "name": "Helen Coffey",
+    "number": "0873457549",
+    "location": "Crumlin, Moneygall",
+  },
+  {
+    "image": "assets/images/person.png",
+    "name": "Helen Coffey",
+    "number": "0873457549",
+    "location": "Crumlin, Moneygall",
+  },
+  {
+    "image": "assets/images/person.png",
+    "name": "Helen Coffey",
+    "number": "0873457549",
+    "location": "Crumlin, Moneygall",
+  },
+  {
+    "image": "assets/images/person.png",
+    "name": "Helen Coffey",
+    "number": "0873457549",
+    "location": "Crumlin, Moneygall",
+  },
 ];

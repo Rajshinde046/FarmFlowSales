@@ -11,6 +11,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Common/limit_range.dart';
+import '../../Model/cartModel/cartModel.dart';
+import '../../controller/cart_controller.dart';
+import '../../controller/inventories_controller.dart';
+import '../../view_models/cartApi/cartApi.dart';
+
 class Discount extends StatelessWidget {
   Discount({super.key});
 
@@ -21,10 +27,17 @@ class Discount extends StatelessWidget {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   final RxBool discountBool = true.obs;
   final RxDouble finalAmount = 0.0.obs;
-  final double mRP = 500.0;
+  double mRP = 0.0;
+
+  CartController cartController = Get.put(CartController());
+
+  InventoriesController inventoriesController =
+      Get.put(InventoriesController());
 
   @override
   Widget build(BuildContext context) {
+    discountValueConttroller.text = "0";
+    mRP = inventoriesController.cartSubTotalValue.value.toDouble();
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -47,6 +60,11 @@ class Discount extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           discountBool.value = true;
+                          if (double.parse(discountValueConttroller.text) >
+                              100) {
+                            discountValueConttroller.text = "100";
+                            discountController.changeValue(100);
+                          }
                         },
                         child: Container(
                           width: 179.w,
@@ -102,26 +120,34 @@ class Discount extends StatelessWidget {
                 sizedBoxHeight(21.h),
                 textGrey4D4D4D_16W500('Enter Value'),
                 sizedBoxHeight(7.h),
-                CustomTextFormField(
-                    onChanged: (p0) {
-                      // CommonGetXController
-                      double doubleValue = double.tryParse(p0) ?? 0;
-                      discountController.changeValue(doubleValue);
-                    },
-                    hintText: "Enter value",
-                    texttype: TextInputType.phone,
-                    textEditingController: discountValueConttroller,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(10)
-                    ],
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Please enter a value";
-                      }
-                      return null;
-                    },
-                    validatorText: "Enter your value"),
+                Obx(
+                  () => CustomTextFormField(
+                      onChanged: (p0) {
+                        // CommonGetXController
+                        double doubleValue = double.tryParse(p0) ?? 0;
+                        discountController.changeValue(doubleValue);
+                      },
+                      hintText: "Enter value",
+                      texttype: TextInputType.phone,
+                      textEditingController: discountValueConttroller,
+                      inputFormatters: discountBool.value
+                          ? [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(3),
+                              LimitRange(0, 100)
+                            ]
+                          : [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LimitRange(0, mRP.toInt())
+                            ],
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter a value";
+                        }
+                        return null;
+                      },
+                      validatorText: "Enter your value"),
+                ),
                 sizedBoxHeight(23.h),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,7 +170,6 @@ class Discount extends StatelessWidget {
                 const Divider(thickness: 1, color: AppColors.buttoncolour),
                 sizedBoxHeight(3.h),
                 Row(
-
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     text18w5004D4D4D("Total Amount"),
@@ -152,7 +177,7 @@ class Discount extends StatelessWidget {
                       builder: (controller) {
                         return Obx(
                           () => text18w5004D4D4D(discountBool.value
-                              ? "€ ${mRP - ((mRP * discountController.discountValue!) / 100)}"
+                              ? "€ ${(mRP - ((mRP * discountController.discountValue!) / 100)).toStringAsFixed(2)}"
                               : "€ ${mRP - discountController.discountValue!}"),
                         );
                       },
@@ -164,11 +189,27 @@ class Discount extends StatelessWidget {
                     text: "Proceed",
                     onTap: () {
                       if (_form.currentState!.validate()) {
-                        Get.toNamed("/placeordermain", arguments: {
-                          "discountpercent":discountController.discountValue,
-                          "currency": discountValueConttroller.text,
-                          "bool": discountBool.value,
+                        cartController.discountTypeId =
+                            discountBool.value ? 0 : 1;
+                        cartController.discountValue = discountBool.value
+                            ? discountController.discountValue!
+                            : double.parse(discountValueConttroller.text);
+                        cartController.netValue = discountBool.value
+                            ? double.parse((mRP -
+                                    ((mRP * discountController.discountValue!) /
+                                        100))
+                                .toStringAsFixed(2))
+                            : (mRP - discountController.discountValue!);
+
+                        CartApi().getViewCartData().then((value) {
+                          inventoriesController.viewCartModel =
+                              ViewCartModel.fromJson(value.data);
+                        }).then((value) {
+                          Get.toNamed("/placeordermain", arguments: {
+                            "bool": discountBool.value,
+                          });
                         });
+
                         // investAmountPopUp();
                       }
                     })

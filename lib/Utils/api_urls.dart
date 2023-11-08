@@ -4,8 +4,7 @@ class ApiUrls {
   static const dashboardApi = "${base}sales/dashboard";
   static const weatherApi = "http://api.weatherapi.com/v1/current.json";
 
-
-  static const loginApi = "https://farmflow.betadelivery.com/api/login";
+  // static const loginApi = "https://farmflow.betadelivery.com/api/login";
   static const warehouseApi =
       "https://farmflow.betadelivery.com/api/warehouse/list";
   static const farmerlistApi =
@@ -19,5 +18,12 @@ class ApiUrls {
   static const manageCartApi = "${base}manage/cart";
   static const viewCartApi = "${base}view/cart";
   static const inventoryLivestockApi = "${base}inventory/livestocks";
-
+  static const farmerAddressApi = "${base}farmer/address";
+  static const frequencyApi = "${base}frequency/list";
+  static const placeOrderApi = "${base}order/place";
+  static const connectFarmerApi = "${base}connect/farmer";
+  static const ongoingOrderApi = "${base}ongoing/orders";
+  static const completedOrderApi = "${base}completed/orders";
+  static const salesApi = "${base}sales";
+  static const faqApi = "${base}faq/";
 }

@@ -62,6 +62,8 @@ dependencies:
   location: ^5.0.3
   shimmer: ^3.0.0
   carousel_slider: ^4.2.1
+  dropdown_button2: ^2.1.2
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:farm_flow_sales/Common/limit_range.dart';
@@ -10,7 +9,6 @@ import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
-import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
 import 'package:farm_flow_sales/view_models/inventoriesApi/inventoriesApi.dart';
@@ -18,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -40,11 +39,18 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
   InventoryLivestockModel inventoryLivestockModel = InventoryLivestockModel();
   @override
   void initState() {
-    inventoriesController.isApiCalling.value = true;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await InventoriesApi().getInventoriesData("", []).then((value) async {
-        inventoriesController.inventoriesDataModel =
-            InventoriesDataModel.fromJson(value.data);
+      inventoriesController.isApiCalling.value = true;
+      await InventoriesApi()
+          .getInventoriesData(
+              "",
+              [],
+              inventoriesController.fromWarehouse
+                  ? inventoriesController.wareHouseId
+                  : 0)
+          .then((value1) async {
+        inventoriesController.inventoriesDataModel.value =
+            InventoriesDataModel.fromJson(value1.data);
         await InventoriesApi().getFeedLivestockApi().then((value) {
           inventoryLivestockModel =
               InventoryLivestockModel.fromJson(value.data);
@@ -67,35 +73,37 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
     return Scaffold(
       backgroundColor: AppColors.white,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: SizedBox(
-        width: 100.w,
-        height: 50.h,
-        child: FloatingActionButton(
-            shape:
-                BeveledRectangleBorder(borderRadius: BorderRadius.circular(3)),
-            backgroundColor: AppColors.buttoncolour,
-            onPressed: () {
-              CartApi().getViewCartData().then((value) {
-                inventoriesController.viewCartModel =
-                    ViewCartModel.fromJson(value.data);
+      floatingActionButton: inventoriesController.fromWarehouse
+          ? const SizedBox()
+          : SizedBox(
+              width: 100.w,
+              height: 50.h,
+              child: FloatingActionButton(
+                  shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.circular(3)),
+                  backgroundColor: AppColors.buttoncolour,
+                  onPressed: () {
+                    CartApi().getViewCartData().then((value) {
+                      inventoriesController.viewCartModel =
+                          ViewCartModel.fromJson(value.data);
 
-                Get.toNamed('/sideMenu', arguments: 3);
-              });
-            },
-            tooltip: 'View Cart',
-            child: Text(
-              "View Cart",
-              style: GoogleFonts.poppins(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.white),
-            )),
-      ),
+                      Get.toNamed('/sideMenu', arguments: 3);
+                    });
+                  },
+                  tooltip: 'View Cart',
+                  child: Text(
+                    "View Cart",
+                    style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.white),
+                  )),
+            ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -131,9 +139,13 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                           inventoriesController.isApiCalling.value = true;
                           await InventoriesApi()
                               .getInventoriesData(
-                                  searchController.text, filterList)
+                                  searchController.text,
+                                  filterList,
+                                  inventoriesController.fromWarehouse
+                                      ? inventoriesController.wareHouseId
+                                      : 0)
                               .then((value) {
-                            inventoriesController.inventoriesDataModel =
+                            inventoriesController.inventoriesDataModel.value =
                                 InventoriesDataModel.fromJson(value.data);
                             inventoriesController.isApiCalling.value = false;
                           });
@@ -141,9 +153,13 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                           inventoriesController.isApiCalling.value = true;
                           await InventoriesApi()
                               .getInventoriesData(
-                                  searchController.text, filterList)
+                                  searchController.text,
+                                  filterList,
+                                  inventoriesController.fromWarehouse
+                                      ? inventoriesController.wareHouseId
+                                      : 0)
                               .then((value) {
-                            inventoriesController.inventoriesDataModel =
+                            inventoriesController.inventoriesDataModel.value =
                                 InventoriesDataModel.fromJson(value.data);
                             inventoriesController.isApiCalling.value = false;
                           });
@@ -165,10 +181,17 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
               ),
               sizedBoxHeight(20.h),
               Obx(() => inventoriesController.isApiCalling.value
-                  ? const Center(
-                      child: CircularProgressIndicator(),
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Gap(Get.height / 2.7),
+                        const Align(
+                            alignment: Alignment.bottomCenter,
+                            child: CircularProgressIndicator()),
+                      ],
                     )
-                  : inventoriesController.inventoriesDataModel.data!.isEmpty
+                  : inventoriesController
+                          .inventoriesDataModel.value.data!.isEmpty
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -193,21 +216,29 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                               Expanded(
                                 child: ListView.builder(
                                     itemCount: inventoriesController
-                                        .inventoriesDataModel.data!.length,
+                                        .inventoriesDataModel
+                                        .value
+                                        .data!
+                                        .length,
                                     itemBuilder: (ctx, index) {
                                       return ProductContainer(
                                         txt: inventoriesController
                                             .inventoriesDataModel
+                                            .value
                                             .data![index]
                                             .title!,
                                         png: inventoriesController
                                             .inventoriesDataModel
+                                            .value
                                             .data![index]
                                             .smallImageUrl!,
                                         data: inventoriesController
-                                            .inventoriesDataModel.data![index],
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index],
                                         maxValue: inventoriesController
                                             .inventoriesDataModel
+                                            .value
                                             .data![index]
                                             .lots![0]
                                             .quantity!,
@@ -259,14 +290,19 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
               GestureDetector(
                   onTap: () async {
                     inventoriesController.isApiCalling.value = true;
+                    Get.back();
                     await InventoriesApi()
-                        .getInventoriesData(searchController.text, filterList)
+                        .getInventoriesData(
+                            searchController.text,
+                            filterList,
+                            inventoriesController.fromWarehouse
+                                ? inventoriesController.wareHouseId
+                                : 0)
                         .then((value) async {
-                      inventoriesController.inventoriesDataModel =
+                      inventoriesController.inventoriesDataModel.value =
                           InventoriesDataModel.fromJson(value.data);
 
                       inventoriesController.isApiCalling.value = false;
-                      Get.back();
                     });
                   },
                   child: Container(
@@ -346,6 +382,8 @@ class _ProductContainerState extends State<ProductContainer> {
   RxInt price = 0.obs;
   RxInt selectedBag = 0.obs;
   InventoryDetailsModel inventoryDetailsModel = InventoryDetailsModel();
+  InventoriesController inventoriesController =
+      Get.put(InventoriesController());
 
   @override
   void initState() {
@@ -360,9 +398,30 @@ class _ProductContainerState extends State<ProductContainer> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => SearchItem(
-              data: widget.data,
-            ));
+        if (!inventoriesController.fromWarehouse) {
+          InventoriesApi()
+              .getInventoryDetailData(widget.data.id.toString())
+              .then((value) async {
+            var res = await Get.to(() => SearchItem(
+                  data: InventoryDetailsModel.fromJson(value.data),
+                ));
+            if (res == true) {
+              inventoriesController.isApiCalling.value = true;
+              await InventoriesApi()
+                  .getInventoriesData(
+                      "",
+                      [],
+                      inventoriesController.fromWarehouse
+                          ? inventoriesController.wareHouseId
+                          : 0)
+                  .then((value1) async {
+                inventoriesController.inventoriesDataModel.value =
+                    InventoriesDataModel.fromJson(value1.data);
+                inventoriesController.isApiCalling.value = false;
+              });
+            }
+          });
+        }
       },
       child: Container(
         width: double.infinity,
@@ -442,68 +501,81 @@ class _ProductContainerState extends State<ProductContainer> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             textBlack18W700Center('€ ${price.value}'),
-                            Row(
-                              children: [
-                                GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (counter.value > widget.minValue) {
-                                          counter.value--;
-                                          CartApi()
-                                              .manageCartData(
-                                                  widget
-                                                      .data
-                                                      .lots![selectedBag.value]
-                                                      .itemMasterXid!,
-                                                  counter.value)
-                                              .then((value) {
-                                            Map<String, dynamic> responseData =
-                                                Map<String, dynamic>.from(
-                                                    value.data);
-                                            utils.showToast(
-                                                responseData["message"]);
-                                          });
-                                        }
-                                      });
-                                    },
-                                    child: SvgPicture.asset(
-                                      "assets/images/minusbutton.svg",
-                                      width: 20.w,
-                                    )),
-                                sizedBoxWidth(12.w),
-                                textblack14M('${counter.value}'),
-                                sizedBoxWidth(8.w),
-                                GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (counter.value <
-                                            bagsQuantity.value) {
-                                          counter.value++;
+                            inventoriesController.fromWarehouse
+                                ? Text(
+                                    "Quantity : ${bagsQuantity.value}",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16.sp,
+                                        color: const Color(0xff0E5F02),
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                : Row(
+                                    children: [
+                                      GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              if (counter.value >
+                                                  widget.minValue) {
+                                                counter.value--;
+                                                CartApi()
+                                                    .manageCartData(
+                                                        widget
+                                                            .data
+                                                            .lots![selectedBag
+                                                                .value]
+                                                            .itemMasterXid!,
+                                                        counter.value)
+                                                    .then((value) {
+                                                  Map<String, dynamic>
+                                                      responseData =
+                                                      Map<String, dynamic>.from(
+                                                          value.data);
+                                                  utils.showToast(
+                                                      responseData["message"]);
+                                                });
+                                              }
+                                            });
+                                          },
+                                          child: SvgPicture.asset(
+                                            "assets/images/minusbutton.svg",
+                                            width: 20.w,
+                                          )),
+                                      sizedBoxWidth(12.w),
+                                      textblack14M('${counter.value}'),
+                                      sizedBoxWidth(8.w),
+                                      GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              if (counter.value <
+                                                  bagsQuantity.value) {
+                                                counter.value++;
 
-                                          CartApi()
-                                              .manageCartData(
-                                                  widget
-                                                      .data
-                                                      .lots![selectedBag.value]
-                                                      .itemMasterXid!,
-                                                  counter.value)
-                                              .then((value) {
-                                            Map<String, dynamic> responseData =
-                                                Map<String, dynamic>.from(
-                                                    value.data);
+                                                CartApi()
+                                                    .manageCartData(
+                                                        widget
+                                                            .data
+                                                            .lots![selectedBag
+                                                                .value]
+                                                            .itemMasterXid!,
+                                                        counter.value)
+                                                    .then((value) {
+                                                  Map<String, dynamic>
+                                                      responseData =
+                                                      Map<String, dynamic>.from(
+                                                          value.data);
 
-                                            utils.showToast(
-                                                responseData["message"]);
-                                          });
-                                        }
-                                      });
-                                    },
-                                    child: SvgPicture.asset(
-                                      "assets/images/plusreorder.svg",
-                                      width: 20.w,
-                                    )),
-                              ],
-                            )
+                                                  utils.showToast(
+                                                      responseData["message"]);
+                                                });
+                                              }
+                                            });
+                                          },
+                                          child: SvgPicture.asset(
+                                            "assets/images/plusreorder.svg",
+                                            width: 20.w,
+                                          )),
+                                    ],
+                                  )
                           ],
                         ),
                       ),
@@ -633,57 +705,68 @@ class _ProductContainerState extends State<ProductContainer> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 textBlack18W700Center('€ $amount'),
-                Obx(
-                  () => Row(
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (counterValue.value > widget.minValue) {
-                                if (selectedBag.value == index) {
-                                  counter--;
-                                }
-                                counterValue.value--;
-                                CartApi()
-                                    .manageCartData(id, counterValue.value)
-                                    .then((value) {
-                                  Map<String, dynamic> responseData =
-                                      Map<String, dynamic>.from(value.data);
+                inventoriesController.fromWarehouse
+                    ? Text(
+                        "Quantity : $quantity",
+                        style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            color: const Color(0xff0E5F02),
+                            fontWeight: FontWeight.w500),
+                      )
+                    : Obx(
+                        () => Row(
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (counterValue.value > widget.minValue) {
+                                      if (selectedBag.value == index) {
+                                        counter--;
+                                      }
+                                      counterValue.value--;
+                                      CartApi()
+                                          .manageCartData(
+                                              id, counterValue.value)
+                                          .then((value) {
+                                        Map<String, dynamic> responseData =
+                                            Map<String, dynamic>.from(
+                                                value.data);
 
-                                  utils.showToast(responseData["message"]);
-                                });
-                              }
-                            });
-                          },
-                          child: SvgPicture.asset(
-                              "assets/images/minusbutton.svg")),
-                      sizedBoxWidth(12.w),
-                      textblack14M('${counterValue.value}'),
-                      sizedBoxWidth(8.w),
-                      GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (counterValue.value < quantity) {
-                                if (selectedBag.value == index) {
-                                  counter++;
-                                }
-                                counterValue.value++;
-                              }
-                              CartApi()
-                                  .manageCartData(id, counterValue.value)
-                                  .then((value) {
-                                Map<String, dynamic> responseData =
-                                    Map<String, dynamic>.from(value.data);
+                                        utils
+                                            .showToast(responseData["message"]);
+                                      });
+                                    }
+                                  });
+                                },
+                                child: SvgPicture.asset(
+                                    "assets/images/minusbutton.svg")),
+                            sizedBoxWidth(12.w),
+                            textblack14M('${counterValue.value}'),
+                            sizedBoxWidth(8.w),
+                            GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (counterValue.value < quantity) {
+                                      if (selectedBag.value == index) {
+                                        counter++;
+                                      }
+                                      counterValue.value++;
+                                    }
+                                    CartApi()
+                                        .manageCartData(id, counterValue.value)
+                                        .then((value) {
+                                      Map<String, dynamic> responseData =
+                                          Map<String, dynamic>.from(value.data);
 
-                                utils.showToast(responseData["message"]);
-                              });
-                            });
-                          },
-                          child: SvgPicture.asset(
-                              "assets/images/plusreorder.svg")),
-                    ],
-                  ),
-                )
+                                      utils.showToast(responseData["message"]);
+                                    });
+                                  });
+                                },
+                                child: SvgPicture.asset(
+                                    "assets/images/plusreorder.svg")),
+                          ],
+                        ),
+                      )
               ],
             ),
           ],
