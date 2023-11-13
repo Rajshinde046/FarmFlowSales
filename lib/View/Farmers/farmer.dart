@@ -59,7 +59,8 @@ class _FarmerState extends State<Farmer> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Get.toNamed("/farmerdetails");
+                            Get.toNamed("/farmerdetails",
+                                arguments: {"id": farmerData.id.toString()});
                           },
                           child: SizedBox(
                             width: 358.w,

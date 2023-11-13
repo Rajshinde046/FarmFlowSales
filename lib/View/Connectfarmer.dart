@@ -1,13 +1,15 @@
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
-import 'package:farm_flow_sales/Common/limit_range.dart';
+import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/view_models/farmer/ConnectFarmerAPI.dart';
 import 'package:farm_flow_sales/view_models/connectFarmerApi/connect_farmer_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 
 class Connectfarmer extends StatefulWidget {
   const Connectfarmer({super.key});
@@ -18,12 +20,25 @@ class Connectfarmer extends StatefulWidget {
 
 class _ConnectfarmerState extends State<Connectfarmer> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  TextEditingController connectCodeController = TextEditingController();
+  TextEditingController connectCode = TextEditingController();
 
-  @override
-  void dispose() {
-    connectCodeController.dispose();
-    super.dispose();
+  _codecheck() async {
+    final isValid = _form.currentState?.validate();
+    if (isValid!) {
+      Map<String, String> updata = {
+        "connect_code": connectCode.text,
+      };
+      final resp = await ConnectFarmerAPI(updata).connectFarmerApi();
+      if (resp.status == ResponseStatus.SUCCESS) {
+        buildconnectfarmer(context);
+      } else if (resp.status == ResponseStatus.PRIVATE) {
+        String? message = resp.message;
+        utils.showToast("$message");
+      } else {
+        utils.showToast(resp.data);
+        utils.showToast("Error");
+      }
+    }
   }
 
   buildconnectfarmer(context) {
@@ -31,7 +46,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
         context: context,
         builder: (context) {
           Future.delayed(const Duration(seconds: 2), () {
-            connectCodeController.text = "";
+            //   connectCodeController.text = "";
             Navigator.of(context).pop(true);
           });
           return Column(
@@ -73,8 +88,6 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                         height: 87.h,
                       ),
                     ),
-
-                    // sizedBoxHeight(28.h)
                   ],
                 ),
               ),
@@ -152,7 +165,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                           ),
                           sizedBoxHeight(14.h),
                           TextFormField(
-                            controller: connectCodeController,
+                            controller: connectCode,
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
@@ -216,23 +229,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                           customButtonCurve(
                               text: "Connect To Farmer",
                               onTap: () {
-                                if (_form.currentState!.validate()) {
-                                  ConnectFarmerApi()
-                                      .connnectFarmerApi(
-                                          connectCodeController.text)
-                                      .then((value) {
-                                    if (value.data.toString().contains(
-                                        "Already Connected to this farmer")) {
-                                      utils.showToast(value.data["message"]);
-                                    } else if (value.data.toString().contains(
-                                        "The selected connect code is invalid")) {
-                                      utils.showToast(value.data["message"]
-                                          ["connect_code"][0]);
-                                    } else {
-                                      buildconnectfarmer(context);
-                                    }
-                                  });
-                                }
+                                _codecheck();
                               })
                         ],
                       ),
