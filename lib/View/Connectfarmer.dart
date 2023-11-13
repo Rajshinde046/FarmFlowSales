@@ -1,13 +1,14 @@
-import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/view_models/farmer/ConnectFarmerAPI.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 
 class Connectfarmer extends StatefulWidget {
   const Connectfarmer({super.key});
@@ -18,6 +19,26 @@ class Connectfarmer extends StatefulWidget {
 
 class _ConnectfarmerState extends State<Connectfarmer> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  TextEditingController connectCode = TextEditingController();
+
+  _codecheck() async {
+    final isValid = _form.currentState?.validate();
+    if (isValid!) {
+      Map<String, String> updata = {
+        "connect_code": connectCode.text,
+      };
+      final resp = await ConnectFarmerAPI(updata).connectFarmerApi();
+      if (resp.status == ResponseStatus.SUCCESS) {
+        buildconnectfarmer(context);
+      } else if (resp.status == ResponseStatus.PRIVATE) {
+        String? message = resp.message;
+        utils.showToast("$message");
+      } else {
+        utils.showToast(resp.data);
+        utils.showToast("Error");
+      }
+    }
+  }
 
   buildconnectfarmer(context) {
     return showDialog(
@@ -64,8 +85,6 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                         height: 87.h,
                       ),
                     ),
-
-                    // sizedBoxHeight(28.h)
                   ],
                 ),
               ),
@@ -143,6 +162,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                           ),
                           sizedBoxHeight(14.h),
                           TextFormField(
+                            controller: connectCode,
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
@@ -203,9 +223,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                           customButtonCurve(
                               text: "Connect To Farmer",
                               onTap: () {
-                                if (_form.currentState!.validate()) {
-                                  buildconnectfarmer(context);
-                                }
+                                _codecheck();
                               })
                         ],
                       ),

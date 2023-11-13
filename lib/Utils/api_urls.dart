@@ -9,4 +9,9 @@ class ApiUrls {
       "https://farmflow.betadelivery.com/api/warehouse/list";
   static const farmerlistApi =
       "https://farmflow.betadelivery.com/api/farmers/list";
+  static const farmerdetailApi =
+      "https://farmflow.betadelivery.com/api/farmer/";
+  static const connectCodeApi =
+      "https://farmflow.betadelivery.com/api/connect/farmer";
+  static const feedbackApi = "${base}feedback";
 }

@@ -4,11 +4,9 @@ import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 class FeedBack extends StatefulWidget {
@@ -136,7 +134,10 @@ class _FeedBackState extends State<FeedBack> {
                             // feedbackform
                             Get.toNamed(
                               "/feedbackform",
-                              arguments: feedbackData[focusedValue]["text"],
+                              arguments: {
+                                "text": feedbackData[focusedValue]["text"],
+                                "index": focusedValue + 1,
+                              },
                             );
                           }))
                 ],

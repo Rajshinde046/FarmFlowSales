@@ -1,12 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/Utils/utils.dart';
+import 'package:farm_flow_sales/view_models/feedbackAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart' hide MultipartFile, FormData;
 
 class Feedbackform extends StatefulWidget {
   const Feedbackform({super.key});
@@ -22,13 +23,22 @@ class _FeedbackformState extends State<Feedbackform> {
   // bool _isChecked4 = false;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   String? feedBackData;
+  int? selectedIndex;
   final messagecontroller = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    feedBackData = Get.arguments;
+    Map<String, dynamic> data = Get.arguments;
+    feedBackData = data["text"];
+    selectedIndex = data["index"];
+  }
+
+  @override
+  void dispose() {
+    messagecontroller.dispose();
+    super.dispose();
   }
 
   @override
@@ -167,9 +177,18 @@ class _FeedbackformState extends State<Feedbackform> {
                     text: "Send Now",
                     onTap: () {
                       if (_form.currentState!.validate()) {
-                        print("error");
-                        Get.toNamed(
-                            "/sideMenu"); // SystemChannels.textInput.invokeMethod('TextInput.hide');
+                        Utils.loader();
+                        var data = FormData.fromMap({
+                          "experience_id": selectedIndex,
+                          "comment": messagecontroller.text,
+                        });
+                        FeedbackAPI().feedbackApi(data).then((value) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          messagecontroller.clear();
+                          Get.back();
+                          Get.back();
+                          Get.back();
+                        });
                       }
                     }),
               ],
