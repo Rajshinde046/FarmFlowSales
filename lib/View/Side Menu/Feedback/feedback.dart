@@ -132,7 +132,10 @@ class _FeedBackState extends State<FeedBack> {
                             // feedbackform
                             Get.toNamed(
                               "/feedbackform",
-                              arguments: feedbackData[focusedValue]["text"],
+                              arguments: {
+                                "text": feedbackData[focusedValue]["text"],
+                                "index": focusedValue + 1,
+                              },
                             );
                           }))
                 ],
