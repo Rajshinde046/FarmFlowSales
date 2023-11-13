@@ -116,7 +116,8 @@ class NetworkApiServices extends BaseApiServices {
   }
 
   @override
-  Future<ResponseData> postApi(data, String url) async {
+  Future<ResponseData> postApi(data, String url,
+      {bool optionalpar = false}) async {
     if (kDebugMode) {
       print("data >>> $data");
       print("api url is >>> $url");
@@ -128,16 +129,22 @@ class NetworkApiServices extends BaseApiServices {
     try {
       response = await dio.post(url,
           data: data,
-          options: (token == null || token == "")
+          options: optionalpar
               ? Options(
                   headers: {
                     "authorization": basicAuth,
                   },
                 )
-              : Options(headers: {
-                  "Authorization": "Bearer $token",
-                  //'access-token': token,
-                }));
+              : (token == null || token == "")
+                  ? Options(
+                      headers: {
+                        "authorization": basicAuth,
+                      },
+                    )
+                  : Options(headers: {
+                      "Authorization": "Bearer $token",
+                      //'access-token': token,
+                    }));
     } on Exception catch (e) {
       print(e);
       return ResponseData<dynamic>(

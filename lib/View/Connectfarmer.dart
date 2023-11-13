@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';

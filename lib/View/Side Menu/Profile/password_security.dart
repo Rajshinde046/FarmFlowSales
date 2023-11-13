@@ -1,11 +1,15 @@
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/controller/profile_controller.dart';
+import 'package:farm_flow_sales/view_models/SecurityApi/security_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'TouchId.dart';
 
@@ -20,11 +24,32 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
   final GlobalKey<FormState> _pin = GlobalKey<FormState>();
 
   String gender = "security-first";
-  bool onclickofpin = false;
-  bool onclickoftouchid = false;
 
   TextEditingController pincontroller = TextEditingController();
   TextEditingController confirmpincontroller = TextEditingController();
+  ProfileController profileController = Get.find();
+
+  @override
+  void initState() {
+    getLoginData();
+    super.initState();
+  }
+
+  Future<void> getLoginData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('fingerprint') != null) {
+      if (prefs.getBool('fingerprint')!) {
+        profileController.onclickoftouchid = true;
+        setState(() {});
+      }
+    }
+    if (prefs.getBool('pin') != null) {
+      if (prefs.getBool('pin')!) {
+        profileController.onclickofpin = true;
+        setState(() {});
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +106,8 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
               ),
               sizedBoxHeight(20.h),
               widgetDigitPin(),
-              sizedBoxHeight(15.h),
-              widgetTouch()
+              // sizedBoxHeight(15.h),
+              // widgetTouch()
             ],
           ),
         ),
@@ -93,13 +118,15 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
   Widget widgetTouch() {
     return GestureDetector(
       onTap: () {
-        onclickoftouchid ? Get.to(() => const TouchId()) : null;
+        Get.to(() => const TouchId());
       },
       child: Container(
         height: 100.h,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: onclickoftouchid ? AppColors.buttoncolour : Colors.white,
+          color: profileController.onclickoftouchid
+              ? AppColors.buttoncolour
+              : Colors.white,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: AppColors.buttoncolour, width: 1),
         ),
@@ -107,17 +134,23 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
         padding: const EdgeInsets.all(5),
         child: ListTile(
           onTap: () {
-            onclickoftouchid ? Get.to(() => const TouchId()) : null;
+            profileController.onclickoftouchid
+                ? Get.to(() => const TouchId())
+                : null;
           },
           trailing: SvgPicture.asset(
-              onclickoftouchid
+              profileController.onclickoftouchid
                   ? "assets/images/touch-white.svg"
                   : "assets/images/touch-black.svg",
-              color: onclickoftouchid ? Colors.white : AppColors.buttoncolour),
+              color: profileController.onclickoftouchid
+                  ? Colors.white
+                  : AppColors.buttoncolour),
           title: Text(
             "Touch Id",
             style: TextStyle(
-                color: onclickoftouchid ? Colors.white : Colors.black,
+                color: profileController.onclickoftouchid
+                    ? Colors.white
+                    : Colors.black,
                 fontFamily: 'Poppins',
                 fontSize: 18),
           ),
@@ -125,15 +158,14 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
             scale: 1.5,
             child: Radio(
                 fillColor: MaterialStateColor.resolveWith((states) =>
-                    onclickoftouchid ? Colors.white : AppColors.buttoncolour),
+                    profileController.onclickoftouchid
+                        ? Colors.white
+                        : AppColors.buttoncolour),
                 activeColor: (Colors.white),
                 value: "Touch Id",
                 groupValue: gender,
                 onChanged: (value) {
                   setState(() {
-                    onclickoftouchid = true;
-                    onclickofpin = false;
-                    gender = value.toString();
                     Get.to(() => const TouchId());
                   });
                 }),
@@ -148,7 +180,9 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
       height: 100.h,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: onclickofpin ? AppColors.buttoncolour : Colors.white,
+        color: profileController.onclickofpin
+            ? AppColors.buttoncolour
+            : Colors.white,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: AppColors.buttoncolour, width: 1),
       ),
@@ -156,18 +190,20 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
       padding: const EdgeInsets.all(5),
       child: ListTile(
         trailing: SvgPicture.asset(
-          onclickofpin
+          profileController.onclickofpin
               ? "assets/images/four-dg-white.svg"
               : "assets/images/four-dg-black.svg",
-          color: onclickofpin ? Colors.white : AppColors.buttoncolour,
+          color: profileController.onclickofpin
+              ? Colors.white
+              : AppColors.buttoncolour,
         ),
         onTap: () {
-          onclickofpin ? build4digitpin() : null;
+          build4digitpin();
         },
         title: Text(
           "4 Digit PIN",
           style: TextStyle(
-            color: onclickofpin ? Colors.white : Colors.black,
+            color: profileController.onclickofpin ? Colors.white : Colors.black,
             fontSize: 18,
             fontFamily: 'Poppins',
           ),
@@ -176,16 +212,14 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
           scale: 1.5,
           child: Radio(
               fillColor: MaterialStateColor.resolveWith((states) =>
-                  onclickofpin ? Colors.white : AppColors.buttoncolour),
+                  profileController.onclickofpin
+                      ? Colors.white
+                      : AppColors.buttoncolour),
               activeColor: (Colors.white),
               value: "4 Digit PIN",
               groupValue: gender,
               onChanged: (value) {
                 setState(() {
-                  print(value);
-                  onclickoftouchid = false;
-                  onclickofpin = true;
-                  gender = value.toString();
                   build4digitpin();
                 });
               }),
@@ -346,49 +380,23 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
                       onTap: () {
                         final isValid = _pin.currentState?.validate();
                         if (isValid!) {
-                          Get.back();
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (context) {
-                          //     return AlertDialog(
-                          //       content: Column(
-                          //         mainAxisSize: MainAxisSize.min,
-                          //         crossAxisAlignment: CrossAxisAlignment.start,
-                          //         children: [
-                          //           sizedBoxHeight(15.h),
-                          //           textBlack18W7000('4 Digit Pin'),
-                          //           sizedBoxHeight(10.h),
-                          //           textGrey4D4D4D_14(
-                          //               'Use Your 4 Digit Pin to easily log in!'),
-                          //           sizedBoxHeight(20.h),
-                          //           Container(
-                          //             padding: EdgeInsets.symmetric(
-                          //                 horizontal: 20.w, vertical: 15.h),
-                          //             decoration: BoxDecoration(
-                          //               borderRadius: BorderRadius.circular(5),
-                          //               border: Border.all(
-                          //                   color: AppColors.buttoncolour),
-                          //             ),
-                          //             child: Center(
-                          //               child: Row(
-                          //                 mainAxisAlignment:
-                          //                     MainAxisAlignment.spaceBetween,
-                          //                 children: [
-                          //                   textBlack18('Enter PIN'),
-                          //                   const Icon(
-                          //                     Icons.arrow_circle_right_outlined,
-                          //                     color: AppColors.buttoncolour,
-                          //                   )
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //           ),
-                          //           sizedBoxHeight(60.h)
-                          //         ],
-                          //       ),
-                          //     );
-                          //   },
-                          // );
+                          SecurityApi()
+                              .changePinApi(
+                                  profileController
+                                      .profileInfoModel.value.data!.id!,
+                                  int.parse(pincontroller.text))
+                              .then((value) async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            pincontroller.clear();
+                            confirmpincontroller.clear();
+                            Get.back();
+                            profileController.onclickofpin = true;
+
+                            setState(() {});
+                            await prefs.setBool('pin', true);
+                            utils.showToast(value.data["message"]);
+                          });
                         } else {
                           Get.snackbar("Error", "Please Enter Required Fields",
                               margin: const EdgeInsets.all(8),

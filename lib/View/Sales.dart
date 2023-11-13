@@ -2,7 +2,6 @@ import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Model/salesModel/sales_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/View/SalesData.dart';
 import 'package:farm_flow_sales/view_models/salesApi/sales_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

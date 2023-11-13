@@ -1,16 +1,17 @@
+import 'package:farm_flow_sales/Model/orderModel/completed_order_model.dart';
 import 'package:farm_flow_sales/Model/orderModel/ongoing_order_model.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/View/Order/ongoiningorderdata.dart';
-import 'package:farm_flow_sales/View/Order/salesordermaindata.dart';
 import 'package:farm_flow_sales/view_models/orderApi/order_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../Utils/api_urls.dart';
+import '../../Utils/texts.dart';
 
 enum SingingCharacter {
   Today,
@@ -29,12 +30,19 @@ class OrderMain extends StatefulWidget {
 
 class _OrderMainState extends State<OrderMain> {
   OngoingOrderModel ongoingOrderModel = OngoingOrderModel();
+
+  CompletedOrderModel completedOrderModel = CompletedOrderModel();
   RxBool isOngoingLoading = true.obs;
+  RxBool isCompletedLoading = true.obs;
   @override
   void initState() {
     OrderApi().getOngoingOrderData().then((value) {
       ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
       isOngoingLoading.value = false;
+    });
+    OrderApi().getCompletedOrderData().then((value) {
+      completedOrderModel = CompletedOrderModel.fromJson(value.data);
+      isCompletedLoading.value = false;
     });
     super.initState();
   }
@@ -42,216 +50,280 @@ class _OrderMainState extends State<OrderMain> {
   SingingCharacter? _character = SingingCharacter.Today;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Orders",
-                    style: TextStyle(
-                      color: const Color(0XFF141414),
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+    return DefaultTabController(
+      length: 2,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
+              child: TabBar(
+                onTap: ((value) {
+                  if (value == 0) {
+                    isOngoingLoading.value = true;
+                    OrderApi().getOngoingOrderData().then((value) {
+                      ongoingOrderModel =
+                          OngoingOrderModel.fromJson(value.data);
+                      isOngoingLoading.value = false;
+                    });
+                  } else {
+                    isCompletedLoading.value = true;
+                    OrderApi().getCompletedOrderData().then((value) {
+                      completedOrderModel =
+                          CompletedOrderModel.fromJson(value.data);
+                      isCompletedLoading.value = false;
+                    });
+                  }
+                }),
+                labelStyle: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.normal, fontSize: 16.sp),
+                indicatorSize: TabBarIndicatorSize.label,
+                indicatorColor: Colors.white,
+                tabs: const [
+                  Tab(
+                    text: "Ongoing",
+                  ),
+                  Tab(
+                    text: "Completed",
                   ),
                 ],
               ),
             ),
-            sizedBoxHeight(13.h),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 9, 16, 20),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Ongoing Orders",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w500, fontSize: 18.sp),
+            elevation: 0,
+            backgroundColor: AppColors.buttoncolour,
+          ),
+          backgroundColor: AppColors.white,
+          body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
+                    child: Text(
+                      "Ongoing Orders",
+                      style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.w500, fontSize: 18.sp),
+                    ),
+                  ),
+                  sizedBoxHeight(13.h),
+                  Obx(
+                    () => isOngoingLoading.value
+                        ? Container(
+                            margin: EdgeInsets.only(top: Get.height / 3.5),
+                            child: const Center(
+                                child: CircularProgressIndicator()))
+                        : SizedBox(
+                            height: Get.height / 1.4,
+                            width: Get.width,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(23, 5, 23, 0),
+                              child: ongoingOrderModel.data!.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        LottieBuilder.asset(
+                                            "assets/lotties/no_data_found.json"),
+                                        textGrey4D4D4D_22(
+                                            "No Ongoing Orders Found !"),
+                                      ],
+                                    )
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: ongoingOrderModel.data!.length,
+                                      itemBuilder: (_, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Get.toNamed("/orderdetails",
+                                                arguments: {
+                                                  "id": ongoingOrderModel
+                                                      .data![index]
+                                                      .orderHeaderId!,
+                                                });
+                                          },
+                                          child: SalesOrderMainTile(
+                                            ongoingOrderModel.data![index]
+                                                .getFarmer!.profilePhoto!,
+                                            ongoingOrderModel.data![index]
+                                                .getFarmer!.userName!,
+                                            ongoingOrderModel.data![index]
+                                                .getFarmer!.phoneNumber!,
+                                            ongoingOrderModel
+                                                .data![index].address!,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                            ),
                           ),
-                        ],
-                      ),
-                      sizedBoxHeight(10),
-                      Obx(
-                        () => isOngoingLoading.value
-                            ? const CircularProgressIndicator()
-                            : Container(
-                                height: 370.h,
-                                width: 360.w,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF1F1F1),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(23, 5, 23, 0),
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: const BouncingScrollPhysics(),
-                                    itemCount: ongoingOrderModel.data!.length,
-                                    itemBuilder: (_, index) {
-                                      return InkWell(
-                                        onTap: () {
-                                          Get.toNamed("/orderdetails");
-                                        },
-                                        child: SalesOrderMainTile(
-                                          ongoingOrderModel.data![index]
-                                              .getFarmer!.profilePhoto!,
-                                          ongoingOrderModel.data![index]
-                                              .getFarmer!.userName!,
-                                          ongoingOrderModel.data![index]
-                                              .getFarmer!.phoneNumber!,
-                                          ongoingOrderModel
-                                              .data![index].address!,
-                                        ),
-                                      );
-                                    },
-                                  ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Completed Orders",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500, fontSize: 18.sp),
+                        ),
+                        const Spacer(),
+                        PopupMenuButton(
+                          offset: const Offset(0, 50),
+                          color: const Color(0xFFFFFFFF),
+                          tooltip: '',
+                          icon: const Icon(
+                            Icons.filter_alt_outlined,
+                            color: Colors.black,
+                          ),
+                          onSelected: (value) {
+                            setState(() {
+                              _character = value;
+                            });
+                            Get.back();
+                          },
+                          itemBuilder: (BuildContext bc) {
+                            return [
+                              PopupMenuItem(
+                                child: RadioListTile<SingingCharacter>(
+                                  title: const Text('Today'),
+                                  value: SingingCharacter.Today,
+                                  groupValue: _character,
+                                  onChanged: (SingingCharacter? value) {
+                                    setState(() {
+                                      _character = value;
+                                    });
+                                    Get.back();
+                                  },
                                 ),
                               ),
-                      ),
-                      sizedBoxHeight(25),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Completed Orders",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w500, fontSize: 18.sp),
-                          ),
-                          const Spacer(),
-                          PopupMenuButton(
-                            offset: const Offset(0, 50),
-                            color: const Color(0xFFFFFFFF),
-                            tooltip: '',
-                            icon: const Icon(
-                              Icons.filter_alt_outlined,
-                              color: Colors.black,
-                            ),
-                            onSelected: (value) {
-                              setState(() {
-                                _character = value;
-                              });
-                              Get.back();
-                            },
-                            itemBuilder: (BuildContext bc) {
-                              return [
-                                PopupMenuItem(
-                                  child: RadioListTile<SingingCharacter>(
-                                    title: const Text('Today'),
-                                    value: SingingCharacter.Today,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter? value) {
-                                      setState(() {
-                                        _character = value;
-                                      });
-                                      Get.back();
-                                    },
-                                  ),
+                              PopupMenuItem(
+                                child: RadioListTile<SingingCharacter>(
+                                  title: const Text('Last Week'),
+                                  value: SingingCharacter.Week,
+                                  groupValue: _character,
+                                  onChanged: (SingingCharacter? value) {
+                                    setState(() {
+                                      _character = value;
+                                    });
+                                    Get.back();
+                                  },
                                 ),
-                                PopupMenuItem(
-                                  child: RadioListTile<SingingCharacter>(
-                                    title: const Text('Last Week'),
-                                    value: SingingCharacter.Week,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter? value) {
-                                      setState(() {
-                                        _character = value;
-                                      });
-                                      Get.back();
-                                    },
-                                  ),
+                              ),
+                              PopupMenuItem(
+                                child: RadioListTile<SingingCharacter>(
+                                  title: const Text('Last Month'),
+                                  value: SingingCharacter.Month,
+                                  groupValue: _character,
+                                  onChanged: (SingingCharacter? value) {
+                                    setState(() {
+                                      _character = value;
+                                    });
+                                    Get.back();
+                                  },
                                 ),
-                                PopupMenuItem(
-                                  child: RadioListTile<SingingCharacter>(
-                                    title: const Text('Last Month'),
-                                    value: SingingCharacter.Month,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter? value) {
-                                      setState(() {
-                                        _character = value;
-                                      });
-                                      Get.back();
-                                    },
-                                  ),
+                              ),
+                              PopupMenuItem(
+                                child: RadioListTile<SingingCharacter>(
+                                  title: const Text('Last 3 Month'),
+                                  value: SingingCharacter.Threemonth,
+                                  groupValue: _character,
+                                  onChanged: (SingingCharacter? value) {
+                                    setState(() {
+                                      _character = value;
+                                    });
+                                    Get.back();
+                                  },
                                 ),
-                                PopupMenuItem(
-                                  child: RadioListTile<SingingCharacter>(
-                                    title: const Text('Last 3 Month'),
-                                    value: SingingCharacter.Threemonth,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter? value) {
-                                      setState(() {
-                                        _character = value;
-                                      });
-                                      Get.back();
-                                    },
-                                  ),
+                              ),
+                              PopupMenuItem(
+                                child: RadioListTile<SingingCharacter>(
+                                  title: const Text('Last Year'),
+                                  value: SingingCharacter.Year,
+                                  groupValue: _character,
+                                  onChanged: (SingingCharacter? value) {
+                                    setState(() {
+                                      _character = value;
+                                    });
+                                    Get.back();
+                                  },
                                 ),
-                                PopupMenuItem(
-                                  child: RadioListTile<SingingCharacter>(
-                                    title: const Text('Last Year'),
-                                    value: SingingCharacter.Year,
-                                    groupValue: _character,
-                                    onChanged: (SingingCharacter? value) {
-                                      setState(() {
-                                        _character = value;
-                                      });
-                                      Get.back();
-                                    },
-                                  ),
-                                ),
-                              ];
-                            },
-                          ),
-                        ],
-                      ),
-                      sizedBoxHeight(10),
-                      Container(
-                        height: 370.h,
-                        width: 360.w,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF1F1F1),
-                          borderRadius: BorderRadius.circular(10),
+                              ),
+                            ];
+                          },
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(23, 5, 23, 0),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: ongoingOrderMainData.length,
-                            itemBuilder: (_, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                      ongoingOrderMainData[index]["route"]);
-                                },
-                                child: OngoingOrderMainTile(
-                                    ongoingOrderMainData[index]["image"],
-                                    ongoingOrderMainData[index]["name"],
-                                    ongoingOrderMainData[index]["number"],
-                                    ongoingOrderMainData[index]["location"]),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      sizedBoxHeight(40.h)
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                  sizedBoxHeight(13.h),
+                  Obx(
+                    () => isCompletedLoading.value
+                        ? Container(
+                            margin: EdgeInsets.only(top: Get.height / 3.5),
+                            child: const Center(
+                                child: CircularProgressIndicator()))
+                        : SizedBox(
+                            height: Get.height / 1.46,
+                            width: Get.width,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(23, 5, 23, 0),
+                              child: completedOrderModel.data!.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        LottieBuilder.asset(
+                                            "assets/lotties/no_data_found.json"),
+                                        textGrey4D4D4D_22(
+                                            "No Completed Orders Found !"),
+                                      ],
+                                    )
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount:
+                                          completedOrderModel.data!.length,
+                                      itemBuilder: (_, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Get.toNamed("/orderdetails",
+                                                arguments: {
+                                                  "id": ongoingOrderModel
+                                                      .data![index]
+                                                      .orderHeaderId!,
+                                                });
+                                          },
+                                          child: SalesOrderMainTile(
+                                            completedOrderModel.data![index]
+                                                .getFarmer!.profilePhoto!,
+                                            completedOrderModel.data![index]
+                                                .getFarmer!.userName!,
+                                            completedOrderModel.data![index]
+                                                .getFarmer!.phoneNumber!,
+                                            completedOrderModel
+                                                .data![index].address!,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                            ),
+                          ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

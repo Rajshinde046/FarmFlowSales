@@ -68,6 +68,11 @@ class Utils {
     return DateFormat('d MMM y').format(inputDate);
   }
 
+  static String convertDate(String inputDate) {
+    DateTime dateTime = DateTime.parse(inputDate).toLocal();
+    return DateFormat("MMMM d, y hh:mm a").format(dateTime);
+  }
+
   static String convertISOToFormattedDate(String isoDateString) {
     try {
       DateTime isoDate = DateTime.parse(isoDateString);

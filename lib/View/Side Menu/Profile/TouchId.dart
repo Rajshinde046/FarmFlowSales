@@ -1,10 +1,13 @@
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
+import 'package:farm_flow_sales/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TouchId extends StatefulWidget {
   const TouchId({super.key});
@@ -16,6 +19,7 @@ class TouchId extends StatefulWidget {
 class _TouchIdState extends State<TouchId> {
   bool? _hasBiometricSensor;
 
+  ProfileController profileController = Get.find();
   LocalAuthentication authentication = LocalAuthentication();
 
   Future<void> _checkBio() async {
@@ -32,6 +36,7 @@ class _TouchIdState extends State<TouchId> {
   }
 
   Future<void> _getAuth() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isAuth = false;
     try {
       isAuth = await authentication.authenticate(
@@ -39,22 +44,22 @@ class _TouchIdState extends State<TouchId> {
         options: const AuthenticationOptions(
             biometricOnly: false, useErrorDialogs: true, stickyAuth: true),
       );
+      if (isAuth) {
+        await prefs.setBool('fingerprint', true);
+        Get.back();
 
-      isAuth
-          ? Get.back()
-          : Get.snackbar("Not Recogonized", "Please Try Again",
-              margin: const EdgeInsets.all(8),
-              snackStyle: SnackStyle.FLOATING,
-              snackPosition: SnackPosition.BOTTOM);
+        profileController.onclickoftouchid = true;
+        utils.showToast("Fingerprint setup successfully !");
+      } else {
+        Get.snackbar("Not Recogonized", "Please Try Again",
+            margin: const EdgeInsets.all(8),
+            snackStyle: SnackStyle.FLOATING,
+            snackPosition: SnackPosition.BOTTOM);
+      }
       print('is Auth $isAuth');
     } on PlatformException catch (e) {
       print('exception is : $e');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override

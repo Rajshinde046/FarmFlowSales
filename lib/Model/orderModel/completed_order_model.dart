@@ -1,15 +1,20 @@
-class ProfileInfoModel {
+class CompletedOrderModel {
   int? status;
   bool? success;
-  Data? data;
+  List<Data>? data;
   String? message;
 
-  ProfileInfoModel({this.status, this.success, this.data, this.message});
+  CompletedOrderModel({this.status, this.success, this.data, this.message});
 
-  ProfileInfoModel.fromJson(Map<String, dynamic> json) {
+  CompletedOrderModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     success = json['success'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(Data.fromJson(v));
+      });
+    }
     message = json['message'];
   }
 
@@ -18,7 +23,7 @@ class ProfileInfoModel {
     data['status'] = status;
     data['success'] = success;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     data['message'] = message;
     return data;
@@ -26,6 +31,36 @@ class ProfileInfoModel {
 }
 
 class Data {
+  int? orderHeaderId;
+  GetFarmer? getFarmer;
+  String? address;
+
+  Data({
+    this.orderHeaderId,
+    this.getFarmer,
+    this.address,
+  });
+
+  Data.fromJson(Map<String, dynamic> json) {
+    orderHeaderId = json['order_header_id'];
+    getFarmer = json['get_farmer'] != null
+        ? GetFarmer.fromJson(json['get_farmer'])
+        : null;
+    address = json['address'] ?? "";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['order_header_id'] = orderHeaderId;
+    if (getFarmer != null) {
+      data['get_farmer'] = getFarmer!.toJson();
+    }
+    data['address'] = address;
+    return data;
+  }
+}
+
+class GetFarmer {
   int? id;
   int? principalTypeXid;
   int? principalSourceXid;
@@ -35,9 +70,8 @@ class Data {
   String? emailAddress;
   String? addressLine1;
   String? profilePhoto;
-  bool? pin;
 
-  Data({
+  GetFarmer({
     this.id,
     this.principalTypeXid,
     this.principalSourceXid,
@@ -47,20 +81,18 @@ class Data {
     this.emailAddress,
     this.addressLine1,
     this.profilePhoto,
-    this.pin,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  GetFarmer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     principalTypeXid = json['principal_type_xid'];
     principalSourceXid = json['principal_source_xid'];
     userName = json['user_name'];
-    dateOfBirth = json['date_of_birth'] ?? "";
+    dateOfBirth = json['date_of_birth'];
     phoneNumber = json['phone_number'];
     emailAddress = json['email_address'];
     addressLine1 = json['address_line1'] ?? "";
-    profilePhoto = json["profile_photo"] ?? "";
-    pin = json['pin'];
+    profilePhoto = json['profile_photo'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -74,7 +106,7 @@ class Data {
     data['email_address'] = emailAddress;
     data['address_line1'] = addressLine1;
     data['profile_photo'] = profilePhoto;
-    data['pin'] = pin;
+
     return data;
   }
 }

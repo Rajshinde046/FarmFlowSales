@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import '../../Utils/api_urls.dart';
-import 'package:dio/dio.dart';
 import '../../Utils/base_manager.dart';
 import '../../data/network/network_api_services.dart';
 

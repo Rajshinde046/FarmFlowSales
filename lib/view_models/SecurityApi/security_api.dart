@@ -1,24 +1,29 @@
-import 'package:farm_flow_sales/Utils/base_manager.dart';
-import 'package:farm_flow_sales/data/network/network_api_services.dart';
+import 'dart:developer';
 
-class ForgotPasswordAPI {
-  ForgotPasswordAPI(
-    this.data,
-  );
-  var data;
+import 'package:dio/dio.dart';
 
-  Future<ResponseData<dynamic>> forgotpasswordApi() async {
+import '../../Utils/api_urls.dart';
+import '../../Utils/base_manager.dart';
+import '../../data/network/network_api_services.dart';
+
+class SecurityApi {
+  Future<ResponseData<dynamic>> changePinApi(
+    int id,
+    int pin,
+  ) async {
     final response = await NetworkApiServices().postApi(
-      data,
-      "https://farmflow.betadelivery.com/api/forgot-password",
+      FormData.fromMap({
+        "id": id,
+        "pin": pin,
+      }),
+      ApiUrls.changePinApi,
     );
-
+    log(response.data.toString());
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
       if (responseData['success']) {
-        print("token is $response");
-        print("otp is $responseData");
+        return response;
       } else {
         return ResponseData<dynamic>(
             responseData['message'], ResponseStatus.FAILED);
@@ -27,19 +32,23 @@ class ForgotPasswordAPI {
     return response;
   }
 
-  Future<ResponseData<dynamic>> forgotpinApi() async {
+  Future<ResponseData<dynamic>> checkPinApi(
+    int id,
+    int pin,
+  ) async {
     final response = await NetworkApiServices().postApi(
-      optionalpar: true,
-      data,
-      "https://farmflow.betadelivery.com/api/forgot-password",
+      FormData.fromMap({
+        "id": id,
+        "pin": pin,
+      }),
+      ApiUrls.checkPinApi,
     );
-
+    log(response.data.toString());
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
       if (responseData['success']) {
-        print("token is $response");
-        print("otp is $responseData");
+        return response;
       } else {
         return ResponseData<dynamic>(
             responseData['message'], ResponseStatus.FAILED);

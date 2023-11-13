@@ -26,4 +26,8 @@ class ApiUrls {
   static const completedOrderApi = "${base}completed/orders";
   static const salesApi = "${base}sales";
   static const faqApi = "${base}faq/";
+  static const contactUsApi = "${base}contact_us";
+  static const changePinApi = "${base}change/pin";
+  static const checkPinApi = "${base}check/pin";
+  static const orderDetailsApi = "${base}details/order/";
 }
