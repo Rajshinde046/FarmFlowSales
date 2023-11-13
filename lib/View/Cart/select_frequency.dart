@@ -1,25 +1,18 @@
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/View/LoginScreen.dart';
+import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-enum FrequencyLabel {
-  black('One Time'),
-  blue('Weekly'),
-  pink('Monthly'),
-  green('Quaterly'),
-  yellow('half Yearly'),
-  grey('yearly');
-
-  const FrequencyLabel(this.label);
-  final String label;
-}
+import '../../Common/custom_dropdown.dart';
+import '../../controller/cart_controller.dart';
+import '../../view_models/farmer/FarmerListAPI.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
 
 class selectFrequency extends StatefulWidget {
   const selectFrequency({super.key});
@@ -30,9 +23,28 @@ class selectFrequency extends StatefulWidget {
 
 class _selectFrequencyState extends State<selectFrequency> {
   DateTime? _selectedDate;
-  FrequencyLabel? selectedColor;
   TextEditingController datecontroller = TextEditingController();
-  TextEditingController frequencyController = TextEditingController();
+  String? selectedFrequency;
+  List<String> frequencyList = [];
+  List<int> frequencyId = [];
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  CartController cartController = Get.put(CartController());
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await FarmerListAPI().getFrequencyApi().then((value) {
+        for (var a in value.data!) {
+          frequencyList.add(a.name!);
+          frequencyId.add(a.id!);
+        }
+        setState(() {});
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   void _presentDatePicker() {
@@ -40,8 +52,8 @@ class _selectFrequencyState extends State<selectFrequency> {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1922),
-      lastDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(3000),
       builder: (context, child) {
         return Theme(
             data: Theme.of(context).copyWith(
@@ -52,7 +64,7 @@ class _selectFrequencyState extends State<selectFrequency> {
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: AppColors.buttoncolour,
+                  foregroundColor: AppColors.buttoncolour,
                 ),
               ),
             ),
@@ -70,18 +82,8 @@ class _selectFrequencyState extends State<selectFrequency> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuEntry<FrequencyLabel>> colorEntries =
-        <DropdownMenuEntry<FrequencyLabel>>[];
-    for (final FrequencyLabel color in FrequencyLabel.values) {
-      colorEntries.add(
-        DropdownMenuEntry<FrequencyLabel>(
-          value: color,
-          label: color.label,
-        ),
-      );
-    }
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -123,70 +125,68 @@ class _selectFrequencyState extends State<selectFrequency> {
                   ],
                 ),
                 sizedBoxHeight(10.h),
-                DropdownMenu<FrequencyLabel>(
-                  hintText: "Select Frequrncy",
-                  trailingIcon: Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.green,
-                  ),
-                  inputDecorationTheme: InputDecorationTheme(
-                    filled: true,
-                    fillColor: Color(0xFFF1F1F1),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.red, width: 1),
-                    ),
-                  ),
-                  enabled: true,
-                  width: 350.w,
-                  enableSearch: false,
-                  controller: frequencyController,
-                  dropdownMenuEntries: colorEntries,
-                  onSelected: (FrequencyLabel? color) {
-                    setState(() {
-                      selectedColor = color;
-                    });
-                  },
+                DropdownBtn(
+                  hint: "Select Frequency",
+                  // items: ,
+                  items: frequencyList
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            onTap: () {
+                              setState(() {
+                                selectedFrequency = e;
+                              });
+                            },
+                            child: Text(
+                              e,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4D4D4D),
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ))
+                      .toList(),
+                  value: selectedFrequency,
                 ),
                 sizedBoxHeight(25.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Select Start Date",
-                      style: GoogleFonts.poppins(
-                          fontSize: 18.sp, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-                Personaldatepicker(
-                  datecontroller: datecontroller,
-                  ontap: () => _presentDatePicker(),
-                ),
+                selectedFrequency == "One Time"
+                    ? const SizedBox()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Select Start Date",
+                            style: GoogleFonts.poppins(
+                                fontSize: 18.sp, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                selectedFrequency == "One Time"
+                    ? const SizedBox()
+                    : Form(
+                        key: _formKey,
+                        child: Personaldatepicker(
+                          datecontroller: datecontroller,
+                          ontap: () => _presentDatePicker(),
+                        ),
+                      ),
                 sizedBoxHeight(150.h),
                 CustomButton(
                     text: "Confirm",
                     onTap: () {
-                      Get.toNamed("/discountpage");
+                      if (selectedFrequency == null) {
+                        utils.showToast("Please Select Frequency");
+                      } else if (datecontroller.text.isEmpty &&
+                          selectedFrequency != "One Time") {
+                        utils.showToast("Please Select Start Date");
+                      } else {
+                        cartController.selectedFrequencyId = frequencyId[
+                            frequencyList.indexOf(selectedFrequency!)];
+                        cartController.selectedStartDate = datecontroller.text;
+
+                        Get.toNamed("/discountpage");
+                      }
                     })
               ],
             ),
@@ -281,7 +281,7 @@ class Personaldatepicker extends StatelessWidget {
             padding: EdgeInsets.only(right: 5.w),
             child: CircleAvatar(
               radius: 20.h,
-              backgroundColor: Color(0xffF1F1F1),
+              backgroundColor: const Color(0xffF1F1F1),
               child: Center(
                 child: SvgPicture.asset(
                   "assets/images/datepicker.svg",

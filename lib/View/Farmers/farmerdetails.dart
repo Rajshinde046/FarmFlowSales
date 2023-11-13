@@ -371,7 +371,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
         decoration: BoxDecoration(
             // dec
             color: selectedCurrentFeed == index
-                ? Color.fromARGB(255, 236, 248, 239)
+                ? const Color.fromARGB(255, 236, 248, 239)
                 : AppColors.white,
             borderRadius: BorderRadius.circular(5.h),
             border: Border.all(

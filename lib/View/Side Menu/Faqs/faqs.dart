@@ -1,8 +1,12 @@
+import 'package:farm_flow_sales/Model/faqModel/faq_model.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/view_models/faqApi/faq_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../Common/getx_controller.dart';
 
 class Faq extends StatefulWidget {
   const Faq({super.key});
@@ -12,6 +16,8 @@ class Faq extends StatefulWidget {
 }
 
 class _FaqState extends State<Faq> {
+  CommonGetXController commonGetXController = Get.put(CommonGetXController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,14 +36,14 @@ class _FaqState extends State<Faq> {
                   },
                   child: CircleAvatar(
                     radius: 20.h,
-                    backgroundColor: Color(0XFFF1F1F1),
+                    backgroundColor: const Color(0XFFF1F1F1),
                     child: Center(
                       child: Padding(
                         padding: EdgeInsets.only(left: 8.w),
                         child: Icon(
                           Icons.arrow_back_ios,
                           size: 25.h,
-                          color: Color(0XFF141414),
+                          color: const Color(0XFF141414),
                         ),
                       ),
                     ),
@@ -47,7 +53,7 @@ class _FaqState extends State<Faq> {
                 Text(
                   "FAQ's",
                   style: TextStyle(
-                    color: Color(0XFF141414),
+                    color: const Color(0XFF141414),
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -60,14 +66,17 @@ class _FaqState extends State<Faq> {
             padding: EdgeInsets.only(left: 16.w, right: 16.w),
             child: GestureDetector(
               onTap: () {
-                Get.toNamed('/faqcontent');
+                FaqApi().getFaqData("1").then((value) {
+                  commonGetXController.faqModel = FaqModel.fromJson(value.data);
+                  Get.toNamed('/faqcontent');
+                });
               },
               child: SizedBox(
                 width: 358.w,
                 height: 220.h,
                 child: Card(
                   // elevation: 2,
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                   // shadowColor: Color(0XFF00000029),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -117,13 +126,16 @@ class _FaqState extends State<Faq> {
             padding: EdgeInsets.only(left: 16.w, right: 16.w),
             child: GestureDetector(
               onTap: () {
-                Get.toNamed('/faqcontent');
+                FaqApi().getFaqData("2").then((value) {
+                  commonGetXController.faqModel = FaqModel.fromJson(value.data);
+                  Get.toNamed('/faqcontent');
+                });
               },
               child: SizedBox(
                 width: 358.w,
                 height: 220.h,
                 child: Card(
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                   // shadowColor: Color(0XFF00000029),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -158,13 +170,16 @@ class _FaqState extends State<Faq> {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: GestureDetector(
               onTap: () {
-                Get.toNamed('/faqcontent');
+                FaqApi().getFaqData("3").then((value) {
+                  commonGetXController.faqModel = FaqModel.fromJson(value.data);
+                  Get.toNamed('/faqcontent');
+                });
               },
               child: SizedBox(
                 width: 358.w,
                 height: 220.h,
                 child: Card(
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                   // shadowColor: Color(0XFF00000029),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

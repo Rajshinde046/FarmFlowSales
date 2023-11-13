@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:another_flushbar/flushbar.dart';
+import 'package:dio/dio.dart';
 import 'package:farm_flow_sales/Common/CommonTextFormField.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
@@ -7,11 +8,20 @@ import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart' hide MultipartFile, FormData;
 import 'package:image_cropper/image_cropper.dart';
+import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../common/limit_range.dart';
+import '../../../Model/ProfileModel/profile_info_model.dart';
+import '../../../Utils/api_urls.dart';
+import '../../../Utils/base_manager.dart';
+import '../../../Utils/utils.dart';
+import '../../../controller/profile_controller.dart';
+import '../../../view_models/profileApi/ProfileAPI.dart';
 import 'profile.dart';
 
 class PersonalInfo extends StatefulWidget {
@@ -27,6 +37,31 @@ class _PersonalInfoState extends State<PersonalInfo> {
   final ProfileImageController editProfileImage =
       Get.put(ProfileImageController());
 
+  ProfileController profileController = Get.put(ProfileController());
+
+  @override
+  void initState() {
+    if (profileController
+        .profileInfoModel.value.data!.dateOfBirth!.isNotEmpty) {
+      List<String> formattedDate = profileController
+          .profileInfoModel.value.data!.dateOfBirth!
+          .split(" ")[0]
+          .split("-");
+      String formattedDate1 =
+          "${formattedDate[2]}/${formattedDate[1]}/${formattedDate[0]}";
+      datecontroller.text = formattedDate1;
+    }
+
+    nameController.text =
+        profileController.profileInfoModel.value.data!.userName!;
+    phoneController.text =
+        profileController.profileInfoModel.value.data!.phoneNumber!;
+    emailController.text =
+        profileController.profileInfoModel.value.data!.emailAddress!;
+
+    super.initState();
+  }
+
   void _submit() {
     setState(() {
       setState(() {
@@ -37,6 +72,52 @@ class _PersonalInfoState extends State<PersonalInfo> {
       });
     });
     // }
+  }
+
+  void uploadData() async {
+    Utils.loader();
+    MultipartFile imageFile;
+
+    if (editProfileImage.profilePicPath.value.isNotEmpty) {
+      imageFile = await MultipartFile.fromFile(
+        editProfileImage.profilePicPath.value,
+        filename: path.basename(editProfileImage.profilePicPath.value),
+      );
+    } else {
+      if (profileController
+          .profileInfoModel.value.data!.profilePhoto!.isEmpty) {
+        //
+        imageFile = await Utils.assetImageToMultipartFile(
+            "assets/images/profile.png", "profile");
+      } else {
+        imageFile = await Utils.networkImageToMultipartFile(
+          "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}",
+        );
+      }
+    }
+    List<String> formattedDate = datecontroller.text.split("/");
+    String formattedDate1 =
+        "${formattedDate[0]}-${formattedDate[1]}-${formattedDate[2]}";
+    final data = await ProfileAPI().updateProfileApi(map: {
+      "name": nameController.text,
+      "phone_number": phoneController.text,
+      "dob": formattedDate1,
+      "email": emailController.text,
+      'profile_photo': imageFile,
+    });
+    if (data.status == ResponseStatus.SUCCESS) {
+      ProfileAPI().getProfileInfo().then((value) {
+        profileController.profileInfoModel.value =
+            ProfileInfoModel.fromJson(value.data);
+        utils.showToast("Profile added Successfully!");
+
+        Get.back();
+        Get.back(result: true);
+      });
+    } else {
+      Get.back();
+      utils.showToast(data.message);
+    }
   }
 
   Future<File> saveFilePermanently(String imagePath) async {
@@ -61,7 +142,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: AppColors.buttoncolour,
+                  foregroundColor: AppColors.buttoncolour,
                 ),
               ),
             ),
@@ -81,6 +162,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   builduploadprofile() {
     return showModalBottomSheet(
+      backgroundColor: Colors.white,
       isScrollControlled: true,
       context: context,
       shape: RoundedRectangleBorder(
@@ -184,204 +266,249 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: CircleAvatar(
-                      radius: 20.h,
-                      backgroundColor: const Color(0XFFF1F1F1),
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 8.w),
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            size: 25.h,
-                            color: const Color(0XFF141414),
+    return WillPopScope(
+      onWillPop: () async {
+        editProfileImage.profilePicPath.value = "";
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        editProfileImage.profilePicPath.value = "";
+
+                        Get.back();
+                      },
+                      child: CircleAvatar(
+                        radius: 20.h,
+                        backgroundColor: const Color(0XFFF1F1F1),
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.w),
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              size: 25.h,
+                              color: const Color(0XFF141414),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  sizedBoxWidth(15.w),
-                  Text(
-                    "Personal Information",
-                    style: TextStyle(
-                      color: const Color(0XFF141414),
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
+                    sizedBoxWidth(15.w),
+                    Text(
+                      "Personal Information",
+                      style: TextStyle(
+                        color: const Color(0XFF141414),
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            sizedBoxHeight(40.h),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Form(
-                  key: _formKey,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Obx(
-                            () => GestureDetector(
-                              onTap: () {
-                                builduploadprofile();
-                              },
-                              child: ClipOval(
-                                child: SizedBox.fromSize(
-                                  size: Size.fromRadius(60.r),
-                                  child: editProfileImage
-                                              .profilePicPath.value !=
-                                          ''
-                                      ? Image(
-                                          image: FileImage(File(editProfileImage
-                                              .profilePicPath.value)),
-                                          fit: BoxFit.cover,
-                                          width: 200.w,
-                                          height: 200.h,
-                                        )
-                                      : Image.asset(
-                                          'assets/images/profile.png'),
-                                ),
-                              ),
-                            ),
+              sizedBoxHeight(40.h),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Form(
+                    key: _formKey,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Stack(
+                                clipBehavior: Clip.none,
+                                alignment: Alignment.center,
+                                children: [
+                                  Obx(
+                                    () => ClipOval(
+                                      child: SizedBox.fromSize(
+                                        size: Size.fromRadius(60.r),
+                                        child: editProfileImage
+                                                    .profilePicPath.value !=
+                                                ''
+                                            ? Image(
+                                                image: FileImage(File(
+                                                    editProfileImage
+                                                        .profilePicPath.value)),
+                                                fit: BoxFit.cover,
+                                                width: 200.w,
+                                                height: 200.h,
+                                              )
+                                            : profileController
+                                                    .profileInfoModel
+                                                    .value
+                                                    .data!
+                                                    .profilePhoto!
+                                                    .isEmpty
+                                                ? Image.asset(
+                                                    "assets/images/profile.png")
+                                                : Image.network(
+                                                    "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}"),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        builduploadprofile();
+                                      },
+                                      child: Material(
+                                        elevation: 1,
+                                        shape: const CircleBorder(),
+                                        child: CircleAvatar(
+                                            radius: 16.5.r,
+                                            backgroundColor:
+                                                const Color(0XFF0E5F02),
+                                            child: SvgPicture.asset(
+                                              "assets/images/camera-svgrepo-com.svg",
+                                              width: 20.w,
+                                              height: 17.h,
+                                            )
+                                            // Icon(
+                                            //   Icons.edit_outlined,
+                                            //   color: Color(0xffCCCCCC),
+                                            // ),
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
                           ),
-                        ),
-                        sizedBoxHeight(31.h),
-                        Text(
-                          "Full Name",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 18.sp,
-                              color: const Color(0XFF141414)),
-                        ),
-                        sizedBoxHeight(5.h),
-                        CustomTextFormField(
-                          textEditingController: nameController,
-                          hintText: 'Enter Full Name',
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(20),
-                            FilteringTextInputFormatter.allow(
-                                RegExp('[a-zA-Z ]')),
-                          ],
-                          validatorText: 'Please enter full name',
-                          texttype: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter full name";
-                            }
-                            return null;
-                          },
-                        ),
-                        sizedBoxHeight(21.h),
-                        Text(
-                          "Date Of Birth",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 18.sp,
-                              color: const Color(0XFF141414)),
-                        ),
-                        sizedBoxHeight(5.h),
-                        Personaldatepicker(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please Select Date of Birth";
-                            }
-                            return null;
-                          },
-                          datecontroller: datecontroller,
-                          ontap: () => _presentDatePicker(),
-                        ),
-                        sizedBoxHeight(21.h),
-                        Text(
-                          "Contact Number",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 18.sp,
-                              color: const Color(0XFF141414)),
-                        ),
-                        sizedBoxHeight(5.h),
-                        CustomTextFormField(
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                          ],
-                          textEditingController: phoneController,
-                          hintText: 'Enter Contact Number',
-                          texttype: TextInputType.number,
-                          validatorText: 'Please enter contact number',
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter contact number";
-                            }
-                            return null;
-                          },
-                        ),
-                        sizedBoxHeight(21.h),
-                        Text(
-                          "Email Address",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 18.sp,
-                              color: const Color(0XFF141414)),
-                        ),
-                        sizedBoxHeight(5.h),
-                        CustomTextFormField(
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(50),
-                          ],
-                          textEditingController: emailController,
-                          hintText: 'Enter Email Address',
-                          validatorText: 'Please enter email address',
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                !value.contains('@') ||
-                                !value.contains('.')) {
-                              return "Please enter valid email address";
-                            }
-                            return null;
-                          },
-                        ),
-                        sizedBoxHeight(38.h),
-                        CustomButton(
-                            text: "Save",
-                            onTap: () {
-                              final isValid = _formKey.currentState?.validate();
-                              if (isValid!) {
-                                _submit();
-                                // Get.toNamed("/profile");
-                                Get.back();
-                              } else {
-                                Flushbar(
-                                  message: "Please fill all fields",
-                                  duration: const Duration(seconds: 3),
-                                ).show(context);
+                          sizedBoxHeight(31.h),
+                          Text(
+                            "Full Name",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18.sp,
+                                color: const Color(0XFF141414)),
+                          ),
+                          sizedBoxHeight(5.h),
+                          CustomTextFormField(
+                            textEditingController: nameController,
+                            hintText: 'Enter Full Name',
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(20),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp('[a-zA-Z ]')),
+                            ],
+                            validatorText: 'Please enter full name',
+                            texttype: TextInputType.text,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter full name";
                               }
-                            }),
-                        sizedBoxHeight(79.h),
-                      ],
+                              return null;
+                            },
+                          ),
+                          sizedBoxHeight(21.h),
+                          Text(
+                            "Date Of Birth",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18.sp,
+                                color: const Color(0XFF141414)),
+                          ),
+                          sizedBoxHeight(5.h),
+                          Personaldatepicker(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please Select Date of Birth";
+                              }
+                              return null;
+                            },
+                            datecontroller: datecontroller,
+                            ontap: () => _presentDatePicker(),
+                          ),
+                          sizedBoxHeight(21.h),
+                          Text(
+                            "Contact Number",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18.sp,
+                                color: const Color(0XFF141414)),
+                          ),
+                          sizedBoxHeight(5.h),
+                          CustomTextFormField(
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp('[0-9]')),
+                            ],
+                            textEditingController: phoneController,
+                            hintText: 'Enter Contact Number',
+                            texttype: TextInputType.number,
+                            validatorText: 'Please enter contact number',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter contact number";
+                              }
+                              return null;
+                            },
+                          ),
+                          sizedBoxHeight(21.h),
+                          Text(
+                            "Email Address",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 18.sp,
+                                color: const Color(0XFF141414)),
+                          ),
+                          sizedBoxHeight(5.h),
+                          CustomTextFormField(
+                            readonly: true,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(50),
+                            ],
+                            textEditingController: emailController,
+                            hintText: 'Enter Email Address',
+                            validatorText: 'Please enter email address',
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  !value.contains('@') ||
+                                  !value.contains('.')) {
+                                return "Please enter valid email address";
+                              }
+                              return null;
+                            },
+                          ),
+                          sizedBoxHeight(38.h),
+                          CustomButton(
+                              text: "Save",
+                              onTap: () {
+                                final isValid =
+                                    _formKey.currentState?.validate();
+                                if (isValid!) {
+                                  uploadData();
+                                } else {
+                                  Flushbar(
+                                    message: "Please fill all fields",
+                                    duration: const Duration(seconds: 3),
+                                  ).show(context);
+                                }
+                              }),
+                          sizedBoxHeight(79.h),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

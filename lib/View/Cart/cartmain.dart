@@ -1,13 +1,21 @@
+import 'dart:developer';
+
+import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
-import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
+
+import '../../Model/cartModel/cartModel.dart';
+import '../../Utils/texts.dart';
+import '../../controller/inventories_controller.dart';
+import '../../view_models/cartApi/cartApi.dart';
 
 class Cartmain extends StatefulWidget {
   const Cartmain({
@@ -33,466 +41,435 @@ class Cartmain extends StatefulWidget {
 }
 
 class _CartmainState extends State<Cartmain> {
-  int counter = 0;
-  int counter1 = 0;
-  int counter2 = 0;
+  InventoriesController inventoriesController =
+      Get.put(InventoriesController());
+
+  CartController cartController = Get.put(CartController());
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      inventoriesController.isLoading.value = true;
+      CartApi().getViewCartData().then((value) {
+        inventoriesController.viewCartModel =
+            ViewCartModel.fromJson(value.data);
+        inventoriesController.cartSubTotalValue.value =
+            inventoriesController.viewCartModel.data!.subTotal!;
+        inventoriesController.isLoading.value = false;
+      });
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.only(left: 16.w, top: 42.h, right: 16.w),
-        child: Column(
+      body: Obx(
+        () => inventoriesController.isLoading.value
+            ? const Center(child: CircularProgressIndicator())
+            : inventoriesController.viewCartModel.data!.cart!.isEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                          child: LottieBuilder.asset(
+                        "assets/lotties/empty_cart.json",
+                        height: 250,
+                        width: 200,
+                        fit: BoxFit.contain,
+                      )),
+                      textGrey4D4D4D_22("Cart Is Empty !"),
+                    ],
+                  )
+                : SafeArea(
+                    child: SingleChildScrollView(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.only(left: 16.w, top: 42.h, right: 16.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Obx(
+                            () => Text(
+                              "Subtotal € ${inventoriesController.cartSubTotalValue.value}",
+                              style: GoogleFonts.montserrat(
+                                fontSize: 18.sp,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          sizedBoxHeight(11.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: 12.h,
+                                backgroundColor: AppColors.buttoncolour,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.check,
+                                    size: 15.h,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                              ),
+                              sizedBoxWidth(6.w),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "your order is eligible for free delivery.",
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 16.sp,
+                                      color: AppColors.buttoncolour,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  RichText(
+                                      text: TextSpan(
+                                          text:
+                                              "select this option at checkout.",
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16.sp,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w400),
+                                          children: [
+                                        TextSpan(
+                                          text: "Details",
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16.sp,
+                                              color: AppColors.buttoncolour,
+                                              fontWeight: FontWeight.w600),
+                                        )
+                                      ]))
+                                ],
+                              )
+                            ],
+                          ),
+                          sizedBoxHeight(31.h),
+                          // CustomButton(text: "Proceed To Buy (3 Items)", onTap: () {}),
+                          InkWell(
+                            onTap: () {
+                              List<int> listV = [];
+                              for (var a in inventoriesController
+                                  .viewCartModel.data!.cart!) {
+                                listV.add(a.id!);
+                              }
+                              cartController.cartDataId = listV;
+                              Get.toNamed("/selectfarmer");
+                            },
+                            child: Container(
+                              height: 50.h,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.h),
+                                  color: AppColors.buttoncolour),
+                              child: Center(
+                                child: Text(
+                                  "Proceed To Buy (${inventoriesController.viewCartModel.data!.cart!.length} Items)",
+                                  style: TextStyle(
+                                      color: AppColors.white, fontSize: 18.sp),
+                                ),
+                              ),
+                            ),
+                          ),
+                          sizedBoxHeight(27.h),
+                          SizedBox(
+                            height: Get.height / 1.65,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: inventoriesController
+                                    .viewCartModel.data!.cart!.length,
+                                itemBuilder: (ctx, index) {
+                                  return CartCardDetails(
+                                      index: index,
+                                      maxValue: inventoriesController
+                                          .viewCartModel
+                                          .data!
+                                          .cart![index]
+                                          .getItems![0]
+                                          .quantity!);
+                                }),
+                          ),
+                          sizedBoxHeight(20.h),
+                        ],
+                      ),
+                    ),
+                  )),
+      ),
+    );
+  }
+}
+
+class CartCardDetails extends StatefulWidget {
+  CartCardDetails({super.key, required this.index, required this.maxValue});
+  int index;
+  int maxValue;
+
+  @override
+  State<CartCardDetails> createState() => _CartCardDetailsState();
+}
+
+class _CartCardDetailsState extends State<CartCardDetails> {
+  InventoriesController inventoriesController =
+      Get.put(InventoriesController());
+  RxInt counter = 0.obs;
+  RxInt price = 0.obs;
+  @override
+  void initState() {
+    counter = inventoriesController
+        .viewCartModel.data!.cart![widget.index].quantity!.obs;
+    price.value = counter.value *
+        inventoriesController
+            .viewCartModel.data!.cart![widget.index].getItems![0].price!;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 358.w,
+      margin: const EdgeInsets.only(bottom: 15),
+      // height: 120.h,
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: Color(0xffF1F1F1),
+          boxShadow: [
+            BoxShadow(
+                color: Color(0xff0000001F),
+                blurRadius: 12.0,
+                offset: Offset(0.0, 0.75),
+                spreadRadius: 2)
+          ]),
+      child: Padding(
+        padding:
+            EdgeInsets.only(left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Subtotal € 850",
-              style: GoogleFonts.montserrat(
-                fontSize: 18.sp,
-                color: AppColors.black,
-                fontWeight: FontWeight.w600,
-              ),
+            Image.network(
+              "${ApiUrls.baseImageUrl}/${inventoriesController.viewCartModel.data!.cart![widget.index].getItems![0].item!.smallImageUrl}",
+              width: 57.w,
+              height: 99.h,
             ),
-            sizedBoxHeight(11.h),
-            Row(
+            sizedBoxWidth(31.w),
+            Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 12.h,
-                  backgroundColor: AppColors.buttoncolour,
-                  child: Center(
-                    child: Icon(
-                      Icons.check,
-                      size: 15.h,
-                      color: AppColors.white,
-                    ),
+                Text(
+                  inventoriesController.viewCartModel.data!.cart![widget.index]
+                      .getItems![0].item!.title!,
+                  style: GoogleFonts.poppins(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xff141414),
                   ),
                 ),
-                sizedBoxWidth(6.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "your order is eligible for free delivery.",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 16.sp,
-                        color: AppColors.buttoncolour,
-                        fontWeight: FontWeight.w600,
+                sizedBoxHeight(7.h),
+                Text(
+                  inventoriesController.viewCartModel.data!.cart![widget.index]
+                      .getItems![0].lotName!,
+                  style: GoogleFonts.poppins(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.normal,
+                    color: const Color(0xff141414),
+                  ),
+                ),
+                sizedBoxHeight(7.h),
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "€ ${price.value}",
+                        style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black),
                       ),
-                    ),
-                    RichText(
-                        text: TextSpan(
-                            text: "select this option at checkout.",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w400),
-                            children: [
-                          TextSpan(
-                            text: "Details",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                color: AppColors.buttoncolour,
-                                fontWeight: FontWeight.w600),
-                          )
-                        ]))
-                  ],
-                )
-              ],
-            ),
-            sizedBoxHeight(31.h),
-            // CustomButton(text: "Proceed To Buy (3 Items)", onTap: () {}),
-            InkWell(
-              onTap: () {
-                Get.toNamed("/selectfarmer");
-              },
-              child: Container(
-                height: 50.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.h),
-                    color: AppColors.buttoncolour),
-                child: Center(
-                  child: Text(
-                    "Proceed To Buy (3 Items)",
-                    style: TextStyle(color: AppColors.white, fontSize: 18.sp),
+                      sizedBoxWidth(91.w),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (counter.value > 0) {
+                                counter.value--;
+
+                                CartApi()
+                                    .manageCartData(
+                                        inventoriesController
+                                            .viewCartModel
+                                            .data!
+                                            .cart![widget.index]
+                                            .itemMasterLotXid!,
+                                        counter.value)
+                                    .then((value) {
+                                  if (counter.value == 0) {
+                                    inventoriesController.isLoading.value =
+                                        true;
+                                    CartApi().getViewCartData().then((value) {
+                                      inventoriesController.viewCartModel =
+                                          ViewCartModel.fromJson(value.data);
+                                      inventoriesController
+                                              .cartSubTotalValue.value =
+                                          inventoriesController
+                                              .viewCartModel.data!.subTotal!;
+                                      inventoriesController.isLoading.value =
+                                          false;
+                                    });
+                                  } else {
+                                    int totalPriceV = 0;
+                                    inventoriesController
+                                        .viewCartModel
+                                        .data!
+                                        .cart![widget.index]
+                                        .quantity = counter.value;
+
+                                    price.value = counter.value *
+                                        inventoriesController
+                                            .viewCartModel
+                                            .data!
+                                            .cart![widget.index]
+                                            .getItems![0]
+                                            .price!;
+
+                                    for (int i = 0;
+                                        i <
+                                            inventoriesController.viewCartModel
+                                                .data!.cart!.length;
+                                        i++) {
+                                      totalPriceV += inventoriesController
+                                              .viewCartModel
+                                              .data!
+                                              .cart![i]
+                                              .quantity! *
+                                          inventoriesController
+                                              .viewCartModel
+                                              .data!
+                                              .cart![i]
+                                              .getItems![0]
+                                              .price!;
+                                    }
+
+                                    inventoriesController
+                                        .cartSubTotalValue.value = totalPriceV;
+                                  }
+                                  Map<String, dynamic> responseData =
+                                      Map<String, dynamic>.from(value.data);
+                                  utils.showToast(responseData["message"]);
+                                });
+                              }
+                              // widget.onChanged(counter);
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            // "assets/images/minusbutton.svg",
+                            "assets/images/minus1.svg",
+                            width: 20.w,
+                            // width: 20.w,
+                            // height: 40.h,
+                          ),
+                        ),
+                      ),
+                      sizedBoxWidth(12.w),
+                      Obx(
+                        () => SizedBox(
+                          width: 14.w,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              "${counter.value}",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: const Color(0xff141414),
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                      sizedBoxWidth(8.w),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (counter.value < widget.maxValue) {
+                                counter.value++;
+                                CartApi()
+                                    .manageCartData(
+                                        inventoriesController
+                                            .viewCartModel
+                                            .data!
+                                            .cart![widget.index]
+                                            .itemMasterLotXid!,
+                                        counter.value)
+                                    .then((value) {
+                                  int totalPriceV = 0;
+                                  inventoriesController
+                                      .viewCartModel
+                                      .data!
+                                      .cart![widget.index]
+                                      .quantity = counter.value;
+                                  price.value = counter.value *
+                                      inventoriesController
+                                          .viewCartModel
+                                          .data!
+                                          .cart![widget.index]
+                                          .getItems![0]
+                                          .price!;
+                                  for (int i = 0;
+                                      i <
+                                          inventoriesController
+                                              .viewCartModel.data!.cart!.length;
+                                      i++) {
+                                    totalPriceV += inventoriesController
+                                            .viewCartModel
+                                            .data!
+                                            .cart![i]
+                                            .quantity! *
+                                        inventoriesController.viewCartModel
+                                            .data!.cart![i].getItems![0].price!;
+                                  }
+
+                                  inventoriesController
+                                      .cartSubTotalValue.value = totalPriceV;
+                                  Map<String, dynamic> responseData =
+                                      Map<String, dynamic>.from(value.data);
+                                  utils.showToast(responseData["message"]);
+                                });
+                              }
+                              // widget.onChanged(counter);
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            // "assets/images/plusreorder.svg",
+                            "assets/images/plus1.svg",
+                            width: 20.w,
+                            // width: 20.w,
+                            // height: 40.h,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ),
-            sizedBoxHeight(27.h),
-            Container(
-              width: 358.w,
-              // height: 120.h,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  color: Color(0xffF1F1F1),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color(0xff0000001F),
-                        blurRadius: 12.0,
-                        offset: Offset(0.0, 0.75),
-                        spreadRadius: 2)
-                  ]),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      "assets/images/orderred.png",
-                      width: 57.w,
-                      height: 99.h,
-                    ),
-                    sizedBoxWidth(31.w),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Elite Dairy 15% BULK ",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff141414),
-                          ),
-                        ),
-                        sizedBoxHeight(7.h),
-                        Image.asset(
-                          "assets/images/cartmain.png",
-                          width: 104.w,
-                          height: 22.h,
-                        ),
-                        sizedBoxHeight(7.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "€ 500",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.black),
-                            ),
-                            sizedBoxWidth(91.w),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counter > widget.minValue) {
-                                      counter--;
-                                    }
-                                    // widget.onChanged(counter);
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  // "assets/images/minusbutton.svg",
-                                  "assets/images/minus1.svg",
-                                  width: 20.w,
-                                  // width: 20.w,
-                                  // height: 40.h,
-                                ),
-                              ),
-                            ),
-                            sizedBoxWidth(12.w),
-                            SizedBox(
-                              width: 14.w,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Text(
-                                  "$counter",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: Color(0xff141414),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            sizedBoxWidth(8.w),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counter < widget.maxValue) {
-                                      counter++;
-                                    }
-                                    // widget.onChanged(counter);
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  // "assets/images/plusreorder.svg",
-                                  "assets/images/plus1.svg",
-                                  width: 20.w,
-                                  // width: 20.w,
-                                  // height: 40.h,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            sizedBoxHeight(20.h),
-            Container(
-              width: 358.w,
-              // height: 120.h,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  color: Color(0xffF1F1F1),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color(0xff0000001F),
-                        blurRadius: 12.0,
-                        offset: Offset(0.0, 0.75),
-                        spreadRadius: 2)
-                  ]),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      "assets/images/orderyellow.png",
-                      width: 57.w,
-                      height: 99.h,
-                    ),
-                    sizedBoxWidth(31.w),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Pre-Calver Gain Gold",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff141414),
-                          ),
-                        ),
-                        sizedBoxHeight(7.h),
-                        Image.asset(
-                          "assets/images/cartmain.png",
-                          width: 104.w,
-                          height: 22.h,
-                        ),
-                        sizedBoxHeight(7.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "€ 500",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.black),
-                            ),
-                            sizedBoxWidth(91.w),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counter1 > widget.minValue1) {
-                                      counter1--;
-                                    }
-                                    // widget.onChanged(counter1);
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  // "assets/images/minusbutton.svg",
-                                  "assets/images/minus1.svg",
-                                  width: 20.w,
-                                  // width: 20.w,
-                                  // height: 40.h,
-                                ),
-                              ),
-                            ),
-                            sizedBoxWidth(12.w),
-                            SizedBox(
-                              width: 14.w,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Text(
-                                  "$counter1",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: Color(0xff141414),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            sizedBoxWidth(8.w),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counter1 < widget.maxValue1) {
-                                      counter1++;
-                                    }
-                                    // widget.onChanged(counter1);
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  // "assets/images/plusreorder.svg",
-                                  "assets/images/plus1.svg",
-                                  width: 20.w,
-                                  // width: 20.w,
-                                  // height: 40.h,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            sizedBoxHeight(20.h),
-            Container(
-              width: 358.w,
-              // height: 120.h,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  color: Color(0xffF1F1F1),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color(0xff0000001F),
-                        blurRadius: 12.0,
-                        offset: Offset(0.0, 0.75),
-                        spreadRadius: 2)
-                  ]),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      "assets/images/orderwhite.png",
-                      width: 57.w,
-                      height: 99.h,
-                    ),
-                    sizedBoxWidth(31.w),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Pre-Calver Gain Gold",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff141414),
-                          ),
-                        ),
-                        sizedBoxHeight(7.h),
-                        Image.asset(
-                          "assets/images/cartmain.png",
-                          width: 104.w,
-                          height: 22.h,
-                        ),
-                        sizedBoxHeight(7.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "€ 500",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.black),
-                            ),
-                            sizedBoxWidth(91.w),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counter2 > widget.minValue2) {
-                                      counter2--;
-                                    }
-                                    // widget.onChanged(counter2);
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  // "assets/images/minusbutton.svg",
-                                  "assets/images/minus1.svg",
-                                  width: 20.w,
-                                  // width: 20.w,
-                                  // height: 40.h,
-                                ),
-                              ),
-                            ),
-                            sizedBoxWidth(12.w),
-                            SizedBox(
-                              width: 14.w,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Text(
-                                  "$counter2",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: Color(0xff141414),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            sizedBoxWidth(8.w),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counter2 < widget.maxValue2) {
-                                      counter2++;
-                                    }
-                                    // widget.onChanged(counter2);
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  // "assets/images/plusreorder.svg",
-                                  "assets/images/plus1.svg",
-                                  width: 20.w,
-                                  // width: 20.w,
-                                  // height: 40.h,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }

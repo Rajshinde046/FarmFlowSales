@@ -3,6 +3,7 @@ import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/view_models/farmer/ConnectFarmerAPI.dart';
+import 'package:farm_flow_sales/view_models/connectFarmerApi/connect_farmer_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -44,22 +45,24 @@ class _ConnectfarmerState extends State<Connectfarmer> {
     return showDialog(
         context: context,
         builder: (context) {
-          Future.delayed(Duration(seconds: 3), () {
+          Future.delayed(const Duration(seconds: 2), () {
+            //   connectCodeController.text = "";
             Navigator.of(context).pop(true);
-            Get.toNamed("/farmer");
           });
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AlertDialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 16),
+                insetPadding: const EdgeInsets.symmetric(horizontal: 16),
                 backgroundColor:
-                    Get.isDarkMode ? Colors.black : Color(0XFFFFFFFF),
+                    Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
                 contentPadding: EdgeInsets.fromLTRB(31.w, 50.h, 31.w, 52.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
                   side: BorderSide(
-                      color: Get.isDarkMode ? Colors.grey : Color(0XFFFFFFFF)),
+                      color: Get.isDarkMode
+                          ? Colors.grey
+                          : const Color(0XFFFFFFFF)),
                 ),
                 content: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -146,7 +149,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                                 style: GoogleFonts.montserrat(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xff141414)),
+                                    color: const Color(0xff141414)),
                               ),
                             ],
                           ),
@@ -158,7 +161,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                                 style: GoogleFonts.poppins(
                                     fontSize: 24.sp,
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xff141414))),
+                                    color: const Color(0xff141414))),
                           ),
                           sizedBoxHeight(14.h),
                           TextFormField(
@@ -176,23 +179,26 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                               errorStyle: TextStyle(fontSize: 16.sp),
                               contentPadding: EdgeInsets.all(17.h),
                               filled: true,
-                              fillColor: Color(0xFFF1F1F1),
+                              fillColor: const Color(0xFFF1F1F1),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.r),
                                 borderSide: BorderSide(
-                                    color: Color(0xFF707070).withOpacity(0),
+                                    color:
+                                        const Color(0xFF707070).withOpacity(0),
                                     width: 1),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.r),
                                 borderSide: BorderSide(
-                                    color: Color(0xFF707070).withOpacity(0),
+                                    color:
+                                        const Color(0xFF707070).withOpacity(0),
                                     width: 1),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.r),
                                 borderSide: BorderSide(
-                                    color: Color(0xFF707070).withOpacity(0),
+                                    color:
+                                        const Color(0xFF707070).withOpacity(0),
                                     width: 1),
                               ),
                               errorBorder: OutlineInputBorder(

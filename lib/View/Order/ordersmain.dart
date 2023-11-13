@@ -1,12 +1,16 @@
+import 'package:farm_flow_sales/Model/orderModel/ongoing_order_model.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/View/Order/ongoiningorderdata.dart';
 import 'package:farm_flow_sales/View/Order/salesordermaindata.dart';
+import 'package:farm_flow_sales/view_models/orderApi/order_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../Utils/api_urls.dart';
 
 enum SingingCharacter {
   Today,
@@ -24,6 +28,17 @@ class OrderMain extends StatefulWidget {
 }
 
 class _OrderMainState extends State<OrderMain> {
+  OngoingOrderModel ongoingOrderModel = OngoingOrderModel();
+  RxBool isOngoingLoading = true.obs;
+  @override
+  void initState() {
+    OrderApi().getOngoingOrderData().then((value) {
+      ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
+      isOngoingLoading.value = false;
+    });
+    super.initState();
+  }
+
   SingingCharacter? _character = SingingCharacter.Today;
   @override
   Widget build(BuildContext context) {
@@ -52,7 +67,7 @@ class _OrderMainState extends State<OrderMain> {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(16, 9, 16, 20),
+                  padding: const EdgeInsets.fromLTRB(16, 9, 16, 20),
                   child: Column(
                     children: [
                       Row(
@@ -66,34 +81,43 @@ class _OrderMainState extends State<OrderMain> {
                         ],
                       ),
                       sizedBoxHeight(10),
-                      Container(
-                        height: 370.h,
-                        width: 360.w,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF1F1F1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(23, 5, 23, 0),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
-                            itemCount: salesOrderMainData.length,
-                            itemBuilder: (_, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                      salesOrderMainData[index]["route"]);
-                                },
-                                child: SalesOrderMainTile(
-                                    salesOrderMainData[index]["image"],
-                                    salesOrderMainData[index]["name"],
-                                    salesOrderMainData[index]["number"],
-                                    salesOrderMainData[index]["location"]),
-                              );
-                            },
-                          ),
-                        ),
+                      Obx(
+                        () => isOngoingLoading.value
+                            ? const CircularProgressIndicator()
+                            : Container(
+                                height: 370.h,
+                                width: 360.w,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF1F1F1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(23, 5, 23, 0),
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: ongoingOrderModel.data!.length,
+                                    itemBuilder: (_, index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          Get.toNamed("/orderdetails");
+                                        },
+                                        child: SalesOrderMainTile(
+                                          ongoingOrderModel.data![index]
+                                              .getFarmer!.profilePhoto!,
+                                          ongoingOrderModel.data![index]
+                                              .getFarmer!.userName!,
+                                          ongoingOrderModel.data![index]
+                                              .getFarmer!.phoneNumber!,
+                                          ongoingOrderModel
+                                              .data![index].address!,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
                       ),
                       sizedBoxHeight(25),
                       Row(
@@ -104,7 +128,7 @@ class _OrderMainState extends State<OrderMain> {
                             style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w500, fontSize: 18.sp),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           PopupMenuButton(
                             offset: const Offset(0, 50),
                             color: const Color(0xFFFFFFFF),
@@ -196,14 +220,14 @@ class _OrderMainState extends State<OrderMain> {
                         height: 370.h,
                         width: 360.w,
                         decoration: BoxDecoration(
-                          color: Color(0xFFF1F1F1),
+                          color: const Color(0xFFF1F1F1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(23, 5, 23, 0),
                           child: ListView.builder(
                             shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             itemCount: ongoingOrderMainData.length,
                             itemBuilder: (_, index) {
                               return InkWell(
@@ -235,11 +259,11 @@ class _OrderMainState extends State<OrderMain> {
 }
 
 Widget SalesOrderMainTile(
-    dynamic image, dynamic name, dynamic number, dynamic location) {
+    String image, String name, String number, String location) {
   return Padding(
     padding: const EdgeInsets.only(top: 10.0),
     child: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),
@@ -259,7 +283,9 @@ Widget SalesOrderMainTile(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(60), //<-- SEE HERE
                   ),
-                  child: Image.asset(image),
+                  child: image.isEmpty
+                      ? Image.asset("assets/images/person.png")
+                      : Image.network("${ApiUrls.baseImageUrl}/$image"),
                 ),
               ),
               sizedBoxWidth(8.w),
@@ -294,7 +320,7 @@ Widget SalesOrderMainTile(
                             text: number,
                             // "0225845855",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),
@@ -316,10 +342,10 @@ Widget SalesOrderMainTile(
                         sizedBoxWidth(5.w),
                         RichText(
                           text: TextSpan(
-                            text: location,
+                            text: location.isEmpty ? "Unknown" : location,
                             // "Canada",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),
@@ -346,7 +372,7 @@ Widget OngoingOrderMainTile(
     padding: const EdgeInsets.only(top: 10.0),
     child: Container(
       //width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),
@@ -402,7 +428,7 @@ Widget OngoingOrderMainTile(
                             text: number,
                             // "0225845855",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),
@@ -427,7 +453,7 @@ Widget OngoingOrderMainTile(
                             text: location,
                             // "Canada",
                             style: TextStyle(
-                              color: Color(0XFF585858),
+                              color: const Color(0XFF585858),
                               fontSize: 16.sp,
                             ),
                           ),

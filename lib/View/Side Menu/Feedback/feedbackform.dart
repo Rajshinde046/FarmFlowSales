@@ -5,7 +5,6 @@ import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/view_models/feedbackAPI.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData;
 
@@ -28,7 +27,6 @@ class _FeedbackformState extends State<Feedbackform> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Map<String, dynamic> data = Get.arguments;
     feedBackData = data["text"];
@@ -69,14 +67,14 @@ class _FeedbackformState extends State<Feedbackform> {
                         },
                         child: CircleAvatar(
                           radius: 20.h,
-                          backgroundColor: Color(0XFFF1F1F1),
+                          backgroundColor: const Color(0XFFF1F1F1),
                           child: Center(
                             child: Padding(
                               padding: EdgeInsets.only(left: 8.w),
                               child: Icon(
                                 Icons.arrow_back_ios,
                                 size: 25.h,
-                                color: Color(0XFF141414),
+                                color: const Color(0XFF141414),
                               ),
                             ),
                           ),
@@ -86,12 +84,12 @@ class _FeedbackformState extends State<Feedbackform> {
                       Text(
                         "Feedback",
                         style: TextStyle(
-                          color: Color(0XFF141414),
+                          color: const Color(0XFF141414),
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Icon(
                         Icons.more_vert,
                         color: AppColors.black,
@@ -107,7 +105,7 @@ class _FeedbackformState extends State<Feedbackform> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20.sp,
-                      color: Color(0xff141414),
+                      color: const Color(0xff141414),
                       fontWeight: FontWeight.w600,
                       fontFamily: "Montserrat",
                     ),
@@ -120,7 +118,7 @@ class _FeedbackformState extends State<Feedbackform> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontFamily: "Poppins",
                     ),
                   ),
@@ -135,21 +133,24 @@ class _FeedbackformState extends State<Feedbackform> {
                     errorStyle: TextStyle(fontSize: 16.sp),
                     contentPadding: EdgeInsets.all(17.h),
                     filled: true,
-                    fillColor: Color(0xFFF1F1F1),
+                    fillColor: const Color(0xFFF1F1F1),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                          color: const Color(0xFF707070).withOpacity(0),
+                          width: 1),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                          color: const Color(0xFF707070).withOpacity(0),
+                          width: 1),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                       borderSide: BorderSide(
-                          color: Color(0xFF707070).withOpacity(0), width: 1),
+                          color: const Color(0xFF707070).withOpacity(0),
+                          width: 1),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),

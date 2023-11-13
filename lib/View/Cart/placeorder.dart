@@ -1,14 +1,16 @@
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/controller/inventories_controller.dart';
+import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../controller/cart_controller.dart';
 
 class Placedorder extends StatefulWidget {
   const Placedorder({
@@ -34,10 +36,16 @@ class Placedorder extends StatefulWidget {
 }
 
 class _PlacedorderState extends State<Placedorder> {
-  int counter = 0;
-  int counter1 = 0;
-  int counter2 = 0;
-  String gender = "security-first";
+  CartController cartController = Get.put(CartController());
+  InventoriesController inventoriesController =
+      Get.put(InventoriesController());
+  String phoneNumber = "";
+  String street = "";
+
+  String city = "";
+  String state = "";
+  String zipcode = "";
+  String country = "";
 
   buildorderconfirmpopup() {
     return showDialog(
@@ -65,11 +73,12 @@ class _PlacedorderState extends State<Placedorder> {
           //   ),
           // ),
           AlertDialog(
-            insetPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            insetPadding:
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
             backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-            contentPadding: EdgeInsets.fromLTRB(15, 30, 15, 24),
+            contentPadding: const EdgeInsets.fromLTRB(15, 30, 15, 24),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               side: BorderSide(
                   color: Get.isDarkMode ? Colors.grey : Colors.white),
             ),
@@ -90,13 +99,13 @@ class _PlacedorderState extends State<Placedorder> {
                         "Your Order Has Been Placed Successfully!",
                         style: GoogleFonts.poppins(
                             fontSize: 20.sp,
-                            color: Color(0xff4D4D4D),
+                            color: const Color(0xff4D4D4D),
                             fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 InkWell(
@@ -118,7 +127,7 @@ class _PlacedorderState extends State<Placedorder> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 )
               ],
@@ -129,18 +138,25 @@ class _PlacedorderState extends State<Placedorder> {
     );
   }
 
-  double? discount;
-  String? curren;
   bool? change;
-  final double mRP = 500.0;
 
   @override
   void initState() {
-    discount = Get.arguments["discountpercent"];
-    curren = Get.arguments["currency"];
     change = Get.arguments["bool"];
-    print(Get.arguments["bool"]);
-    // TODO: implement initState
+    for (var a in cartController.farmerListModel.data!) {
+      if (a.id == cartController.selectedFarmerId) {
+        phoneNumber = a.phoneNumber!;
+      }
+    }
+    for (var a in cartController.farmerAddressModel.data!) {
+      if (a.id == cartController.selectedFarmAddressId) {
+        street = a.street!;
+        city = a.city!;
+        state = a.province!;
+        zipcode = a.postalCode.toString();
+        country = a.country!;
+      }
+    }
     super.initState();
   }
 
@@ -174,12 +190,12 @@ class _PlacedorderState extends State<Placedorder> {
                 // height: 48.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(left: 19.w, top: 12, bottom: 11),
                   child: Text(
-                    "Kevin Mounsey",
+                    cartController.farmerName,
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
                         color: AppColors.black,
@@ -193,538 +209,226 @@ class _PlacedorderState extends State<Placedorder> {
                 height: 263.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  color: Color(0xffF1F1F1),
+                  color: const Color(0xffF1F1F1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Transform.scale(
-                      scale: 1.5,
-                      child: Radio<String>(
-                        value: 'male',
-                        groupValue: gender,
-                        fillColor: MaterialStateColor.resolveWith(
-                            (states) => AppColors.buttoncolour),
-                        onChanged: (value) {
-                          setState(() {
-                            gender = value!;
-                          });
-                        },
-                      ),
-                    ),
-                    //   Padding(
-                    //   padding: EdgeInsets.only(left: 7.w),
-                    //   child: SvgPicture.asset(
-                    //     "assets/images/address.svg",
-                    //     width: 29.w,
-                    //     height: 29.h,
-                    //   ),
-                    // ),
-                    // sizedBoxWidth(13.w),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 10.h),
-                          child: Text(
-                            "Address",
-                            style: GoogleFonts.poppins(
-                              fontSize: 20.sp,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
+                    Padding(
+                      padding: EdgeInsets.only(left: 19.w, top: 12, bottom: 11),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.h),
+                            child: Text(
+                              "Address",
+                              style: GoogleFonts.poppins(
+                                fontSize: 20.sp,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                        ),
-                        sizedBoxHeight(4.h),
-                        RichText(
-                          text: TextSpan(
-                            text: "First Line Of Address : ",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                            children: [
-                              TextSpan(
-                                text: "64 martens \nplace",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                          sizedBoxHeight(4.h),
+                          RichText(
+                            text: TextSpan(
+                              text: "street : ",
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 16.sp,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                  text: street,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16.sp,
+                                      color: const Color(0xff4D4D4D),
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        sizedBoxHeight(5.h),
-                        RichText(
-                          text: TextSpan(
-                            text: "Second Line Of Address : ",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                            children: [
-                              TextSpan(
-                                text: "dunwich",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                          sizedBoxHeight(5.h),
+                          RichText(
+                            text: TextSpan(
+                              text: "city : ",
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 16.sp,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                  text: city,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16.sp,
+                                      color: const Color(0xff4D4D4D),
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        sizedBoxHeight(5.h),
-                        RichText(
-                          text: TextSpan(
-                            text: "Country : ",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                            children: [
-                              TextSpan(
-                                text: "queensland",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                          sizedBoxHeight(5.h),
+                          RichText(
+                            text: TextSpan(
+                              text: "state/province/area : ",
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 16.sp,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                  text: state,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16.sp,
+                                      color: const Color(0xff4D4D4D),
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        sizedBoxHeight(5.h),
-                        RichText(
-                          text: TextSpan(
-                            text: "phone number : ",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                            children: [
-                              TextSpan(
-                                text: "(07) 3830 6616",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                          sizedBoxHeight(5.h),
+                          RichText(
+                            text: TextSpan(
+                              text: "phone number : ",
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 16.sp,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                  text: phoneNumber,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16.sp,
+                                      color: const Color(0xff4D4D4D),
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        sizedBoxHeight(5.h),
-                        RichText(
-                          text: TextSpan(
-                            text: "Eircode : ",
-                            style: GoogleFonts.montserrat(
-                                fontSize: 16.sp,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                            children: [
-                              TextSpan(
-                                text: "4183",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16.sp,
-                                    color: Color(0xff4D4D4D),
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                          sizedBoxHeight(5.h),
+                          RichText(
+                            text: TextSpan(
+                              text: "zip code : ",
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 16.sp,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                  text: zipcode,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16.sp,
+                                      color: const Color(0xff4D4D4D),
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        // sizedBoxHeight(5.h),
-                        // RichText(
-                        //   text: TextSpan(
-                        //     text: "country : ",
-                        //     style: GoogleFonts.montserrat(
-                        //         fontSize: 16.sp,
-                        //         color: AppColors.black,
-                        //         fontWeight: FontWeight.w600),
-                        //     children: [
-                        //       TextSpan(
-                        //         text: "Ireland",
-                        //         style: GoogleFonts.montserrat(
-                        //             fontSize: 16.sp,
-                        //             color: Color(0xff4D4D4D),
-                        //             fontWeight: FontWeight.w400),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                      ],
+                          sizedBoxHeight(5.h),
+                          RichText(
+                            text: TextSpan(
+                              text: "country : ",
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 16.sp,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                  text: country,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16.sp,
+                                      color: Color(0xff4D4D4D),
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),
               ),
               sizedBoxHeight(24.h),
-              Container(
-                width: 358.w,
-                // height: 120.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Color(0xffF1F1F1),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color(0xff0000001F),
-                          blurRadius: 12.0,
-                          offset: Offset(0.0, 0.75),
-                          spreadRadius: 2)
-                    ]),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        "assets/images/orderred.png",
-                        width: 57.w,
-                        height: 99.h,
-                      ),
-                      sizedBoxWidth(31.w),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Pre-Calver Gain Gold",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff141414),
+              ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount:
+                      inventoriesController.viewCartModel.data!.cart!.length,
+                  itemBuilder: (ctx, index) {
+                    return Container(
+                      width: 358.w, margin: const EdgeInsets.only(bottom: 15),
+                      // height: 120.h,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Color(0xffF1F1F1),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color(0xff0000001F),
+                                blurRadius: 12.0,
+                                offset: Offset(0.0, 0.75),
+                                spreadRadius: 2)
+                          ]),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.network(
+                              "${ApiUrls.baseImageUrl}/${inventoriesController.viewCartModel.data!.cart![index].getItems![0].item!.smallImageUrl}",
+                              width: 57.w,
+                              height: 99.h,
                             ),
-                          ),
-                          sizedBoxHeight(3.h),
-                          Text(
-                            "lorem ipsum is simply dummy",
-                            style: GoogleFonts.poppins(
-                                fontSize: 15.sp,
-                                color: Color(0xff4D4D4D),
-                                fontWeight: FontWeight.w300),
-                          ),
-                          sizedBoxHeight(7.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "€ 500",
-                                style: GoogleFonts.poppins(
+                            sizedBoxWidth(31.w),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  inventoriesController.viewCartModel.data!
+                                      .cart![index].getItems![0].item!.title!,
+                                  style: GoogleFonts.poppins(
                                     fontSize: 18.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.black),
-                              ),
-                              sizedBoxWidth(91.w),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (counter > widget.minValue) {
-                                        counter--;
-                                      }
-                                      // widget.onChanged(counter);
-                                    });
-                                  },
-                                  child: SvgPicture.asset(
-                                    // "assets/images/minusbutton.svg",
-                                    "assets/images/minus1.svg",
-                                    width: 20.w,
-                                    // width: 20.w,
-                                    // height: 40.h,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xff141414),
                                   ),
                                 ),
-                              ),
-                              sizedBoxWidth(12.w),
-                              SizedBox(
-                                width: 14.w,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Text(
-                                    "$counter",
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Color(0xff141414),
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                sizedBoxHeight(3.h),
+                                Text(
+                                  inventoriesController.viewCartModel.data!
+                                      .cart![index].getItems![0].lotName!,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 15.sp,
+                                      color: const Color(0xff4D4D4D),
+                                      fontWeight: FontWeight.w300),
                                 ),
-                              ),
-                              sizedBoxWidth(8.w),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (counter < widget.maxValue) {
-                                        counter++;
-                                      }
-                                      // widget.onChanged(counter);
-                                    });
-                                  },
-                                  child: SvgPicture.asset(
-                                    // "assets/images/plusreorder.svg",
-                                    "assets/images/plus1.svg",
-                                    width: 20.w,
-                                    // width: 20.w,
-                                    // height: 40.h,
-                                  ),
+                                sizedBoxHeight(7.h),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "€ ${inventoriesController.viewCartModel.data!.cart![index].getItems![0].price! * inventoriesController.viewCartModel.data!.cart![index].quantity!}",
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.black),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              sizedBoxHeight(20.h),
-              Container(
-                width: 358.w,
-                // height: 120.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Color(0xffF1F1F1),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color(0xff0000001F),
-                          blurRadius: 12.0,
-                          offset: Offset(0.0, 0.75),
-                          spreadRadius: 2)
-                    ]),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        "assets/images/orderyellow.png",
-                        width: 57.w,
-                        height: 99.h,
-                      ),
-                      sizedBoxWidth(31.w),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Pre-Calver Gain Gold",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff141414),
+                              ],
                             ),
-                          ),
-                          sizedBoxHeight(3.h),
-                          Text(
-                            "lorem ipsum is simply dummy",
-                            style: GoogleFonts.poppins(
-                                fontSize: 15.sp,
-                                color: Color(0xff4D4D4D),
-                                fontWeight: FontWeight.w300),
-                          ),
-                          sizedBoxHeight(7.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "€ 200",
-                                style: GoogleFonts.poppins(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.black),
-                              ),
-                              sizedBoxWidth(91.w),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (counter1 > widget.minValue1) {
-                                        counter1--;
-                                      }
-                                      // widget.onChanged(counter1);
-                                    });
-                                  },
-                                  child: SvgPicture.asset(
-                                    // "assets/images/minusbutton.svg",
-                                    "assets/images/minus1.svg",
-                                    width: 20.w,
-                                    // height: 40.h,
-                                  ),
-                                ),
-                              ),
-                              sizedBoxWidth(12.w),
-                              SizedBox(
-                                width: 14.w,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Text(
-                                    "$counter1",
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Color(0xff141414),
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              sizedBoxWidth(8.w),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (counter1 < widget.maxValue1) {
-                                        counter1++;
-                                      }
-                                      // widget.onChanged(counter1);
-                                    });
-                                  },
-                                  child: SvgPicture.asset(
-                                    // "assets/images/plusreorder.svg",
-                                    "assets/images/plus1.svg",
-                                    width: 20.w,
-                                    // height: 40.h,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              sizedBoxHeight(20.h),
-              Container(
-                width: 358.w,
-                // height: 120.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Color(0xffF1F1F1),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color(0xff0000001F),
-                          blurRadius: 12.0,
-                          offset: Offset(0.0, 0.75),
-                          spreadRadius: 2)
-                    ]),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        "assets/images/orderwhite.png",
-                        width: 57.w,
-                        height: 99.h,
-                      ),
-                      sizedBoxWidth(31.w),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Pre-Calver Gain Gold",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff141414),
-                            ),
-                          ),
-                          sizedBoxHeight(2.h),
-                          Text(
-                            "lorem ipsum is simply dummy",
-                            style: GoogleFonts.poppins(
-                                fontSize: 15.sp,
-                                color: Color(0xff4D4D4D),
-                                fontWeight: FontWeight.w300),
-                          ),
-                          sizedBoxHeight(7.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "€ 150",
-                                style: GoogleFonts.poppins(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.black),
-                              ),
-                              sizedBoxWidth(91.w),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (counter2 > widget.minValue2) {
-                                        counter2--;
-                                      }
-                                      // widget.onChanged(counter2);
-                                    });
-                                  },
-                                  child: SvgPicture.asset(
-                                    // "assets/images/minusbutton.svg",
-                                    "assets/images/minus1.svg",
-                                    width: 20.w,
-                                    // height: 40.h,
-                                  ),
-                                ),
-                              ),
-                              sizedBoxWidth(12.w),
-                              SizedBox(
-                                width: 14.w,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Text(
-                                    "$counter2",
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Color(0xff141414),
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              sizedBoxWidth(8.w),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (counter2 < widget.maxValue2) {
-                                        counter2++;
-                                      }
-                                      // widget.onChanged(counter2);
-                                    });
-                                  },
-                                  child: SvgPicture.asset(
-                                    // "assets/images/plusreorder.svg",
-                                    "assets/images/plus1.svg",
-                                    width: 20.w,
-                                    // height: 40.h,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    );
+                  }),
               sizedBoxHeight(3.h),
-              Divider(
+              const Divider(
                 thickness: 1,
                 color: AppColors.buttoncolour,
               ),
@@ -736,14 +440,14 @@ class _PlacedorderState extends State<Placedorder> {
                     "Total MRP",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    "€ $mRP",
+                    "€ ${inventoriesController.cartSubTotalValue}",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontWeight: FontWeight.w500),
                   ),
                 ],
@@ -756,20 +460,22 @@ class _PlacedorderState extends State<Placedorder> {
                     "Discount on MRP",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    change! ? "- ${discount.toString()} %" : "€ ${curren}",
+                    change!
+                        ? "- ${cartController.discountValue} %"
+                        : "€ ${cartController.discountValue}",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
               sizedBoxHeight(3.h),
-              Divider(
+              const Divider(
                 thickness: 1,
                 color: AppColors.buttoncolour,
               ),
@@ -785,10 +491,7 @@ class _PlacedorderState extends State<Placedorder> {
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    change!
-                        ? "€ ${mRP - ((mRP * discount!) / 100)}"
-                        : "€ ${mRP - discount!}",
-                    // "€ 450",
+                    "€ ${cartController.netValue}",
                     style: GoogleFonts.poppins(
                         fontSize: 18.sp,
                         color: AppColors.buttoncolour,
@@ -800,7 +503,30 @@ class _PlacedorderState extends State<Placedorder> {
               customButtonCurve(
                   text: "Confirm Delivery",
                   onTap: () {
-                    buildorderconfirmpopup();
+                    String formattedDate = "";
+                    if (cartController.selectedStartDate.isNotEmpty) {
+                      List<String> dateSplit =
+                          cartController.selectedStartDate.split("/");
+                      formattedDate =
+                          '${dateSplit[2]}-${dateSplit[1]}-${dateSplit[0]}';
+                    }
+
+                    CartApi()
+                        .placeOrder(
+                      cartController.selectedFarmerId,
+                      cartController.selectedFarmAddressId,
+                      cartController.deliveryInstructionText,
+                      cartController.selectedFrequencyId,
+                      formattedDate,
+                      cartController.discountTypeId,
+                      cartController.discountValue,
+                      cartController.cartDataId,
+                      inventoriesController.cartSubTotalValue.value.toDouble(),
+                      cartController.netValue,
+                    )
+                        .then((value) {
+                      buildorderconfirmpopup();
+                    });
                   }),
               sizedBoxHeight(30.h)
             ],

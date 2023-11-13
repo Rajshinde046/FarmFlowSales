@@ -1,8 +1,7 @@
+import 'package:farm_flow_sales/Common/getx_controller.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -14,85 +13,91 @@ class Faqscontent extends StatefulWidget {
 }
 
 class _FaqscontentState extends State<Faqscontent> {
+  CommonGetXController commonGetXController = Get.put(CommonGetXController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      body: SafeArea(
-          child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: CircleAvatar(
-                    radius: 20.h,
-                    backgroundColor: Color(0XFFF1F1F1),
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 8.w),
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          size: 25.h,
-                          color: Color(0XFF141414),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                sizedBoxWidth(15.w),
-                Text(
-                  "FAQ's",
-                  style: TextStyle(
-                    color: Color(0XFF141414),
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+      appBar: AppBar(
+        title: Padding(
+          padding: EdgeInsets.only(
+            top: 20.h,
+          ),
+          child: Text(
+            "FAQ's",
+            style: TextStyle(
+              color: const Color(0XFF141414),
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  sizedBoxHeight(26.h),
-                  FaqExpanded(isExpanded2: true),
-                  sizedBoxHeight(23.h),
-                  FaqExpanded(isExpanded2: false),
-                  sizedBoxHeight(23.h),
-                  FaqExpanded(isExpanded2: false),
-                  sizedBoxHeight(23.h),
-                  FaqExpanded(
-                    isExpanded2: false,
+        ),
+        leading: Padding(
+          padding: EdgeInsets.only(
+            top: 20.h,
+            left: 16.w,
+          ),
+          child: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: CircleAvatar(
+              radius: 20.h,
+              backgroundColor: const Color(0XFFF1F1F1),
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 8.w),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 25.h,
+                    color: const Color(0XFF141414),
                   ),
-                  sizedBoxHeight(23.h),
-                  FaqExpanded(isExpanded2: false),
-                  sizedBoxHeight(23.h),
-                  FaqExpanded(isExpanded2: false),
-                  sizedBoxHeight(23.h),
-                  FaqExpanded(
-                    isExpanded2: false,
-                  ),
-                ],
+                ),
               ),
             ),
-          )
-        ],
-      )),
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
+      ),
+      backgroundColor: AppColors.white,
+      body: SingleChildScrollView(
+        physics: const ScrollPhysics(),
+        child: Column(
+          children: [
+            sizedBoxHeight(26.h),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: commonGetXController.faqModel.data!.length,
+                itemBuilder: (ctx, index) {
+                  return Container(
+                      margin: EdgeInsets.only(bottom: 23.h),
+                      child: FaqExpanded(
+                        isExpanded2: index == 0 ? true : false,
+                        title: commonGetXController
+                            .faqModel.data![index].question!,
+                        desc:
+                            commonGetXController.faqModel.data![index].answer!,
+                      ));
+                })
+          ],
+        ),
+      ),
     );
   }
 }
 
 class FaqExpanded extends StatefulWidget {
   bool isExpanded2;
+  String title;
+  String desc;
 
-  FaqExpanded({super.key, required this.isExpanded2});
+  FaqExpanded({
+    super.key,
+    required this.isExpanded2,
+    required this.title,
+    required this.desc,
+  });
 
   @override
   State<FaqExpanded> createState() => _FaqExpandedState();
@@ -130,12 +135,16 @@ class _FaqExpandedState extends State<FaqExpanded> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'What Is Feed Flow?',
-                style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Color(0xFF141414),
-                    fontWeight: FontWeight.w600),
+              SizedBox(
+                width: 275.w,
+                child: Text(
+                  widget.title,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 16.sp,
+                      color: const Color(0xFF141414),
+                      fontWeight: FontWeight.w600),
+                ),
               ),
             ],
           ),
@@ -143,17 +152,17 @@ class _FaqExpandedState extends State<FaqExpanded> {
             Container(
               width: 370.w,
               height: 30.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.white,
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 15.h),
               child: Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
+                widget.desc,
                 style: TextStyle(
                   fontSize: 16.sp,
-                  color: Color(0xFF4D4D4D),
+                  color: const Color(0xFF4D4D4D),
                 ),
               ),
             )

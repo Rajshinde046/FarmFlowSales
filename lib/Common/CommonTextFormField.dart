@@ -60,7 +60,6 @@ class _CustomtextFormFieldState extends State<CustomTextFormField> {
         textAlignVertical: TextAlignVertical.center,
         style: TextStyle(
           fontSize: 16.sp,
-
         ),
         onChanged: widget.onChanged,
         readOnly: widget.readonly,
@@ -70,28 +69,29 @@ class _CustomtextFormFieldState extends State<CustomTextFormField> {
         controller: widget.textEditingController,
         onTap: widget.onTap,
         decoration: InputDecoration(
-            errorStyle: TextStyle(fontSize: 14.sp,
+            errorStyle: TextStyle(
+              fontSize: 14.sp,
               // overflow: TextOverflow.visible
             ),
             isCollapsed: true,
             suffixIconConstraints: const BoxConstraints(),
             contentPadding: EdgeInsets.all(17.h),
             filled: true,
-            fillColor: Color(0xFFF1F1F1),
+            fillColor: const Color(0xFFF1F1F1),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.r),
-              borderSide:
-                  BorderSide(color: Color(0xFF707070).withOpacity(0), width: 1),
+              borderSide: BorderSide(
+                  color: const Color(0xFF707070).withOpacity(0), width: 1),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.r),
-              borderSide:
-                  BorderSide(color: Color(0xFF707070).withOpacity(0), width: 1),
+              borderSide: BorderSide(
+                  color: const Color(0xFF707070).withOpacity(0), width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.r),
-              borderSide:
-                  BorderSide(color: Color(0xFF707070).withOpacity(0), width: 1),
+              borderSide: BorderSide(
+                  color: const Color(0xFF707070).withOpacity(0), width: 1),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -124,7 +124,7 @@ class _CustomtextFormFieldState extends State<CustomTextFormField> {
                     padding: EdgeInsets.only(left: 8.w),
                     child: eyesuffix(),
                   )
-                : SizedBox()),
+                : const SizedBox()),
         keyboardType: widget.texttype,
         validator: widget.validator,
         inputFormatters: widget.inputFormatters);
