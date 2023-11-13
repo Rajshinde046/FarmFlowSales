@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:farm_flow_sales/View/secure_login.dart';
 import 'package:farm_flow_sales/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
       print('is Auth $isAuth');
     } on PlatformException catch (e) {
       print('exception is : $e');
+      log("Test");
     }
   }
 
