@@ -31,4 +31,5 @@ class ApiUrls {
   static const completedOrderApi = "${base}completed/orders";
   static const salesApi = "${base}sales";
   static const faqApi = "${base}faq/";
+  static const getNotificationData = "${base}sales/notifications";
 }
