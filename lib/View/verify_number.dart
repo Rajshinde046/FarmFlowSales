@@ -13,6 +13,8 @@ import 'package:lottie/lottie.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:farm_flow_sales/common/limit_range.dart';
 
+import '../controller/verify_otp_controller.dart';
+
 class VerifyNumber extends StatefulWidget {
   const VerifyNumber({super.key});
 
@@ -23,6 +25,8 @@ class VerifyNumber extends StatefulWidget {
 class _VerifyNumberState extends State<VerifyNumber> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController pincode = TextEditingController();
+  final controllerVerifyOtp = Get.put(VerifyOtpController());
+
   String? phoneNumber;
   int? id;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -140,14 +144,18 @@ class _VerifyNumberState extends State<VerifyNumber> {
                 ),
 
                 sizedBoxHeight(10.h),
-
-                Text(
-                  "Resend Code",
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 18.sp,
-                      color: AppColors.buttoncolour,
-                      fontWeight: FontWeight.w500),
+                InkWell(
+                  onTap: () {
+                    controllerVerifyOtp.resendOtpApi(id.toString());
+                  },
+                  child: Text(
+                    "Resend Code",
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 18.sp,
+                        color: AppColors.buttoncolour,
+                        fontWeight: FontWeight.w500),
+                  ),
                 ),
 
                 sizedBoxHeight(120.h),

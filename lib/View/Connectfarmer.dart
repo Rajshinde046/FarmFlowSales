@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
@@ -32,8 +34,8 @@ class _ConnectfarmerState extends State<Connectfarmer> {
       if (resp.status == ResponseStatus.SUCCESS) {
         buildconnectfarmer(context);
       } else if (resp.status == ResponseStatus.PRIVATE) {
-        String? message = resp.message;
-        utils.showToast("$message");
+        var message = resp.data;
+        utils.showToast(message["message"]);
       } else {
         utils.showToast(resp.data);
         utils.showToast("Error");
