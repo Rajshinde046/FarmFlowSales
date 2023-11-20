@@ -40,4 +40,5 @@ class ApiUrls {
   static const notificationStatusApi = "${base}sales/notifications-status";
   static const notificationCountsApi = "${base}sales/notifications-count";
   static const getNotificationData = "${base}sales/notifications";
+  static const resendOtpApi = "${base}resend-otp";
 }

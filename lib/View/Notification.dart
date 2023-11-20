@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/controller/notification_controller.dart';
@@ -40,399 +43,444 @@ class _NotificationState extends State<Notification> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: SafeArea(
-        child:
-            // CustomScrollView(
-            //   slivers: [
-            //     SliverToBoxAdapter(
-            // child:
-            Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 18.w, top: 20.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: CircleAvatar(
-                        radius: 20.h,
-                        backgroundColor: Color(0XFFF1F1F1),
-                        child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 8.w),
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              size: 25.h,
-                              color: Color(0xFF141414),
-                            ),
-                          ),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 15.w,
-                  ),
-                  Text(
-                    "Notifications",
-                    style: TextStyle(
-                        color: Color(0xFF141414),
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  // Spacer(),
-                  // Container(
-                  //   height: 42.h,
-                  //   width: 42.h,
-                  //   decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(25.h),
-                  //       color: AppColors.white,
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.shade400,
-                  //           blurRadius: 1.h,
-                  //           spreadRadius: 1.h,
-                  //           offset: Offset(0, 3),
-                  //         )
-                  //       ]),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       InkWell(
-                  //         onTap: () {
-                  //           Get.toNamed("/notificationSettings");
-                  //         },
-                  //         child: SvgPicture.asset(
-                  //           "assets/images/setting-svgrepo-com (1).svg",
-                  //           width: 23.w,
-                  //           height: 24.h,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
+    return WillPopScope(
+      onWillPop: () async {
+        controllerNotification.notificationCount.value = "0";
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: SafeArea(
+          child:
+              // CustomScrollView(
+              //   slivers: [
+              //     SliverToBoxAdapter(
+              // child:
+              Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 16.w, right: 18.w, top: 20.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    GetBuilder<NotificationController>(builder: (builder) {
-                      return controllerNotification.isLoading
-                          ? Center(child: CircularProgressIndicator())
-                          : controllerNotification.notificationData == null
-                              ? Center(
-                                  child: Text(
-                                    // _data[index]['title'] ?? "",
-                                    "Something went wrong",
-                                    style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                )
-                              : (controllerNotification.notificationData!.data
-                                          .today.isEmpty &&
-                                      controllerNotification.notificationData!
-                                          .data.yesterday.isEmpty &&
-                                      controllerNotification
-                                          .notificationData!.data.other.isEmpty)
-                                  ? Center(
-                                      child: Text(
-                                        // _data[index]['title'] ?? "",
-                                        "No Notifications available",
-                                        style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    )
-                                  : Column(
-                                      children: [
-                                        //today
-                                        controllerNotification.notificationData!
-                                                .data.today.isEmpty
-                                            ? SizedBox()
-                                            : Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    16.w),
-                                                        child: Text(
-                                                          "Today",
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
-                                                              fontSize: 16.sp,
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 15,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16.w),
-                                                    child: ListView.separated(
-                                                      shrinkWrap: true,
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      itemCount:
-                                                          controllerNotification
-                                                              .notificationData!
-                                                              .data
-                                                              .today
-                                                              .length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        final data =
-                                                            controllerNotification
-                                                                .notificationData!
-                                                                .data
-                                                                .today[index];
-                                                        String originalDate =
-                                                            data.readAt;
-                                                        DateTime parsedDate =
-                                                            DateTime.parse(
-                                                                originalDate);
-                                                        String formattedDate =
-                                                            DateFormat.jm()
-                                                                .format(
-                                                                    parsedDate);
-                                                        return NotificationCard(
-                                                          imageUrl: data.image,
-                                                          title: data.title,
-                                                          msg: data.message,
-                                                          dateTime:
-                                                              formattedDate,
-                                                        );
-                                                        // );
-                                                      },
-                                                      separatorBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return Divider(
-                                                          height: 40.h,
-                                                          thickness: 1,
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20.h,
-                                                  ),
-                                                ],
-                                              ),
-
-                                        //yesterday
-                                        controllerNotification.notificationData!
-                                                .data.yesterday.isEmpty
-                                            ? SizedBox()
-                                            : Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    16.w),
-                                                        child: Text(
-                                                          "Yesterday",
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
-                                                              fontSize: 16.sp,
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 15,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16.w),
-                                                    child: ListView.separated(
-                                                      shrinkWrap: true,
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      itemCount:
-                                                          controllerNotification
-                                                              .notificationData!
-                                                              .data
-                                                              .yesterday
-                                                              .length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        final data =
-                                                            controllerNotification
-                                                                .notificationData!
-                                                                .data
-                                                                .yesterday[index];
-                                                        String originalDate =
-                                                            data.readAt;
-                                                        DateTime parsedDate =
-                                                            DateTime.parse(
-                                                                originalDate);
-                                                        String formattedDate =
-                                                            DateFormat.jm()
-                                                                .format(
-                                                                    parsedDate);
-                                                        return NotificationCard(
-                                                          imageUrl: data.image,
-                                                          title: data.title,
-                                                          msg: data.message,
-                                                          dateTime:
-                                                              formattedDate,
-                                                        );
-                                                        // );
-                                                      },
-                                                      separatorBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return Divider(
-                                                          height: 40.h,
-                                                          thickness: 1,
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20.h,
-                                                  ),
-                                                ],
-                                              ),
-
-                                        //earlier
-                                        controllerNotification.notificationData!
-                                                .data.other.isEmpty
-                                            ? SizedBox()
-                                            : Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    16.w),
-                                                        child: Text(
-                                                          "Earlier",
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
-                                                              fontSize: 16.sp,
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 15,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16.w),
-                                                    child: ListView.separated(
-                                                      shrinkWrap: true,
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      itemCount:
-                                                          controllerNotification
-                                                              .notificationData!
-                                                              .data
-                                                              .other
-                                                              .length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        final data =
-                                                            controllerNotification
-                                                                .notificationData!
-                                                                .data
-                                                                .other[index];
-                                                        String originalDate =
-                                                            data.readAt;
-                                                        DateTime parsedDate =
-                                                            DateTime.parse(
-                                                                originalDate);
-                                                        String formattedDate =
-                                                            DateFormat(
-                                                                    'd MMM y')
-                                                                .format(
-                                                                    parsedDate);
-                                                        return NotificationCard(
-                                                          imageUrl: data.image,
-                                                          title: data.title,
-                                                          msg: data.message,
-                                                          dateTime:
-                                                              formattedDate,
-                                                        );
-                                                        // );
-                                                      },
-                                                      separatorBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return Divider(
-                                                          height: 40.h,
-                                                          thickness: 1,
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20.h,
-                                                  ),
-                                                ],
-                                              ),
-                                      ],
-                                    );
-                    }),
+                    GestureDetector(
+                      onTap: () {
+                        controllerNotification.notificationCount.value = "0";
+                        Get.back();
+                      },
+                      child: CircleAvatar(
+                          radius: 20.h,
+                          backgroundColor: const Color(0XFFF1F1F1),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 8.w),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                size: 25.h,
+                                color: const Color(0xFF141414),
+                              ),
+                            ),
+                          )),
+                    ),
+                    SizedBox(
+                      width: 15.w,
+                    ),
+                    Text(
+                      "Notifications",
+                      style: TextStyle(
+                          color: const Color(0xFF141414),
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    // Spacer(),
+                    // Container(
+                    //   height: 42.h,
+                    //   width: 42.h,
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(25.h),
+                    //       color: AppColors.white,
+                    //       boxShadow: [
+                    //         BoxShadow(
+                    //           color: Colors.grey.shade400,
+                    //           blurRadius: 1.h,
+                    //           spreadRadius: 1.h,
+                    //           offset: Offset(0, 3),
+                    //         )
+                    //       ]),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       InkWell(
+                    //         onTap: () {
+                    //           Get.toNamed("/notificationSettings");
+                    //         },
+                    //         child: SvgPicture.asset(
+                    //           "assets/images/setting-svgrepo-com (1).svg",
+                    //           width: 23.w,
+                    //           height: 24.h,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),
-            )
-          ],
+              SizedBox(
+                height: 20.h,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      GetBuilder<NotificationController>(builder: (builder) {
+                        return controllerNotification.isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : controllerNotification.notificationData == null
+                                ? Center(
+                                    child: Text(
+                                      // _data[index]['title'] ?? "",
+                                      "Something went wrong",
+                                      style: TextStyle(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                : (controllerNotification.notificationData!.data
+                                            .today.isEmpty &&
+                                        controllerNotification.notificationData!
+                                            .data.yesterday.isEmpty &&
+                                        controllerNotification.notificationData!
+                                            .data.other.isEmpty)
+                                    ? Center(
+                                        child: Text(
+                                          // _data[index]['title'] ?? "",
+                                          "No Notifications available",
+                                          style: TextStyle(
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      )
+                                    : Column(
+                                        children: [
+                                          //today
+                                          controllerNotification
+                                                  .notificationData!
+                                                  .data
+                                                  .today
+                                                  .isEmpty
+                                              ? const SizedBox()
+                                              : Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      16.w),
+                                                          child: Text(
+                                                            "Today",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontSize: 16.sp,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 15,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 16.w),
+                                                      child: ListView.separated(
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        itemCount:
+                                                            controllerNotification
+                                                                .notificationData!
+                                                                .data
+                                                                .today
+                                                                .length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          final data =
+                                                              controllerNotification
+                                                                  .notificationData!
+                                                                  .data
+                                                                  .today[index];
+                                                          String originalDate =
+                                                              data.readAt;
+                                                          DateTime parsedDate =
+                                                              DateTime.parse(
+                                                                  originalDate);
+                                                          String formattedDate =
+                                                              DateFormat.jm()
+                                                                  .format(
+                                                                      parsedDate);
+                                                          return InkWell(
+                                                            onTap: () {
+                                                              if (data.title ==
+                                                                  "connection accepted") {
+                                                                var dataV =
+                                                                    jsonDecode(
+                                                                        data.data);
+                                                                log(dataV
+                                                                    .toString());
+                                                                Get.toNamed(
+                                                                    "/farmerdetails",
+                                                                    arguments: {
+                                                                      "id": dataV[
+                                                                              "farmer_xid"]
+                                                                          .toString()
+                                                                    });
+                                                              }
+                                                            },
+                                                            child:
+                                                                NotificationCard(
+                                                              imageUrl:
+                                                                  data.image,
+                                                              title: data.title,
+                                                              msg: data.message,
+                                                              dateTime:
+                                                                  formattedDate,
+                                                            ),
+                                                          );
+                                                          // );
+                                                        },
+                                                        separatorBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          return Divider(
+                                                            height: 40.h,
+                                                            thickness: 1,
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20.h,
+                                                    ),
+                                                  ],
+                                                ),
+
+                                          //yesterday
+                                          controllerNotification
+                                                  .notificationData!
+                                                  .data
+                                                  .yesterday
+                                                  .isEmpty
+                                              ? const SizedBox()
+                                              : Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      16.w),
+                                                          child: Text(
+                                                            "Yesterday",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontSize: 16.sp,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 15,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 16.w),
+                                                      child: ListView.separated(
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        itemCount:
+                                                            controllerNotification
+                                                                .notificationData!
+                                                                .data
+                                                                .yesterday
+                                                                .length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          final data =
+                                                              controllerNotification
+                                                                  .notificationData!
+                                                                  .data
+                                                                  .yesterday[index];
+                                                          String originalDate =
+                                                              data.readAt;
+                                                          DateTime parsedDate =
+                                                              DateTime.parse(
+                                                                  originalDate);
+                                                          String formattedDate =
+                                                              DateFormat.jm()
+                                                                  .format(
+                                                                      parsedDate);
+                                                          return NotificationCard(
+                                                            imageUrl:
+                                                                data.image,
+                                                            title: data.title,
+                                                            msg: data.message,
+                                                            dateTime:
+                                                                formattedDate,
+                                                          );
+                                                          // );
+                                                        },
+                                                        separatorBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          return Divider(
+                                                            height: 40.h,
+                                                            thickness: 1,
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20.h,
+                                                    ),
+                                                  ],
+                                                ),
+
+                                          //earlier
+                                          controllerNotification
+                                                  .notificationData!
+                                                  .data
+                                                  .other
+                                                  .isEmpty
+                                              ? const SizedBox()
+                                              : Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      16.w),
+                                                          child: Text(
+                                                            "Earlier",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontSize: 16.sp,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 15,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 16.w),
+                                                      child: ListView.separated(
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        itemCount:
+                                                            controllerNotification
+                                                                .notificationData!
+                                                                .data
+                                                                .other
+                                                                .length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          final data =
+                                                              controllerNotification
+                                                                  .notificationData!
+                                                                  .data
+                                                                  .other[index];
+                                                          String originalDate =
+                                                              data.readAt;
+                                                          DateTime parsedDate =
+                                                              DateTime.parse(
+                                                                  originalDate);
+                                                          String formattedDate =
+                                                              DateFormat(
+                                                                      'd MMM y')
+                                                                  .format(
+                                                                      parsedDate);
+                                                          return NotificationCard(
+                                                            imageUrl:
+                                                                data.image,
+                                                            title: data.title,
+                                                            msg: data.message,
+                                                            dateTime:
+                                                                formattedDate,
+                                                          );
+                                                          // );
+                                                        },
+                                                        separatorBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          return Divider(
+                                                            height: 40.h,
+                                                            thickness: 1,
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20.h,
+                                                    ),
+                                                  ],
+                                                ),
+                                        ],
+                                      );
+                      }),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          // ),
+          //],
+          //),
         ),
-        // ),
-        //],
-        //),
       ),
     );
   }
@@ -500,7 +548,7 @@ class _NotificationCardState extends State<NotificationCard> {
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Text(
@@ -508,7 +556,7 @@ class _NotificationCardState extends State<NotificationCard> {
                         // data.message,
                         widget.msg,
                         style: TextStyle(
-                          color: Color(0xFF444444),
+                          color: const Color(0xFF444444),
                           fontSize: 16.sp,
                         ),
                       ),
@@ -525,7 +573,7 @@ class _NotificationCardState extends State<NotificationCard> {
                     // formattedDate,
                     widget.dateTime,
                     style: TextStyle(
-                      color: Color(0xFF707070),
+                      color: const Color(0xFF707070),
                       fontSize: 12.sp,
                     ),
                   ),

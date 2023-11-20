@@ -296,28 +296,32 @@ class _Dashboard extends State<Dashboard> {
                                   ],
                                 ),
                               ),
-                              dashboardController.notificationCount.value == "0"
-                                  ? const SizedBox()
-                                  : Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(4.0),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.red,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Text(
-                                          dashboardController
-                                              .notificationCount.value,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 11.0,
-                                            fontWeight: FontWeight.bold,
+                              Obx(
+                                () => dashboardController
+                                            .notificationCount.value ==
+                                        "0"
+                                    ? const SizedBox()
+                                    : Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4.0),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Text(
+                                            dashboardController
+                                                .notificationCount.value,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 11.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
+                              )
                             ],
                           ),
                           sizedBoxWidth(10.w),
