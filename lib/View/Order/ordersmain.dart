@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:farm_flow_sales/Model/orderModel/completed_order_model.dart';
 import 'package:farm_flow_sales/Model/orderModel/ongoing_order_model.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
@@ -14,6 +16,7 @@ import '../../Utils/api_urls.dart';
 import '../../Utils/texts.dart';
 
 enum SingingCharacter {
+  All,
   Today,
   Week,
   Month,
@@ -40,7 +43,7 @@ class _OrderMainState extends State<OrderMain> {
       ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
       isOngoingLoading.value = false;
     });
-    OrderApi().getCompletedOrderData().then((value) {
+    OrderApi().getCompletedOrderData("0").then((value) {
       completedOrderModel = CompletedOrderModel.fromJson(value.data);
       isCompletedLoading.value = false;
     });
@@ -69,7 +72,7 @@ class _OrderMainState extends State<OrderMain> {
                     });
                   } else {
                     isCompletedLoading.value = true;
-                    OrderApi().getCompletedOrderData().then((value) {
+                    OrderApi().getCompletedOrderData("0").then((value) {
                       completedOrderModel =
                           CompletedOrderModel.fromJson(value.data);
                       isCompletedLoading.value = false;
@@ -190,11 +193,34 @@ class _OrderMainState extends State<OrderMain> {
                           onSelected: (value) {
                             setState(() {
                               _character = value;
+                              log(value);
                             });
                             Get.back();
                           },
                           itemBuilder: (BuildContext bc) {
                             return [
+                              PopupMenuItem(
+                                child: RadioListTile<SingingCharacter>(
+                                  title: const Text('All'),
+                                  value: SingingCharacter.All,
+                                  groupValue: _character,
+                                  onChanged: (SingingCharacter? value) {
+                                    setState(() {
+                                      _character = value;
+                                    });
+                                    Get.back();
+                                    isCompletedLoading.value = true;
+                                    OrderApi()
+                                        .getCompletedOrderData("0")
+                                        .then((value) {
+                                      completedOrderModel =
+                                          CompletedOrderModel.fromJson(
+                                              value.data);
+                                      isCompletedLoading.value = false;
+                                    });
+                                  },
+                                ),
+                              ),
                               PopupMenuItem(
                                 child: RadioListTile<SingingCharacter>(
                                   title: const Text('Today'),
@@ -205,6 +231,15 @@ class _OrderMainState extends State<OrderMain> {
                                       _character = value;
                                     });
                                     Get.back();
+                                    isCompletedLoading.value = true;
+                                    OrderApi()
+                                        .getCompletedOrderData("1")
+                                        .then((value) {
+                                      completedOrderModel =
+                                          CompletedOrderModel.fromJson(
+                                              value.data);
+                                      isCompletedLoading.value = false;
+                                    });
                                   },
                                 ),
                               ),
@@ -218,6 +253,15 @@ class _OrderMainState extends State<OrderMain> {
                                       _character = value;
                                     });
                                     Get.back();
+                                    isCompletedLoading.value = true;
+                                    OrderApi()
+                                        .getCompletedOrderData("2")
+                                        .then((value) {
+                                      completedOrderModel =
+                                          CompletedOrderModel.fromJson(
+                                              value.data);
+                                      isCompletedLoading.value = false;
+                                    });
                                   },
                                 ),
                               ),
@@ -231,6 +275,15 @@ class _OrderMainState extends State<OrderMain> {
                                       _character = value;
                                     });
                                     Get.back();
+                                    isCompletedLoading.value = true;
+                                    OrderApi()
+                                        .getCompletedOrderData("3")
+                                        .then((value) {
+                                      completedOrderModel =
+                                          CompletedOrderModel.fromJson(
+                                              value.data);
+                                      isCompletedLoading.value = false;
+                                    });
                                   },
                                 ),
                               ),
@@ -244,6 +297,15 @@ class _OrderMainState extends State<OrderMain> {
                                       _character = value;
                                     });
                                     Get.back();
+                                    isCompletedLoading.value = true;
+                                    OrderApi()
+                                        .getCompletedOrderData("4")
+                                        .then((value) {
+                                      completedOrderModel =
+                                          CompletedOrderModel.fromJson(
+                                              value.data);
+                                      isCompletedLoading.value = false;
+                                    });
                                   },
                                 ),
                               ),
@@ -257,6 +319,15 @@ class _OrderMainState extends State<OrderMain> {
                                       _character = value;
                                     });
                                     Get.back();
+                                    isCompletedLoading.value = true;
+                                    OrderApi()
+                                        .getCompletedOrderData("5")
+                                        .then((value) {
+                                      completedOrderModel =
+                                          CompletedOrderModel.fromJson(
+                                              value.data);
+                                      isCompletedLoading.value = false;
+                                    });
                                   },
                                 ),
                               ),

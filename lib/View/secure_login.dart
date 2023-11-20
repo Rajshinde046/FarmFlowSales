@@ -84,7 +84,7 @@ class _SecureLoginState extends State<SecureLogin> {
                     Get.to(const ForgotPin());
                   },
                   child: Text(
-                    "Forgot Password?",
+                    "Forgot Pin?",
                     style: TextStyle(
                       fontSize: 15.sp,
                       color: AppColors.buttoncolour,

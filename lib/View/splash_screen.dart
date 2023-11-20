@@ -55,10 +55,10 @@ class _SplashScreenState extends State<SplashScreen> {
       if (token == "" || token == null) {
         Get.offAndToNamed("/loginScreen");
       } else {
-        ProfileAPI().getProfileInfo().then((value) {
+        ProfileAPI().getProfileInfo().then((value) async {
           profileController.profileInfoModel.value =
               ProfileInfoModel.fromJson(value.data);
-          prefs.setBool(
+          await prefs.setBool(
               "pin", profileController.profileInfoModel.value.data!.pin!);
         });
         if (

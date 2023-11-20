@@ -1,6 +1,8 @@
+import 'package:farm_flow_sales/Model/notificationModel/notification_status_model.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/global.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/view_models/notificationApi/notificationApi.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +20,21 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   bool state = false;
   bool fingerstate = false;
+
+  @override
+  void initState() {
+    NotificationAPI().getNotificationStatus().then((value) {
+      NotificationStatusModel notificationStatusModel =
+          NotificationStatusModel.fromJson(value.data);
+      if (notificationStatusModel.data!.isNotEmpty) {
+        state = false;
+      } else {
+        state = true;
+      }
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -440,6 +457,7 @@ class _CustomListTileState extends State<CustomListTile> {
               onToggle: (val) {
                 setState(() {
                   widget.statecontroller = val;
+                  NotificationAPI().notificationSettingsApi(3).then((value) {});
                 });
               },
             ),

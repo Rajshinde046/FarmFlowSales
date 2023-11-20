@@ -21,17 +21,6 @@ class Farmerdetails extends StatefulWidget {
 class _FarmerdetailsState extends State<Farmerdetails> {
   String id = Get.arguments["id"];
   int selectedCurrentFeed = 0;
-  List currentFeedData = [
-    {
-      "imagePath": "assets/images/buffalo.png",
-      "feedFor": "Buffalo",
-      "qty": "100"
-    },
-    {"imagePath": "assets/images/cow.png", "feedFor": "Cow", "qty": "600"},
-    {"imagePath": "assets/images/Sheep1.png", "feedFor": "Sheep", "qty": "100"},
-    {"imagePath": "assets/images/pig1.png", "feedFor": "Pig", "qty": "600"},
-    {"imagePath": "assets/images/hen.png", "feedFor": "Hen", "qty": "100"},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +289,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text("Farm Address",
+                                  Text("Farm Address ${index + 1}",
                                       style: GoogleFonts.poppins(
                                         fontSize: 18.sp,
                                         color: Colors.black,

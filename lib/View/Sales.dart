@@ -8,6 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../Utils/colors.dart';
 
 class Sales extends StatefulWidget {
   const Sales({super.key});
@@ -27,6 +30,110 @@ class _SalesState extends State<Sales> {
       isLoading.value = false;
     });
     super.initState();
+  }
+
+  buildcontentcalldialog(
+    context,
+    String number,
+    String name,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AlertDialog(
+            insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+            backgroundColor:
+                Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
+            //contentPadding: EdgeInsets.fromLTRB(96, 32, 96, 28),
+            shape: RoundedRectangleBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              side: BorderSide(
+                  color:
+                      Get.isDarkMode ? Colors.grey : const Color(0XFFFFFFFF)),
+            ),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //sizedBoxHeight(32.h),
+                Align(
+                  alignment: Alignment.center,
+                  child: SvgPicture.asset(
+                    "assets/images/contactphone.svg",
+                    // "assets/images/call.svg",
+                    width: 35.w,
+                    height: 35.h,
+                  ),
+                ),
+                SizedBox(
+                  height: 22.h,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Are you sure you want to call ${name}?",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+
+                sizedBoxHeight(21.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        launch("tel://${number}");
+                      },
+                      child: Container(
+                        height: 48.h,
+                        width: 140.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.h),
+                            color: AppColors.buttoncolour),
+                        child: Center(
+                          child: Text(
+                            "Yes",
+                            style: TextStyle(
+                                color: AppColors.white, fontSize: 18.sp),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: 48.h,
+                        width: 140.w,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: const Color(0XFF0E5F02)),
+                            borderRadius: BorderRadius.circular(10.h),
+                            color: AppColors.white),
+                        child: Center(
+                          child: Text(
+                            "No",
+                            style: TextStyle(
+                                color: AppColors.buttoncolour, fontSize: 18.sp),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -103,21 +210,21 @@ class _SalesState extends State<Sales> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  "€ 5000",
+                                  "€ ${salesModel.data!.salesData == null ? "0" : salesModel.data!.salesData!.target}",
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Text(
-                                  "€ 1000",
+                                  "€ ${salesModel.data!.salesData == null ? "0" : salesModel.data!.salesData!.current}",
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Text(
-                                  "€ 4000",
+                                  "€ ${salesModel.data!.salesData == null ? "0" : (salesModel.data!.salesData!.target! - salesModel.data!.salesData!.current!) < 0 ? "0" : (salesModel.data!.salesData!.target! - salesModel.data!.salesData!.current!)}",
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
@@ -156,14 +263,25 @@ class _SalesState extends State<Sales> {
                           physics: const BouncingScrollPhysics(),
                           itemCount: salesModel.data!.probableOrders!.length,
                           itemBuilder: (_, index) {
-                            return SalesMainTile(
-                                salesModel
-                                    .data!.probableOrders![index].profilePhoto!,
-                                salesModel
-                                    .data!.probableOrders![index].userName!,
-                                salesModel
-                                    .data!.probableOrders![index].phoneNumber!,
-                                "${salesModel.data!.probableOrders![index].farmDetails![0].province!}, ${salesModel.data!.probableOrders![index].farmDetails![0].country!}");
+                            return InkWell(
+                              onTap: () {
+                                buildcontentcalldialog(
+                                  context,
+                                  salesModel.data!.probableOrders![index]
+                                      .phoneNumber!,
+                                  salesModel
+                                      .data!.probableOrders![index].userName!,
+                                );
+                              },
+                              child: SalesMainTile(
+                                  salesModel.data!.probableOrders![index]
+                                      .profilePhoto!,
+                                  salesModel
+                                      .data!.probableOrders![index].userName!,
+                                  salesModel.data!.probableOrders![index]
+                                      .phoneNumber!,
+                                  "${salesModel.data!.probableOrders![index].farmDetails![0].province!}, ${salesModel.data!.probableOrders![index].farmDetails![0].country!}"),
+                            );
                           },
                         ),
                       ),

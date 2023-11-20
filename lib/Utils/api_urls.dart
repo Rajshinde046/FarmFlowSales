@@ -28,11 +28,15 @@ class ApiUrls {
   static const placeOrderApi = "${base}order/place";
   static const connectFarmerApi = "${base}connect/farmer";
   static const ongoingOrderApi = "${base}ongoing/orders";
-  static const completedOrderApi = "${base}completed/orders";
+  static const completedOrderApi = "${base}completed/orders/";
   static const salesApi = "${base}sales";
   static const faqApi = "${base}faq/";
   static const contactUsApi = "${base}contact_us";
   static const changePinApi = "${base}change/pin";
   static const checkPinApi = "${base}check/pin";
   static const orderDetailsApi = "${base}details/order/";
+  static const contactListApi = "${base}contact/list";
+  static const notificationSettingApi = "${base}sales/notification-settings";
+  static const notificationStatusApi = "${base}sales/notifications-status";
+  static const notificationCountsApi = "${base}sales/notifications-count";
 }

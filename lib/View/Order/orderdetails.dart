@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../Utils/texts.dart';
 
@@ -160,17 +161,17 @@ class _OrderdetailsState extends State<Orderdetails> {
                                     ),
                                   ),
                                   const Spacer(),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 8.h),
-                                    child: Text(
-                                      "Edit",
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color: const Color(0XFF0E5F02),
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(top: 8.h),
+                                  //   child: Text(
+                                  //     "Edit",
+                                  //     style: TextStyle(
+                                  //         fontSize: 16.sp,
+                                  //         color: const Color(0XFF0E5F02),
+                                  //         fontFamily: "Poppins",
+                                  //         fontWeight: FontWeight.bold),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -341,37 +342,70 @@ class _OrderdetailsState extends State<Orderdetails> {
                               ),
                             ),
                             sizedBoxHeight(13.h),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: Container(
-                                width: 358.w,
-                                height: 35.h,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: const Color(0XFF918E8E),
-                                  ),
-                                  color: AppColors.white,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Gap(15),
-                                    SvgPicture.asset(
-                                      "assets/images/download.svg",
-                                      // width: 12.w,
-                                      // height: 13.h,
+                            InkWell(
+                              onTap: () async {
+                                var permissionStatus =
+                                    await Permission.storage.status;
+                                if (permissionStatus.isDenied) {
+                                  await Permission.storage.request();
+                                  permissionStatus =
+                                      await Permission.storage.status;
+                                  if (permissionStatus.isDenied) {
+                                    await openAppSettings();
+                                  }
+                                } else if (permissionStatus
+                                    .isPermanentlyDenied) {
+                                  await openAppSettings();
+                                } else {
+                                  OrderApi()
+                                      .downloadFile(
+                                          "${ApiUrls.base}download/invoice/${orderDetailsModel.data!.orderHeaderId!}",
+                                          "invoice_${orderDetailsModel.data!.orderHeaderId!}.pdf")
+                                      .then((value) {});
+                                }
+                                permissionStatus =
+                                    await Permission.storage.status;
+                                if (permissionStatus.isGranted) {
+                                  OrderApi()
+                                      .downloadFile(
+                                          "${ApiUrls.base}download/invoice/${orderDetailsModel.data!.orderHeaderId!}",
+                                          "invoice_${orderDetailsModel.data!.orderHeaderId!}.pdf")
+                                      .then((value) {});
+                                }
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: Container(
+                                  width: 358.w,
+                                  height: 35.h,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color(0XFF918E8E),
                                     ),
-                                    sizedBoxWidth(10.w),
-                                    Text(
-                                      "Download Invoice",
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontFamily: "Poppins",
-                                          color: const Color(0XFF0E5F02),
-                                          fontWeight: FontWeight.w500),
-                                    )
-                                  ],
+                                    color: AppColors.white,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Gap(15),
+                                      SvgPicture.asset(
+                                        "assets/images/download.svg",
+                                        // width: 12.w,
+                                        // height: 13.h,
+                                      ),
+                                      sizedBoxWidth(10.w),
+                                      Text(
+                                        "Download Invoice",
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontFamily: "Poppins",
+                                            color: const Color(0XFF0E5F02),
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

@@ -29,9 +29,8 @@ class ForgotPasswordAPI {
 
   Future<ResponseData<dynamic>> forgotpinApi() async {
     final response = await NetworkApiServices().postApi(
-      optionalpar: true,
       data,
-      "https://farmflow.betadelivery.com/api/forgot-password",
+      "https://farmflow.betadelivery.com/api/forgot/pin",
     );
 
     if (response.status == ResponseStatus.SUCCESS) {

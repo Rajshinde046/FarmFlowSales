@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide Response, FormData;
 
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/base_manager.dart';
@@ -33,7 +34,7 @@ class NetworkApiServices extends BaseApiServices {
     if (response.statusCode == 200) {
       print(json.encode(response.data));
     } else {
-      print(response.statusMessage);
+      print(response.statusMessage); 
     }
   }
 
@@ -67,6 +68,12 @@ class NetworkApiServices extends BaseApiServices {
         data: response.data,
         ResponseStatus.SUCCESS,
       );
+    } else if (response.statusCode == 403) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', "");
+      Get.offAndToNamed("/loginScreen");
+      return ResponseData<dynamic>(
+          response.statusMessage!, ResponseStatus.FAILED);
     } else {
       try {
         return ResponseData<dynamic>(
@@ -94,7 +101,16 @@ class NetworkApiServices extends BaseApiServices {
 
             // "device-id": deviceId
           }));
-    } on Exception catch (_) {
+      log(response.toString());
+    } on Exception catch (e) {
+      if (e is DioException) {
+        if (e.response!.statusCode == 403) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('token', "");
+          Get.offAndToNamed("/loginScreen");
+        }
+      }
+
       return ResponseData<dynamic>(
           'Oops something Went Wrong', ResponseStatus.FAILED);
     }
@@ -104,6 +120,12 @@ class NetworkApiServices extends BaseApiServices {
         data: response.data,
         ResponseStatus.SUCCESS,
       );
+    } else if (response.statusCode == 403) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', "");
+      Get.offAndToNamed("/loginScreen");
+      return ResponseData<dynamic>(
+          response.statusMessage!, ResponseStatus.FAILED);
     } else {
       try {
         return ResponseData<dynamic>(
@@ -146,7 +168,13 @@ class NetworkApiServices extends BaseApiServices {
                       //'access-token': token,
                     }));
     } on Exception catch (e) {
-      print(e);
+      if (e is DioException) {
+        if (e.response!.statusCode == 403) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('token', "");
+          Get.offAndToNamed("/loginScreen");
+        }
+      }
       return ResponseData<dynamic>(
           'Oops something Went Wrong', ResponseStatus.FAILED);
     }
@@ -161,6 +189,12 @@ class NetworkApiServices extends BaseApiServices {
       print(response.data);
       return ResponseData<dynamic>("success", ResponseStatus.PRIVATE,
           data: response.data);
+    } else if (response.statusCode == 403) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', "");
+      Get.offAndToNamed("/loginScreen");
+      return ResponseData<dynamic>(
+          response.statusMessage!, ResponseStatus.FAILED);
     } else {
       try {
         return ResponseData<dynamic>(
@@ -198,6 +232,12 @@ class NetworkApiServices extends BaseApiServices {
         data: response.data,
         ResponseStatus.SUCCESS,
       );
+    } else if (response.statusCode == 403) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', "");
+      Get.offAndToNamed("/loginScreen");
+      return ResponseData<dynamic>(
+          response.statusMessage!, ResponseStatus.FAILED);
     } else {
       try {
         return ResponseData<dynamic>(

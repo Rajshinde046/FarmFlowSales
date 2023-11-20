@@ -27,7 +27,7 @@ class SalesModel {
 
 class Data {
   List<ProbableOrders>? probableOrders;
-  // List<Null>? salesData;
+  SalesData? salesData;
 
   Data({
     this.probableOrders,
@@ -41,12 +41,11 @@ class Data {
         probableOrders!.add(ProbableOrders.fromJson(v));
       });
     }
-    // if (json['salesData'] != null) {
-    //   salesData = <Null>[];
-    //   json['salesData'].forEach((v) {
-    //     salesData!.add(new Null.fromJson(v));
-    //   });
-    // }
+    if (json['salesData'] != null) {
+      salesData = SalesData.fromJson(json['salesData']);
+    } else {
+      salesData = null;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -54,9 +53,9 @@ class Data {
     if (probableOrders != null) {
       data['probableOrders'] = probableOrders!.map((v) => v.toJson()).toList();
     }
-    // if (salesData != null) {
-    //   data['salesData'] = salesData!.map((v) => v.toJson()).toList();
-    // }
+    if (salesData != null) {
+      data['salesData'] = salesData!.toJson();
+    }
     return data;
   }
 }
@@ -117,6 +116,29 @@ class ProbableOrders {
     if (farmDetails != null) {
       data['farm_details'] = farmDetails!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class SalesData {
+  int? target;
+  int? current;
+
+  SalesData({
+    this.target,
+    this.current,
+  });
+
+  SalesData.fromJson(Map<String, dynamic> json) {
+    target = json['target_value'];
+    current = json['current_achieved'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['target_value'] = target;
+    data['current_achieved'] = current;
+
     return data;
   }
 }

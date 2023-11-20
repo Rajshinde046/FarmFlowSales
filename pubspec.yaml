@@ -64,6 +64,8 @@ dependencies:
   carousel_slider: ^4.2.1
   dropdown_button2: ^2.1.2
   gap: ^3.0.1
+  url_launcher: ^6.2.1
+  permission_handler: ^11.0.1
 
 dev_dependencies:
   flutter_test:
