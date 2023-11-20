@@ -4,6 +4,7 @@ import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../Model/ProfileModel/profile_info_model.dart';
@@ -32,11 +33,12 @@ class _SideBarState extends State<SideBar> {
   List sideBarData = [
     {
       "icon": Image.asset(
-        "assets/images/faq.png",
+        "assets/images/contact-info.png",
         height: 30.h,
         width: 30.h,
+        color: Colors.white,
       ),
-      "text": "Contact",
+      "text": "Contacts",
       "route": "/contact"
     },
     {
@@ -158,6 +160,11 @@ class _SideBarState extends State<SideBar> {
                             ],
                           ),
                         ),
+                        const Gap(39),
+                        const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                        )
                       ],
                     ),
                   ),

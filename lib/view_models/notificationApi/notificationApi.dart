@@ -4,19 +4,17 @@ import '../../Utils/api_urls.dart';
 import '../../Utils/base_manager.dart';
 import '../../data/network/network_api_services.dart';
 
-class CartApi {
-  Future<ResponseData<dynamic>> manageCartData(
-    int id,
-    int quantity,
+class NotificationAPI {
+  Future<ResponseData<dynamic>> notificationSettingsApi(
+    int categoryId,
   ) async {
     final response = await NetworkApiServices().postApi(
       {
-        "item_master_lot_xid": id,
-        "quantity": quantity,
+        "category_id": categoryId,
       },
-      ApiUrls.manageCartApi,
+      ApiUrls.notificationSettingApi,
     );
-    log(response.data.toString());
+
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
@@ -30,11 +28,11 @@ class CartApi {
     return response;
   }
 
-  Future<ResponseData<dynamic>> getViewCartData() async {
+  Future<ResponseData<dynamic>> getNotificationCount() async {
     final response = await NetworkApiServices().getApi1(
-      ApiUrls.viewCartApi,
+      ApiUrls.notificationCountsApi,
     );
-    log(response.data.toString());
+
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
@@ -48,38 +46,16 @@ class CartApi {
     return response;
   }
 
-  Future<ResponseData<dynamic>> placeOrder(
-    int farmerId,
-    int farmId,
-    String deliveryInstruction,
-    int frequencyId,
-    String startDate,
-    int discountType,
-    double discountValue,
-    List<int> cartIds,
-    double totalValue,
-    double netValue,
-  ) async {
-    final response = await NetworkApiServices().postApi(
-      {
-        "farmer_xid": farmerId,
-        "farm_xid": farmId,
-        "delivery_instruction": deliveryInstruction,
-        "frequency_xid": frequencyId,
-        "start_date": startDate,
-        "discount_type": discountType,
-        "discount_value": discountValue,
-        "cart_ids": cartIds,
-        "total_value": totalValue,
-        "net_value": netValue,
-      },
-      ApiUrls.placeOrderApi,
+  Future<ResponseData<dynamic>> getNotificationStatus() async {
+    final response = await NetworkApiServices().getApi1(
+      ApiUrls.notificationStatusApi,
     );
-    log(response.data.toString());
+
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
       if (responseData['success']) {
+        log(responseData.toString());
         return response;
       } else {
         return ResponseData<dynamic>(

@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/View/Side%20Menu/Profile/profile.dart';
+import 'package:farm_flow_sales/view_models/contactUsApi/contact_us_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,6 +22,13 @@ class _ContactUsState extends State<ContactUs> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   final residentialstatustexteditingcontroller = TextEditingController();
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
+  TextEditingController subjectController = TextEditingController();
+
+  @override
   buildcontactusdialog(context) {
     return showDialog(
         context: context,
@@ -51,7 +61,7 @@ class _ContactUsState extends State<ContactUs> {
                     Align(
                       alignment: Alignment.center,
                       child: Image.asset(
-                        "assets/images/circletick.png",
+                        "assets/images/circletick.jpg",
                         width: 59.w,
                         height: 59.h,
                       ),
@@ -149,6 +159,7 @@ class _ContactUsState extends State<ContactUs> {
                         height: 15.h,
                       ),
                       ContactTextformfield(
+                          textEditingController: nameController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please Enter Your Name";
@@ -176,6 +187,7 @@ class _ContactUsState extends State<ContactUs> {
                         height: 15.h,
                       ),
                       ContactTextformfield(
+                          textEditingController: emailController,
                           validator: (value) {
                             if (value.isEmpty) {
                               return "Please Enter Your Email";
@@ -206,6 +218,7 @@ class _ContactUsState extends State<ContactUs> {
                         height: 15.h,
                       ),
                       ContactTextformfield(
+                          textEditingController: phoneController,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(10),
                           ],
@@ -239,6 +252,7 @@ class _ContactUsState extends State<ContactUs> {
                         height: 15.h,
                       ),
                       ContactTextformfield(
+                          textEditingController: subjectController,
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Subject is required';
@@ -266,6 +280,7 @@ class _ContactUsState extends State<ContactUs> {
                         height: 15.h,
                       ),
                       TextFormField(
+                        controller: messageController,
                         style: TextStyle(fontSize: 16.sp),
                         cursorColor: const Color(0xFF3B3F43),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -320,8 +335,22 @@ class _ContactUsState extends State<ContactUs> {
                         text: "Send Now",
                         onTap: () {
                           if (_form.currentState!.validate()) {
-                            print("error");
-                            buildcontactusdialog(context);
+                            ContactUsAPI()
+                                .contactUsApi(
+                              nameController.text,
+                              emailController.text,
+                              phoneController.text,
+                              subjectController.text,
+                              messageController.text,
+                            )
+                                .then((value) {
+                              // nameController.clear();
+                              // emailController.clear();
+                              // phoneController.clear();
+                              // subjectController.clear();
+                              // messageController.clear();
+                              buildcontactusdialog(context);
+                            });
                           }
                         },
                       ),

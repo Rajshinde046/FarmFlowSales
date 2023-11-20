@@ -13,10 +13,12 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../Model/NotificationModel/notification_count_model.dart';
 import '../Model/dashboardModel/dashboard_model.dart';
 import 'package:farm_flow_sales/common/limit_range.dart';
 
 import '../controller/dashboard_controller.dart';
+import '../view_models/notificationApi/notificationApi.dart';
 import '../view_models/weatherApi/weather_api.dart';
 
 class Dashboard extends StatefulWidget {
@@ -54,6 +56,15 @@ class _Dashboard extends State<Dashboard> {
       await DashboardApi().getDashboardData().then((value) async {
         dashboardController.dashboardModel =
             DashboardModel.fromJson(value.data);
+        NotificationAPI().getNotificationCount().then((value) {
+          NotificationCountModel notificationCountModel =
+              NotificationCountModel.fromJson(value.data);
+          dashboardController.notificationCount.value =
+              notificationCountModel.data.toString();
+          //     getCurrentAddress();
+
+          dashboardController.isDashboardApiLoading.value = false;
+        });
         dashboardController.isDashboardApiLoading.value = false;
       });
     });
@@ -248,36 +259,66 @@ class _Dashboard extends State<Dashboard> {
                             ],
                           ),
                           const Spacer(),
-                          Container(
-                            height: 42.h,
-                            width: 42.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.h),
-                              color: AppColors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade400,
-                                  blurRadius: 5.h,
-                                  spreadRadius: 2.h,
-                                )
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Get.toNamed("/notification");
-                                  },
-                                  child: SvgPicture.asset(
-                                    "assets/images/notification_bell.svg",
-                                    height: 28.h,
-                                    width: 28.h,
-                                    color: AppColors.black,
-                                  ),
+                          Stack(
+                            children: [
+                              Container(
+                                height: 42.h,
+                                width: 45.h,
+                              ),
+                              Container(
+                                height: 42.h,
+                                width: 42.h,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade400,
+                                      blurRadius: 5.h,
+                                      spreadRadius: 2.h,
+                                    )
+                                  ],
                                 ),
-                              ],
-                            ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Get.toNamed("/notification");
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/images/notification_bell.svg",
+                                        height: 28.h,
+                                        width: 28.h,
+                                        color: AppColors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              dashboardController.notificationCount.value == "0"
+                                  ? const SizedBox()
+                                  : Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4.0),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Text(
+                                          dashboardController
+                                              .notificationCount.value,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 11.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                            ],
                           ),
                           sizedBoxWidth(10.w),
                           Container(

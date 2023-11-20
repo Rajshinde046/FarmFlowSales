@@ -1,8 +1,6 @@
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/View/LoginScreen.dart';
-import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';

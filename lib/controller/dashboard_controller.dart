@@ -5,6 +5,7 @@ import '../Model/dashboardModel/dashboard_model.dart';
 //import '../models/dashboardModel.dart';
 
 class DashboardController extends GetxController {
+  RxString notificationCount = "0".obs;
   RxString permissionStatus = "".obs;
   RxString tempValue = "00.0".obs;
   RxString humidityValue = "0".obs;

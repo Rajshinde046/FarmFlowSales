@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
 import 'package:farm_flow_sales/models/farmerDetailsModel.dart';
@@ -14,7 +16,7 @@ class FarmerDetailsAPI {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
       if (responseData['success']) {
-        print(responseData);
+        log(responseData.toString());
         FarmerDetailsModel videolistObj =
             FarmerDetailsModel.fromJson(responseData);
         return videolistObj;

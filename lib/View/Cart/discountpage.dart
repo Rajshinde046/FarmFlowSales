@@ -36,7 +36,7 @@ class Discount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    discountValueConttroller.text = "0";
+    // discountValueConttroller.text = "0";
     mRP = inventoriesController.cartSubTotalValue.value.toDouble();
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -163,7 +163,7 @@ class Discount extends StatelessWidget {
                       GetBuilder<CommonGetXController>(builder: (context) {
                         return Obx(() => text18w5004D4D4D(discountBool.value
                             ? "- ${discountController.discountValue} %"
-                            : '€ ${discountValueConttroller.text}'));
+                            : '€ ${discountValueConttroller.text.isEmpty ? "0" : discountValueConttroller.text} '));
                       }),
                     ]),
                 sizedBoxHeight(3.h),

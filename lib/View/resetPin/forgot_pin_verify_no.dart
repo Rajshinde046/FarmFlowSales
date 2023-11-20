@@ -4,23 +4,25 @@ import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/View/resetPin/set_new_pin.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
 import 'package:farm_flow_sales/view_models/onBoarding/VerifyNumberAPI.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:farm_flow_sales/common/limit_range.dart';
 
-class VerifyNumber extends StatefulWidget {
-  const VerifyNumber({super.key});
+class ForogotPinVerifyNumber extends StatefulWidget {
+  const ForogotPinVerifyNumber({super.key});
 
   @override
-  State<VerifyNumber> createState() => _VerifyNumberState();
+  State<ForogotPinVerifyNumber> createState() => _ForgotPinVerifyNumberState();
 }
 
-class _VerifyNumberState extends State<VerifyNumber> {
+class _ForgotPinVerifyNumberState extends State<ForogotPinVerifyNumber> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController pincode = TextEditingController();
   String? phoneNumber;
@@ -46,7 +48,9 @@ class _VerifyNumberState extends State<VerifyNumber> {
       if (resp.status == ResponseStatus.SUCCESS) {
         // int? id = resp.data['data']['id'];
 
-        Get.toNamed('/ResetPassword', arguments: {'id': id.toString()});
+        Get.to(
+          const SetNewPinScreen(),
+        );
       } else if (resp.status == ResponseStatus.PRIVATE) {
         String? message = resp.data['data'];
         utils.showToast("$message");
