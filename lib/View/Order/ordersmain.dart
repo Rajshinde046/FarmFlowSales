@@ -50,7 +50,7 @@ class _OrderMainState extends State<OrderMain> {
     super.initState();
   }
 
-  SingingCharacter? _character = SingingCharacter.Today;
+  SingingCharacter? _character = SingingCharacter.All;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -118,7 +118,9 @@ class _OrderMainState extends State<OrderMain> {
                         ? Container(
                             margin: EdgeInsets.only(top: Get.height / 3.5),
                             child: const Center(
-                                child: CircularProgressIndicator()))
+                                child: CircularProgressIndicator(
+                              color: AppColors.buttoncolour,
+                            )))
                         : SizedBox(
                             height: Get.height / 1.4,
                             width: Get.width,
@@ -343,7 +345,9 @@ class _OrderMainState extends State<OrderMain> {
                         ? Container(
                             margin: EdgeInsets.only(top: Get.height / 3.5),
                             child: const Center(
-                                child: CircularProgressIndicator()))
+                                child: CircularProgressIndicator(
+                              color: AppColors.buttoncolour,
+                            )))
                         : SizedBox(
                             height: Get.height / 1.46,
                             width: Get.width,
@@ -418,7 +422,8 @@ Widget SalesOrderMainTile(
             height: 11.h,
           ),
           Row(
-            //mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 16.w),
@@ -428,75 +433,81 @@ Widget SalesOrderMainTile(
                   ),
                   child: image.isEmpty
                       ? Image.asset("assets/images/person.png")
-                      : Image.network("${ApiUrls.baseImageUrl}/$image"),
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: Image.network(
+                            "${ApiUrls.baseImageUrl}/$image",
+                            width: 65,
+                            height: 65,
+                          ),
+                        ),
                 ),
               ),
               sizedBoxWidth(8.w),
-              SizedBox(
-                width: 165.w,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    RichText(
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                        text: name,
-                        // "Roma dsouza",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  RichText(
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                      text: name,
+                      // "Roma dsouza",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/call.svg",
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/images/call.svg",
+                        width: 13.w,
+                        height: 13.w,
+                      ),
+                      sizedBoxWidth(5.w),
+                      RichText(
+                        text: TextSpan(
+                          text: number,
+                          // "0225845855",
+                          style: TextStyle(
+                            color: const Color(0XFF585858),
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
+                      Container()
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 3.h),
+                        child: SvgPicture.asset(
+                          "assets/images/locationconnect.svg",
                           width: 13.w,
                           height: 13.w,
                         ),
-                        sizedBoxWidth(5.w),
-                        RichText(
-                          text: TextSpan(
-                            text: number,
-                            // "0225845855",
-                            style: TextStyle(
-                              color: const Color(0XFF585858),
-                              fontSize: 16.sp,
-                            ),
+                      ),
+                      sizedBoxWidth(5.w),
+                      Container(
+                        width: Get.width / 1.7,
+                        child: Text(
+                          location.isEmpty ? "Unknown" : location,
+                          // "Canada",
+                          maxLines: 3,
+                          style: TextStyle(
+                            color: const Color(0XFF585858),
+                            fontSize: 16.sp,
                           ),
                         ),
-                        Container()
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 3.h),
-                          child: SvgPicture.asset(
-                            "assets/images/locationconnect.svg",
-                            width: 13.w,
-                            height: 13.w,
-                          ),
-                        ),
-                        sizedBoxWidth(5.w),
-                        RichText(
-                          text: TextSpan(
-                            text: location.isEmpty ? "Unknown" : location,
-                            // "Canada",
-                            style: TextStyle(
-                              color: const Color(0XFF585858),
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                      )
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

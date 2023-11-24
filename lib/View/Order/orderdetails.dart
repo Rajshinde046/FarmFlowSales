@@ -88,7 +88,9 @@ class _OrderdetailsState extends State<Orderdetails> {
         body: Obx(
           () => isLoading.value
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: AppColors.buttoncolour,
+                  ),
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -252,33 +254,33 @@ class _OrderdetailsState extends State<Orderdetails> {
                                     ),
                                   );
                                 }),
-                            sizedBoxHeight(9.h),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Order",
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: const Color(0XFF4D4D4D),
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Text(
-                                    "Cow Feed",
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: const Color(0xff141414),
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // sizedBoxHeight(9.h),
+                            // Padding(
+                            //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            //   child: Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceBetween,
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       Text(
+                            //         "Order",
+                            //         style: TextStyle(
+                            //             fontSize: 16.sp,
+                            //             color: const Color(0XFF4D4D4D),
+                            //             fontFamily: "Poppins",
+                            //             fontWeight: FontWeight.w500),
+                            //       ),
+                            //       Text(
+                            //         "Cow Feed",
+                            //         style: TextStyle(
+                            //             fontSize: 16.sp,
+                            //             color: const Color(0xff141414),
+                            //             fontFamily: "Poppins",
+                            //             fontWeight: FontWeight.w500),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             sizedBoxHeight(14.h),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -761,7 +763,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                             ),
                                             sizedBoxHeight(7.h),
                                             Text(
-                                              "Ordered ${Utils.convertDate(orderDetailsModel.data!.oderSummary!)}",
+                                              "Ordered: ${Utils.convertDate(orderDetailsModel.data!.oderSummary!)}",
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   color:

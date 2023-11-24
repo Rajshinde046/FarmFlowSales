@@ -40,11 +40,14 @@ class _FarmerdetailsState extends State<Farmerdetails> {
               future: FarmerDetailsAPI(id.toString()).farmerDetailsApi(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: AppColors.buttoncolour,
+                  ));
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.data?.data == null) {
-                  return Center(child: Text('No farmer available'));
+                  return const Center(child: Text('No farmer available'));
                 }
                 Data farmerData = snapshot.data!.data!;
 
@@ -77,7 +80,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                     SizedBox(
                       width: 358.w,
                       child: Card(
-                        color: Color(0xffF1F1F1),
+                        color: const Color(0xffF1F1F1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -87,14 +90,16 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: List.generate(
-                                  farmerData.feedDetails!.length,
-                                  (index) => Container(
+                              Container(
+                                width: Get.width / 0.8,
+                                height: 30,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: farmerData.feedDetails!.length,
+                                  itemBuilder: (ctx, index) => Container(
                                     margin: const EdgeInsets.symmetric(
-                                        horizontal: 15),
+                                        horizontal: 10),
                                     child: currentFeedSelection(
                                         imagePath: farmerData.feedDetails!
                                             .elementAt(index)
@@ -110,8 +115,8 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                     width: 109.w,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      border:
-                                          Border.all(color: Color(0xff9E9E9E)),
+                                      border: Border.all(
+                                          color: const Color(0xff9E9E9E)),
                                     ),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
@@ -131,12 +136,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                                 color: AppColors.black),
                                           ),
                                           Text(
-                                            farmerData
-                                                    .feedDetails![
-                                                        selectedCurrentFeed]
-                                                    .currentFeedAvailable
-                                                    .toString() +
-                                                " Kg",
+                                            "${farmerData.feedDetails![selectedCurrentFeed].currentFeedAvailable} Kg",
                                             style: GoogleFonts.poppins(
                                                 fontSize: 12.sp,
                                                 fontWeight: FontWeight.w600,
@@ -151,8 +151,8 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                     // width: 210.w,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      border:
-                                          Border.all(color: Color(0xff9E9E9E)),
+                                      border: Border.all(
+                                          color: const Color(0xff9E9E9E)),
                                     ),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
@@ -208,23 +208,23 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                         errorStyle: TextStyle(fontSize: 16.sp),
                         contentPadding: EdgeInsets.all(17.h),
                         filled: true,
-                        fillColor: Color(0xFFF1F1F1),
+                        fillColor: const Color(0xFFF1F1F1),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.r),
                           borderSide: BorderSide(
-                              color: Color(0xFF707070).withOpacity(0),
+                              color: const Color(0xFF707070).withOpacity(0),
                               width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.r),
                           borderSide: BorderSide(
-                              color: Color(0xFF707070).withOpacity(0),
+                              color: const Color(0xFF707070).withOpacity(0),
                               width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.r),
                           borderSide: BorderSide(
-                              color: Color(0xFF707070).withOpacity(0),
+                              color: const Color(0xFF707070).withOpacity(0),
                               width: 1),
                         ),
                         hintStyle: TextStyle(
@@ -250,23 +250,23 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                         errorStyle: TextStyle(fontSize: 16.sp),
                         contentPadding: EdgeInsets.all(17.h),
                         filled: true,
-                        fillColor: Color(0xFFF1F1F1),
+                        fillColor: const Color(0xFFF1F1F1),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.r),
                           borderSide: BorderSide(
-                              color: Color(0xFF707070).withOpacity(0),
+                              color: const Color(0xFF707070).withOpacity(0),
                               width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.r),
                           borderSide: BorderSide(
-                              color: Color(0xFF707070).withOpacity(0),
+                              color: const Color(0xFF707070).withOpacity(0),
                               width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.r),
                           borderSide: BorderSide(
-                              color: Color(0xFF707070).withOpacity(0),
+                              color: const Color(0xFF707070).withOpacity(0),
                               width: 1),
                         ),
                         hintStyle: TextStyle(
@@ -279,7 +279,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                     ),
                     sizedBoxHeight(17.h),
                     ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: farmerData.farmDetails!.length,
                         itemBuilder: (context, index) {
@@ -304,23 +304,26 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                   errorStyle: TextStyle(fontSize: 16.sp),
                                   contentPadding: EdgeInsets.all(17.h),
                                   filled: true,
-                                  fillColor: Color(0xFFF1F1F1),
+                                  fillColor: const Color(0xFFF1F1F1),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8.r),
                                     borderSide: BorderSide(
-                                        color: Color(0xFF707070).withOpacity(0),
+                                        color: const Color(0xFF707070)
+                                            .withOpacity(0),
                                         width: 1),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8.r),
                                     borderSide: BorderSide(
-                                        color: Color(0xFF707070).withOpacity(0),
+                                        color: const Color(0xFF707070)
+                                            .withOpacity(0),
                                         width: 1),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8.r),
                                     borderSide: BorderSide(
-                                        color: Color(0xFF707070).withOpacity(0),
+                                        color: const Color(0xFF707070)
+                                            .withOpacity(0),
                                         width: 1),
                                   ),
                                   hintStyle: TextStyle(

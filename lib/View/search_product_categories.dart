@@ -187,7 +187,9 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                         Gap(Get.height / 2.7),
                         const Align(
                             alignment: Alignment.bottomCenter,
-                            child: CircularProgressIndicator()),
+                            child: CircularProgressIndicator(
+                              color: AppColors.buttoncolour,
+                            )),
                       ],
                     )
                   : inventoriesController

@@ -394,7 +394,9 @@ class _ContactState extends State<Contact> {
       body: Obx(
         () => isLoading.value
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: AppColors.buttoncolour,
+                ),
               )
             : SingleChildScrollView(
                 physics: const ScrollPhysics(),

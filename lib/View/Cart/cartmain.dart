@@ -66,7 +66,10 @@ class _CartmainState extends State<Cartmain> {
       backgroundColor: AppColors.white,
       body: Obx(
         () => inventoriesController.isLoading.value
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(
+                color: AppColors.buttoncolour,
+              ))
             : inventoriesController.viewCartModel.data!.cart!.isEmpty
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,

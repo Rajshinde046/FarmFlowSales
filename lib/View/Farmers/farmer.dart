@@ -36,7 +36,10 @@ class _FarmerState extends State<Farmer> {
               future: FarmerListAPI().farmerApi(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: AppColors.buttoncolour,
+                  ));
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.data?.data == null ||
@@ -89,8 +92,7 @@ class _FarmerState extends State<Farmer> {
                                               : CircleAvatar(
                                                   radius: 30.r,
                                                   foregroundImage: NetworkImage(
-                                                    (ApiUrls.baseImageUrl +
-                                                        Imagepath),
+                                                    "${ApiUrls.baseImageUrl}/$Imagepath",
                                                     // width: 77.w,
                                                     // height: 77.h,
                                                   ),

@@ -175,27 +175,6 @@ class _Dashboard extends State<Dashboard> {
                         sizedBoxHeight(15.h),
                         SizedBox(
                           width: Get.width,
-                          height: 80,
-                          child: Shimmer.fromColors(
-                              baseColor: AppColors.redFA5658.withOpacity(0.2),
-                              highlightColor: AppColors.white,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15.h),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.04),
-                                      blurRadius: 10,
-                                      spreadRadius: 2,
-                                    )
-                                  ],
-                                  color: AppColors.white,
-                                ),
-                              )),
-                        ),
-                        sizedBoxHeight(15.h),
-                        SizedBox(
-                          width: Get.width,
                           height: 300,
                           child: Shimmer.fromColors(
                               baseColor: AppColors.pistaE3FFE9,
@@ -677,63 +656,64 @@ class _Dashboard extends State<Dashboard> {
                                 ),
                               ),
                               sizedBoxHeight(15.h),
-                              Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed("/notification");
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.h),
-                                        color: AppColors.redFCDADA,
-                                        // border: Border.all(
-                                        //     color: AppColors.redFA5658, width: 1.h),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.04),
-                                            blurRadius: 10,
-                                            spreadRadius: 2,
-                                          )
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15.w, vertical: 10.h),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 13.h,
-                                                  backgroundColor: AppColors
-                                                      .redFA5658
-                                                      .withOpacity(0.2),
-                                                  child: Icon(
-                                                    Icons.warning_amber_rounded,
-                                                    size: 16.h,
-                                                    color: AppColors.redFA5658,
-                                                  ),
-                                                ),
-                                                sizedBoxWidth(10.w),
-                                                textblack14M("Loreum Ipsum Is"),
-                                                const Spacer(),
-                                                textGreen14("New")
-                                              ],
-                                            ),
-                                            sizedBoxHeight(5.h),
-                                            textGrey12L(
-                                                "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry Lorem")
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  sizedBoxHeight(15.h),
-                                ],
-                              ),
+                              // Column(
+                              //   children: [
+                              //     GestureDetector(
+                              //       onTap: () {
+                              //         Get.toNamed("/notification");
+                              //       },
+                              //       child: Container(
+                              //         decoration: BoxDecoration(
+                              //           borderRadius:
+                              //               BorderRadius.circular(10.h),
+                              //           color: AppColors.redFCDADA,
+                              //           // border: Border.all(
+                              //           //     color: AppColors.redFA5658, width: 1.h),
+                              //           boxShadow: [
+                              //             BoxShadow(
+                              //               color:
+                              //                   Colors.black.withOpacity(0.04),
+                              //               blurRadius: 10,
+                              //               spreadRadius: 2,
+                              //             )
+                              //           ],
+                              //         ),
+                              //         child: Padding(
+                              //           padding: EdgeInsets.symmetric(
+                              //               horizontal: 15.w, vertical: 10.h),
+                              //           child: Column(
+                              //             children: [
+                              //               Row(
+                              //                 children: [
+                              //                   CircleAvatar(
+                              //                     radius: 13.h,
+                              //                     backgroundColor: AppColors
+                              //                         .redFA5658
+                              //                         .withOpacity(0.2),
+                              //                     child: Icon(
+                              //                       Icons.warning_amber_rounded,
+                              //                       size: 16.h,
+                              //                       color: AppColors.redFA5658,
+                              //                     ),
+                              //                   ),
+                              //                   sizedBoxWidth(10.w),
+                              //                   textblack14M("Loreum Ipsum Is"),
+                              //                   const Spacer(),
+                              //                   textGreen14("New")
+                              //                 ],
+                              //               ),
+                              //               sizedBoxHeight(5.h),
+                              //               textGrey12L(
+                              //                   "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry Lorem")
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     sizedBoxHeight(15.h),
+                              //   ],
+                              // ),
+
                               Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(27.h),

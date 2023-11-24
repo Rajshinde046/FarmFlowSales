@@ -39,7 +39,10 @@ class _WarehouseState extends State<Warehouse> {
               future: WarehouseAPI().warehouseApi(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: AppColors.buttoncolour,
+                  ));
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.data?.data == null ||

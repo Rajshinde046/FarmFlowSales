@@ -55,7 +55,10 @@ class _ProfileState extends State<Profile> {
               ? Column(
                   children: [
                     Gap(350.h),
-                    const Center(child: CircularProgressIndicator()),
+                    const Center(
+                        child: CircularProgressIndicator(
+                      color: AppColors.buttoncolour,
+                    )),
                   ],
                 )
               : Column(
