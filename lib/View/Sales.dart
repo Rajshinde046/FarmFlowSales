@@ -148,7 +148,10 @@ class _SalesState extends State<Sales> {
       ),
       body: Obx(
         () => isLoading.value
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: CircularProgressIndicator(
+                color: AppColors.buttoncolour,
+              ))
             : Padding(
                 padding: const EdgeInsets.fromLTRB(16, 30, 16, 20),
                 child: Column(
@@ -323,7 +326,14 @@ Widget SalesMainTile(
                   ),
                   child: image.isEmpty
                       ? Image.asset("assets/images/person.png")
-                      : Image.network("${ApiUrls.baseImageUrl}/${image}"),
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: Image.network(
+                            "${ApiUrls.baseImageUrl}/$image",
+                            width: 65,
+                            height: 65,
+                          ),
+                        ),
                 ),
               ),
               sizedBoxWidth(8.w),
