@@ -63,13 +63,13 @@ class _SplashScreenState extends State<SplashScreen> {
         });
         if (
             // prefs.getBool('fingerprint') != null ||
-            prefs.getBool('pin') != null) {
+            profileController.profileInfoModel.value.data!.pin != null) {
           //   if (prefs.getBool('pin') == null
           // //  && prefs.getBool('fingerprint')!
           //   ) {
           //     _getAuth();
           //   } else
-          if (prefs.getBool('pin')!) {
+          if (profileController.profileInfoModel.value.data!.pin!) {
             Get.off(const SecureLogin());
           }
         } else {

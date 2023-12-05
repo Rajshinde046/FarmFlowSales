@@ -344,11 +344,6 @@ class _ContactUsState extends State<ContactUs> {
                               messageController.text,
                             )
                                 .then((value) {
-                              // nameController.clear();
-                              // emailController.clear();
-                              // phoneController.clear();
-                              // subjectController.clear();
-                              // messageController.clear();
                               buildcontactusdialog(context);
                             });
                           }

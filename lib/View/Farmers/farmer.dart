@@ -2,13 +2,14 @@ import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/models/farmerListModel.dart';
 import 'package:farm_flow_sales/view_models/farmer/FarmerListAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../Model/farmerListModel.dart';
 
 class Farmer extends StatefulWidget {
   const Farmer({super.key});
@@ -86,7 +87,7 @@ class _FarmerState extends State<Farmer> {
                                                   radius: 30.r,
                                                   foregroundImage:
                                                       const NetworkImage(
-                                                    ("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"),
+                                                    ("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-pictur+e-973460_960_720.png"),
                                                   ),
                                                 )
                                               : CircleAvatar(

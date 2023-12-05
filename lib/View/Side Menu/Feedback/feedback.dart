@@ -93,15 +93,6 @@ class _FeedBackState extends State<FeedBack> {
                     size: 50.h,
                   ),
 
-                  // SizedBox(
-                  //   height: 500.h,
-                  //   // height =  200.h,
-                  //   child: ListWheelScrollView(
-                  //     // scrollBehavior: ,
-
-                  //     itemExtent: 82.h,
-                  //     children: List.generate(10, (index) => textBlack10("2"))
-                  //   ),
                   // )
 
                   SizedBox(
