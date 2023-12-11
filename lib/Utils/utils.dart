@@ -56,6 +56,12 @@ class Utils {
     );
   }
 
+  static String convertUtcToCustomFormat(String inputDateString) {
+    DateTime dateTime = DateTime.parse(inputDateString).toLocal();
+    String formattedDate = DateFormat('EEEE MMM dd, hh:mm a').format(dateTime);
+    return formattedDate;
+  }
+
   static String formattedTimeAgo(String dateTime) {
     final dateTimeV = DateTime.parse(dateTime);
     final now = DateTime.now();

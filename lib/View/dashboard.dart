@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:location/location.dart' as ls;
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../Model/NotificationModel/notification_count_model.dart';
@@ -51,7 +52,13 @@ class _Dashboard extends State<Dashboard> {
       _clockStream = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
         return DateTime.now();
       });
-      await getCurrentAddress();
+      if (await location.requestPermission() !=
+          ls.PermissionStatus.deniedForever) {
+        await getCurrentAddress();
+      }else{
+          dashboardController.permissionStatus.value =
+                                                "denied";
+      }
 
       await DashboardApi().getDashboardData().then((value) async {
         dashboardController.dashboardModel =
@@ -79,14 +86,19 @@ class _Dashboard extends State<Dashboard> {
 
     final permissionGranted = await location.hasPermission();
     if (permissionGranted != ls.PermissionStatus.granted) {
-      if (await location.requestPermission() != ls.PermissionStatus.granted) {
-        dashboardController.permissionStatus.value = permissionGranted.name;
-        return;
-      } else if (await location.hasPermission() ==
-          ls.PermissionStatus.granted) {
-        final permissionGranted = await location.hasPermission();
+      if (await location.requestPermission() ==
+          ls.PermissionStatus.deniedForever) {
+        openAppSettings();
+      } else {
+        if (await location.requestPermission() != ls.PermissionStatus.granted) {
+          dashboardController.permissionStatus.value = permissionGranted.name;
+          return;
+        } else if (await location.hasPermission() ==
+            ls.PermissionStatus.granted) {
+          final permissionGranted = await location.hasPermission();
 
-        dashboardController.permissionStatus.value = permissionGranted.name;
+          dashboardController.permissionStatus.value = permissionGranted.name;
+        }
       }
     }
     if (await location.hasPermission() == ls.PermissionStatus.granted) {
