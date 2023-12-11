@@ -66,6 +66,12 @@ dependencies:
   gap: ^3.0.1
   url_launcher: ^6.2.1
   permission_handler: ^11.0.1
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
 
 dev_dependencies:
   flutter_test:

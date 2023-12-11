@@ -8,9 +8,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
    <application
-        android:label="FarmFlow Solutions: Sales"
+        android:label="SalesRep-FarmFlow"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
          android:requestLegacyExternalStorage="true">
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

@@ -62,18 +62,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
     super.initState();
   }
 
-  void _submit() {
-    setState(() {
-      setState(() {
-        nameValue = nameController.text;
-        dateValue = datecontroller.text;
-        phoneValue = phoneController.text;
-        emailValue = emailController.text;
-      });
-    });
-    // }
-  }
-
   void uploadData() async {
     Utils.loader();
     MultipartFile imageFile;

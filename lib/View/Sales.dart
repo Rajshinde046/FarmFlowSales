@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Utils/colors.dart';
+import '../Utils/texts.dart';
 
 class Sales extends StatefulWidget {
   const Sales({super.key});
@@ -253,42 +254,49 @@ class _SalesState extends State<Sales> {
                       ],
                     ),
                     sizedBoxHeight(5.h),
-                    Container(
-                      height: Get.height / 1.8,
-                      width: 360.w,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF1F1F1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(23, 5, 23, 10),
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: salesModel.data!.probableOrders!.length,
-                          itemBuilder: (_, index) {
-                            return InkWell(
-                              onTap: () {
-                                buildcontentcalldialog(
-                                  context,
-                                  salesModel.data!.probableOrders![index]
-                                      .phoneNumber!,
-                                  salesModel
-                                      .data!.probableOrders![index].userName!,
-                                );
-                              },
-                              child: SalesMainTile(
-                                  salesModel.data!.probableOrders![index]
-                                      .profilePhoto!,
-                                  salesModel
-                                      .data!.probableOrders![index].userName!,
-                                  salesModel.data!.probableOrders![index]
-                                      .phoneNumber!,
-                                  "${salesModel.data!.probableOrders![index].farmDetails![0].province!}, ${salesModel.data!.probableOrders![index].farmDetails![0].country!}"),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                    salesModel.data!.probableOrders!.isEmpty
+                        ? SizedBox(
+                            height: Get.height / 1.8,
+                            child: Center(
+                                child: textGrey4D4D4D_22(
+                                    "No Ongoing Orders Found !")))
+                        : Container(
+                            height: Get.height / 1.8,
+                            width: 360.w,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF1F1F1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(23, 5, 23, 10),
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount:
+                                    salesModel.data!.probableOrders!.length,
+                                itemBuilder: (_, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      buildcontentcalldialog(
+                                        context,
+                                        salesModel.data!.probableOrders![index]
+                                            .phoneNumber!,
+                                        salesModel.data!.probableOrders![index]
+                                            .userName!,
+                                      );
+                                    },
+                                    child: SalesMainTile(
+                                        salesModel.data!.probableOrders![index]
+                                            .profilePhoto!,
+                                        salesModel.data!.probableOrders![index]
+                                            .userName!,
+                                        salesModel.data!.probableOrders![index]
+                                            .phoneNumber!,
+                                        "${salesModel.data!.probableOrders![index].farmDetails![0].province!}, ${salesModel.data!.probableOrders![index].farmDetails![0].country!}"),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               ),

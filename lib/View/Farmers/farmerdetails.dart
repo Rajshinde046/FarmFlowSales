@@ -3,13 +3,13 @@ import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/utils.dart';
-import 'package:farm_flow_sales/View/Side%20Menu/Profile/profile.dart';
-import 'package:farm_flow_sales/models/farmerDetailsModel.dart';
 import 'package:farm_flow_sales/view_models/farmer/FarmerdetailsAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../Model/farmerDetailsModel.dart';
 
 class Farmerdetails extends StatefulWidget {
   const Farmerdetails({super.key});

@@ -4,7 +4,8 @@ import 'package:farm_flow_sales/Model/frequencyModel/frequency_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
-import 'package:farm_flow_sales/models/farmerListModel.dart';
+
+import '../../Model/farmerListModel.dart';
 
 class FarmerListAPI {
   FarmerListAPI();

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:farm_flow_sales/Model/notification_data_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
-import 'package:farm_flow_sales/models/notification_data_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

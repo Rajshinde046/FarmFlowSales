@@ -34,8 +34,9 @@ class Data {
   String? totalValue;
   String? netValue;
   int? orderStatus;
-  List<ProductList>? deliveryAgent;
+  String? deliveryAgent;
   String? oderSummary;
+  List<DeliveryStatus>? deliveryStatus;
 
   Data(
       {this.orderHeaderId,
@@ -47,6 +48,7 @@ class Data {
       this.netValue,
       this.orderStatus,
       this.deliveryAgent,
+      this.deliveryStatus,
       this.oderSummary});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -64,15 +66,18 @@ class Data {
     netValue = json['net_value'];
     orderStatus = json['order_status'];
     if (json['delivery_agent'] != null) {
-      deliveryAgent = <ProductList>[];
-      json['delivery_agent'].forEach((v) {
-        deliveryAgent!.add(ProductList.fromJson(v));
-      });
+      deliveryAgent = json['delivery_agent'];
     } else {
       deliveryAgent = null;
     }
+    if (json['delivery_status'] != null) {
+      deliveryStatus = <DeliveryStatus>[];
+      json['delivery_status'].forEach((v) {
+        deliveryStatus!.add(DeliveryStatus.fromJson(v));
+      });
+    }
 
-    oderSummary = json['oder_summary'];
+    oderSummary = json['order_summary'];
   }
 
   Map<String, dynamic> toJson() {
@@ -87,11 +92,31 @@ class Data {
     data['total_value'] = totalValue;
     data['net_value'] = netValue;
     data['order_status'] = orderStatus;
-    if (deliveryAgent != null) {
-      data['delivery_agent'] = deliveryAgent!.map((v) => v.toJson()).toList();
-    }
 
+    data['delivery_agent'] = deliveryAgent!;
+    if (deliveryStatus != null) {
+      data['delivery_status'] = deliveryStatus!.map((v) => v.toJson()).toList();
+    }
     data['oder_summary'] = oderSummary;
+    return data;
+  }
+}
+
+class DeliveryStatus {
+  int? deliveryStatusXid;
+  String? createdAt;
+
+  DeliveryStatus({this.deliveryStatusXid, this.createdAt});
+
+  DeliveryStatus.fromJson(Map<String, dynamic> json) {
+    deliveryStatusXid = json['delivery_status_xid'];
+    createdAt = json['created_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['delivery_status_xid'] = deliveryStatusXid;
+    data['created_at'] = createdAt;
     return data;
   }
 }

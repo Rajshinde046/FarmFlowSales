@@ -1,6 +1,7 @@
 import 'package:farm_flow_sales/Model/farmerModel/farmer_address_model.dart';
-import 'package:farm_flow_sales/models/farmerListModel.dart';
 import 'package:get/get.dart';
+
+import '../Model/farmerListModel.dart';
 
 class CartController extends GetxController {
   int selectedFarmerId = 0;

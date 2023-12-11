@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
-import 'package:farm_flow_sales/models/farmerDetailsModel.dart';
+
+import '../../Model/farmerDetailsModel.dart';
 
 class FarmerDetailsAPI {
   FarmerDetailsAPI(this.data);

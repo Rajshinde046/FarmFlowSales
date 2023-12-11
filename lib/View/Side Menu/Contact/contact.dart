@@ -484,18 +484,25 @@ class _ContactState extends State<Contact> {
                                                         BorderRadius.circular(
                                                             100), //<-- SEE HERE
                                                   ),
-                                                  child: Image.asset(
-                                                    "assets/images/Contactoerson.png",
-                                                    // image,
-                                                    // "assets/images/connect2.png",
-                                                    width: 66.w,
-                                                    height: 66.w,
-                                                  ),
+                                                  child: contactListModel
+                                                          .data!
+                                                          .deliveryAgents![
+                                                              index]
+                                                          .profilePhoto!
+                                                          .isEmpty
+                                                      ? Image.asset(
+                                                          "assets/images/Contactoerson.png",
+                                                          width: 66.w,
+                                                          height: 66.w,
+                                                        )
+                                                      : Image.network(
+                                                          "${ApiUrls.baseImageUrl}/${contactListModel.data!.deliveryAgents![index].profilePhoto}",
+                                                          width: 66.w,
+                                                          height: 66.w,
+                                                        ),
                                                 ),
                                               ),
-
                                               sizedBoxWidth(8.w),
-
                                               SizedBox(
                                                 width: 195.w,
                                                 child: Column(
@@ -508,7 +515,11 @@ class _ContactState extends State<Contact> {
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       text: TextSpan(
-                                                        text: "Seamus Ryan",
+                                                        text: contactListModel
+                                                            .data!
+                                                            .deliveryAgents![
+                                                                index]
+                                                            .userName,
                                                         // "Roma dsouza",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -528,7 +539,11 @@ class _ContactState extends State<Contact> {
                                                         sizedBoxWidth(5.w),
                                                         RichText(
                                                           text: TextSpan(
-                                                            text: "0861238765",
+                                                            text: contactListModel
+                                                                .data!
+                                                                .deliveryAgents![
+                                                                    index]
+                                                                .phoneNumber,
                                                             // "0225845855",
                                                             style: TextStyle(
                                                               color: const Color(
@@ -555,11 +570,6 @@ class _ContactState extends State<Contact> {
                                                             width: 18.w,
                                                             height: 18.h,
                                                           ),
-                                                          // SvgPicture.asset(
-                                                          //   "assets/images/mail.svg",
-                                                          //   width: 13.w,
-                                                          //   height: 13.w,
-                                                          // ),
                                                         ),
                                                         sizedBoxWidth(5.w),
                                                         RichText(
@@ -579,56 +589,6 @@ class _ContactState extends State<Contact> {
                                                   ],
                                                 ),
                                               ),
-
-                                              // sizedBoxWidth(16.w),
-
-                                              // Row(
-                                              //     mainAxisAlignment: MainAxisAlignment.end,
-                                              //     children: [
-                                              //       IconButton(
-                                              //         icon: isConnect == 0
-                                              //             // _isChecked
-                                              //             ? CircleAvatar(
-                                              //                 radius: 25.h,
-                                              //                 backgroundColor:
-                                              //                     Color(0XFFF1F1F1),
-                                              //                 child: Icon(
-                                              //                   Icons.star,
-                                              //                   color: Colors.amber,
-                                              //                 ),
-                                              //               )
-                                              //             : Icon(
-                                              //                 Icons.star_border,
-                                              //                 color: Color(0XFF707070),
-                                              //               ),
-                                              //         onPressed: () {
-                                              //           setState(() {
-                                              //             isConnect == 0
-                                              //                 ? isConnect = 1
-                                              //                 : isConnect = 0;
-                                              //             // _isChecked = !_isChecked;
-                                              //           });
-                                              //         },
-                                              //       ),
-                                              //     ]),
-
-                                              // SvgPicture.asset(
-                                              //   "assets/images/starconnect.svg",
-                                              //   width: 38.w,
-                                              //   height: 38.w,
-                                              // ),
-
-                                              // CircleAvatar(
-                                              //   radius: 25.h,
-                                              //   backgroundColor: Color(0XFFF1F1F1),
-                                              //   child: Center(
-                                              //     child: Icon(
-                                              //       Icons.star,
-                                              //       size: 35.h,
-                                              //       color: Color.fromARGB(255, 248, 211, 2),
-                                              //     ),
-                                              //   ),
-                                              // ),
                                             ],
                                           ),
                                           SizedBox(

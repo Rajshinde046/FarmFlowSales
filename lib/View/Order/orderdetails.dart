@@ -13,6 +13,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../Utils/texts.dart';
 
@@ -37,6 +38,109 @@ class _OrderdetailsState extends State<Orderdetails> {
       isLoading.value = false;
     });
     super.initState();
+  }
+
+  buildcontentcalldialog(
+    context,
+    String number,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AlertDialog(
+            insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+            backgroundColor:
+                Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
+            //contentPadding: EdgeInsets.fromLTRB(96, 32, 96, 28),
+            shape: RoundedRectangleBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              side: BorderSide(
+                  color:
+                      Get.isDarkMode ? Colors.grey : const Color(0XFFFFFFFF)),
+            ),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //sizedBoxHeight(32.h),
+                Align(
+                  alignment: Alignment.center,
+                  child: SvgPicture.asset(
+                    "assets/images/contactphone.svg",
+                    // "assets/images/call.svg",
+                    width: 35.w,
+                    height: 35.h,
+                  ),
+                ),
+                SizedBox(
+                  height: 22.h,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Are you sure you want to call delviery agent?",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+
+                sizedBoxHeight(21.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        launch("tel://${number}");
+                      },
+                      child: Container(
+                        height: 48.h,
+                        width: 140.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.h),
+                            color: AppColors.buttoncolour),
+                        child: Center(
+                          child: Text(
+                            "Yes",
+                            style: TextStyle(
+                                color: AppColors.white, fontSize: 18.sp),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: 48.h,
+                        width: 140.w,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: const Color(0XFF0E5F02)),
+                            borderRadius: BorderRadius.circular(10.h),
+                            color: AppColors.white),
+                        child: Center(
+                          child: Text(
+                            "No",
+                            style: TextStyle(
+                                color: AppColors.buttoncolour, fontSize: 18.sp),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -151,13 +255,17 @@ class _OrderdetailsState extends State<Orderdetails> {
                                           ],
                                         ),
                                         sizedBoxHeight(1.h),
-                                        Text(
-                                          orderDetailsModel.data!.address!,
-                                          style: TextStyle(
-                                              fontSize: 16.sp,
-                                              color: const Color(0XFF141414),
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.w400),
+                                        SizedBox(
+                                          width: Get.width / 1.1,
+                                          child: Text(
+                                            orderDetailsModel.data!.address!,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                color: const Color(0XFF141414),
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w400),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -435,15 +543,11 @@ class _OrderdetailsState extends State<Orderdetails> {
                                           children: [
                                             sizedBoxHeight(8.h),
                                             status(),
-                                            (orderDetailsModel.data!
-                                                            .orderStatus ==
-                                                        1 ||
-                                                    orderDetailsModel.data!
-                                                            .orderStatus ==
-                                                        2 ||
-                                                    orderDetailsModel.data!
-                                                            .orderStatus ==
-                                                        3)
+                                            !orderDetailsModel
+                                                    .data!.deliveryStatus!
+                                                    .any((item) =>
+                                                        item.deliveryStatusXid ==
+                                                        7)
                                                 ? const DottedLine(
                                                     direction: Axis.vertical,
                                                     lineLength: 45,
@@ -460,12 +564,11 @@ class _OrderdetailsState extends State<Orderdetails> {
                                                     dashColor:
                                                         Color(0XFF0E5F02)),
                                             status(),
-                                            (orderDetailsModel.data!
-                                                            .orderStatus ==
-                                                        1 ||
-                                                    orderDetailsModel.data!
-                                                            .orderStatus ==
-                                                        2)
+                                            !orderDetailsModel
+                                                    .data!.deliveryStatus!
+                                                    .any((item) =>
+                                                        item.deliveryStatusXid ==
+                                                        5)
                                                 ? const DottedLine(
                                                     direction: Axis.vertical,
                                                     lineLength: 45,
@@ -482,9 +585,11 @@ class _OrderdetailsState extends State<Orderdetails> {
                                                     dashColor:
                                                         Color(0XFF0E5F02)),
                                             status(),
-                                            orderDetailsModel
-                                                        .data!.orderStatus ==
-                                                    1
+                                            !orderDetailsModel
+                                                    .data!.deliveryStatus!
+                                                    .any((item) =>
+                                                        item.deliveryStatusXid ==
+                                                        4)
                                                 ? const DottedLine(
                                                     direction: Axis.vertical,
                                                     lineLength: 45,
@@ -520,14 +625,41 @@ class _OrderdetailsState extends State<Orderdetails> {
                                                       const Color(0xff141414),
                                                   fontFamily: "Poppins"),
                                             ),
-                                            Text(
-                                              "Pending",
-                                              style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color:
-                                                      const Color(0xff4D4D4D),
-                                                  fontFamily: "Poppins"),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                !orderDetailsModel
+                                                        .data!.deliveryStatus!
+                                                        .any((item) =>
+                                                            item.deliveryStatusXid ==
+                                                            7)
+                                                    ? Text("Pending",
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff4D4D4D),
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily:
+                                                                "Poppins"))
+                                                    : Text(
+                                                        Utils.convertUtcToCustomFormat(
+                                                            orderDetailsModel
+                                                                .data!
+                                                                .deliveryStatus![
+                                                                    4]
+                                                                .createdAt!),
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff4D4D4D),
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily:
+                                                                "Poppins"),
+                                                      ),
+                                              ],
                                             ),
                                             sizedBoxHeight(22.h),
                                             Text(
@@ -543,33 +675,36 @@ class _OrderdetailsState extends State<Orderdetails> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  "Tuesday",
-                                                  style: TextStyle(
-                                                      color: const Color(
-                                                          0xff4D4D4D),
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily: "Poppins"),
-                                                ),
-                                                sizedBoxWidth(3.w),
-                                                SvgPicture.asset(
-                                                  "assets/images/Ellipse 780.svg",
-                                                  width: 4.w,
-                                                  height: 4.h,
-                                                ),
-                                                sizedBoxWidth(5.w),
-                                                Text(
-                                                  "Jan 30, 10.12 PM",
-                                                  style: TextStyle(
-                                                      color: const Color(
-                                                          0xff4D4D4D),
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily: "Poppins"),
-                                                ),
+                                                !orderDetailsModel
+                                                        .data!.deliveryStatus!
+                                                        .any((item) =>
+                                                            item.deliveryStatusXid ==
+                                                            5)
+                                                    ? Text("Pending",
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff4D4D4D),
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily:
+                                                                "Poppins"))
+                                                    : Text(
+                                                        Utils.convertUtcToCustomFormat(
+                                                            orderDetailsModel
+                                                                .data!
+                                                                .deliveryStatus![
+                                                                    3]
+                                                                .createdAt!),
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff4D4D4D),
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily:
+                                                                "Poppins"),
+                                                      ),
                                               ],
                                             ),
                                             sizedBoxHeight(25.h),
@@ -586,33 +721,36 @@ class _OrderdetailsState extends State<Orderdetails> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  "Wednesday",
-                                                  style: TextStyle(
-                                                      color: const Color(
-                                                          0xff4D4D4D),
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily: "Poppins"),
-                                                ),
-                                                sizedBoxWidth(3.w),
-                                                SvgPicture.asset(
-                                                  "assets/images/Ellipse 780.svg",
-                                                  width: 4.w,
-                                                  height: 4.h,
-                                                ),
-                                                sizedBoxWidth(5.w),
-                                                Text(
-                                                  "Jan 30, 10.12 PM",
-                                                  style: TextStyle(
-                                                      color: const Color(
-                                                          0xff4D4D4D),
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily: "Poppins"),
-                                                ),
+                                                !orderDetailsModel
+                                                        .data!.deliveryStatus!
+                                                        .any((item) =>
+                                                            item.deliveryStatusXid ==
+                                                            4)
+                                                    ? Text("Pending",
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff4D4D4D),
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily:
+                                                                "Poppins"))
+                                                    : Text(
+                                                        Utils.convertUtcToCustomFormat(
+                                                            orderDetailsModel
+                                                                .data!
+                                                                .deliveryStatus![
+                                                                    2]
+                                                                .createdAt!),
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff4D4D4D),
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily:
+                                                                "Poppins"),
+                                                      ),
                                               ],
                                             ),
                                             sizedBoxHeight(15.h),
@@ -630,24 +768,11 @@ class _OrderdetailsState extends State<Orderdetails> {
                                                   MainAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Friday",
-                                                  style: TextStyle(
-                                                      color: const Color(
-                                                          0xff4D4D4D),
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily: "Poppins"),
-                                                ),
-                                                sizedBoxWidth(3.w),
-                                                SvgPicture.asset(
-                                                  "assets/images/Ellipse 780.svg",
-                                                  width: 4.w,
-                                                  height: 4.h,
-                                                ),
-                                                sizedBoxWidth(5.w),
-                                                Text(
-                                                  "Jan 30, 10.12 PM",
+                                                  Utils
+                                                      .convertUtcToCustomFormat(
+                                                          orderDetailsModel
+                                                              .data!
+                                                              .oderSummary!),
                                                   style: TextStyle(
                                                       color: const Color(
                                                           0xff4D4D4D),
@@ -681,7 +806,12 @@ class _OrderdetailsState extends State<Orderdetails> {
                                       ),
                                     )
                                   : InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        buildcontentcalldialog(
+                                            context,
+                                            orderDetailsModel
+                                                .data!.deliveryAgent!);
+                                      },
                                       child: Container(
                                         height: 50.h,
                                         width: 358.w,
