@@ -42,7 +42,7 @@ class _selectFarmerState extends State<selectFarmer> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await FarmerListAPI().farmerApi().then((value) {
         cartController.farmerListModel = value;
-        for (var a in value.data!) {
+        for (var a in value.data!.farmers!) {
           farmerList.add(a.userName!);
           farmerId.add(a.id!);
         }
