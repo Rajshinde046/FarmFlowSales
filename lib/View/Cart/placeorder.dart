@@ -143,7 +143,7 @@ class _PlacedorderState extends State<Placedorder> {
   @override
   void initState() {
     change = Get.arguments["bool"];
-    for (var a in cartController.farmerListModel.data!) {
+    for (var a in cartController.farmerListModel.data!.farmers!) {
       if (a.id == cartController.selectedFarmerId) {
         phoneNumber = a.phoneNumber!;
       }

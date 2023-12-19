@@ -2,6 +2,7 @@ import 'package:farm_flow_sales/Model/notificationModel/notification_status_mode
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/global.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/View/deleteAccount/deleteAccountScreen.dart';
 import 'package:farm_flow_sales/view_models/notificationApi/notificationApi.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -112,23 +113,23 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
               sizedBoxHeight(29.h),
-              GestureDetector(
-                onTap: () {
-                  buildprofiledeletedialog(context);
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Text(
-                    "Request Deletion Of Account",
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        color: const Color(0XFF0E5F02),
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              sizedBoxHeight(12.h),
+              // GestureDetector(
+              //   onTap: () {
+              //     Get.to(const DeleteAccountScreen());
+              //   },
+              //   child: Padding(
+              //     padding: EdgeInsets.symmetric(horizontal: 16.w),
+              //     child: Text(
+              //       "Request Deletion Of Account",
+              //       style: TextStyle(
+              //           fontSize: 20.sp,
+              //           color: const Color(0XFF0E5F02),
+              //           fontFamily: "Poppins",
+              //           fontWeight: FontWeight.w500),
+              //     ),
+              //   ),
+              // ),
+              // sizedBoxHeight(12.h),
               GestureDetector(
                 onTap: () {
                   buildprofilelogoutdialog(context);

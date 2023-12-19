@@ -96,12 +96,14 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
-                                  itemCount: farmerData.feedDetails!.length,
+                                  itemCount: farmerData
+                                      .farmerDetails!.feedDetails!.length,
                                   itemBuilder: (ctx, index) => Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 10),
                                     child: currentFeedSelection(
-                                        imagePath: farmerData.feedDetails!
+                                        imagePath: farmerData
+                                            .farmerDetails!.feedDetails!
                                             .elementAt(index)
                                             .livestockUri!,
                                         index: index),
@@ -127,6 +129,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                         children: [
                                           Text(
                                             farmerData
+                                                .farmerDetails!
                                                 .feedDetails![
                                                     selectedCurrentFeed]
                                                 .livestockName!,
@@ -136,7 +139,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                                 color: AppColors.black),
                                           ),
                                           Text(
-                                            "${farmerData.feedDetails![selectedCurrentFeed].currentFeedAvailable} Kg",
+                                            "${farmerData.farmerDetails!.feedDetails![selectedCurrentFeed].currentFeedAvailable} Kg",
                                             style: GoogleFonts.poppins(
                                                 fontSize: 12.sp,
                                                 fontWeight: FontWeight.w600,
@@ -171,6 +174,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                           Text(
                                             Utils.convertISOToFormattedDate(
                                                 farmerData
+                                                    .farmerDetails!
                                                     .feedDetails![
                                                         selectedCurrentFeed]
                                                     .reorderingDate!),
@@ -281,7 +285,8 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                     ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: farmerData.farmDetails!.length,
+                        itemCount:
+                            farmerData.farmerDetails!.farmDetails!.length,
                         itemBuilder: (context, index) {
                           return Container(
                               child: Column(
@@ -300,6 +305,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               sizedBoxHeight(3.h),
                               TextFormField(
                                 readOnly: true,
+                                maxLines: 3,
                                 decoration: InputDecoration(
                                   errorStyle: TextStyle(fontSize: 16.sp),
                                   contentPadding: EdgeInsets.all(17.h),
@@ -331,7 +337,8 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                       fontWeight: FontWeight.w400,
                                       fontFamily: "Poppins",
                                       fontSize: 16.sp),
-                                  hintText: farmerData.farmDetails!
+                                  hintText: farmerData
+                                      .farmerDetails!.farmDetails!
                                       .elementAt(index)
                                       .farmAddress,
                                 ),
