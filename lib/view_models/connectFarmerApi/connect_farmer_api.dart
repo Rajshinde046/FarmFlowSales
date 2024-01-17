@@ -14,7 +14,7 @@ class ConnectFarmerApi {
       FormData.fromMap({
         "connect_code": connectCode,
       }),
-      ApiUrls.connectFarmerApi,
+      ApiUrls.connectCodeApi,
     );
     log(response.data.toString());
     if (response.status == ResponseStatus.SUCCESS) {

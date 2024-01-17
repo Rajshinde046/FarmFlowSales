@@ -123,15 +123,22 @@ class DeliveryStatus {
 
 class ProductList {
   int? quantity;
+  String? lot;
   String? itemUnitValue;
   String? itemTitle;
   String? smallImageUrl;
 
-  ProductList(
-      {this.quantity, this.itemUnitValue, this.itemTitle, this.smallImageUrl});
+  ProductList({
+    this.quantity,
+    this.itemUnitValue,
+    this.itemTitle,
+    this.smallImageUrl,
+    this.lot,
+  });
 
   ProductList.fromJson(Map<String, dynamic> json) {
     quantity = json['quantity'];
+    lot = json["lot"];
     itemUnitValue = json['item_unit_value'];
     itemTitle = json['item_title'];
     smallImageUrl = json['small_image_url'];
@@ -142,6 +149,7 @@ class ProductList {
     data['quantity'] = quantity;
     data['item_unit_value'] = itemUnitValue;
     data['item_title'] = itemTitle;
+    data['lot'] = lot;
     data['small_image_url'] = smallImageUrl;
     return data;
   }

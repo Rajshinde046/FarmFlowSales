@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/View/Side%20Menu/Profile/profile.dart';
+import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/view_models/contactUsApi/contact_us_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,59 +27,62 @@ class _ContactUsState extends State<ContactUs> {
   TextEditingController messageController = TextEditingController();
   TextEditingController subjectController = TextEditingController();
 
-  @override
   buildcontactusdialog(context) {
     return showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           Future.delayed(const Duration(seconds: 3), () {
             Get.toNamed('/sideMenu');
             // Navigator.of(context).pop(true);
           });
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AlertDialog(
-                insetPadding: const EdgeInsets.symmetric(horizontal: 16),
-                backgroundColor:
-                    Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
-                contentPadding: EdgeInsets.fromLTRB(90.w, 47.h, 89.w, 64.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  side: BorderSide(
-                      color: Get.isDarkMode
-                          ? Colors.grey
-                          : const Color(0XFFFFFFFF)),
-                ),
-                content: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //sizedBoxHeight(46.h),
+          return WillPopScope(
+            onWillPop: (() async => false),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AlertDialog(
+                  insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  backgroundColor:
+                      Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
+                  contentPadding: EdgeInsets.fromLTRB(90.w, 47.h, 89.w, 64.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    side: BorderSide(
+                        color: Get.isDarkMode
+                            ? Colors.grey
+                            : const Color(0XFFFFFFFF)),
+                  ),
+                  content: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //sizedBoxHeight(46.h),
 
-                    Align(
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        "assets/images/circletick.jpg",
-                        width: 59.w,
-                        height: 59.h,
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          "assets/images/circletick.jpg",
+                          width: 59.w,
+                          height: 59.h,
+                        ),
                       ),
-                    ),
-                    sizedBoxHeight(21.h),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text("Request Sent!",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontSize: 22.sp,
-                            color: const Color(0xff4D4D4D),
-                          )),
-                    ),
-                    // sizedBoxHeight(44.h)
-                  ],
+                      sizedBoxHeight(21.h),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text("Request Sent!",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontSize: 22.sp,
+                              color: const Color(0xff4D4D4D),
+                            )),
+                      ),
+                      // sizedBoxHeight(44.h)
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         });
   }
@@ -88,11 +90,35 @@ class _ContactUsState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          top: 20.h,
+          left: 16.w,
+          right: 16.w,
+          bottom: 20.h,
+        ),
+        child: CustomButton(
+          text: "Send Now",
+          onTap: () {
+            if (_form.currentState!.validate()) {
+              Utils.loader();
+              ContactUsAPI()
+                  .contactUsApi(
+                nameController.text,
+                emailController.text,
+                phoneController.text,
+                subjectController.text,
+                messageController.text,
+              )
+                  .then((value) {
+                Get.back();
+                buildcontactusdialog(context);
+              });
+            }
+          },
+        ),
+      ),
       backgroundColor: Colors.white,
-      // appBar: CustomSignupAppBar(
-      //   titleTxt: "",
-      //   bottomtext: false,
-      // ),
       body: SafeArea(
         child: Center(
           child: Form(
@@ -331,24 +357,6 @@ class _ContactUsState extends State<ContactUs> {
                         },
                       ),
                       SizedBox(height: 42.h),
-                      CustomButton(
-                        text: "Send Now",
-                        onTap: () {
-                          if (_form.currentState!.validate()) {
-                            ContactUsAPI()
-                                .contactUsApi(
-                              nameController.text,
-                              emailController.text,
-                              phoneController.text,
-                              subjectController.text,
-                              messageController.text,
-                            )
-                                .then((value) {
-                              buildcontactusdialog(context);
-                            });
-                          }
-                        },
-                      ),
                       sizedBoxHeight(58.h)
                     ],
                   ),

@@ -127,16 +127,11 @@ class _VerifyNumberState extends State<VerifyNumber> {
                     animationDuration: const Duration(milliseconds: 300),
                     enableActiveFill: true,
                     controller: pincode,
-                    onCompleted: (v) {
-                      print("Completed");
-                    },
+                    onCompleted: (v) {},
                     onChanged: (value) {
-                      print(value);
                       setState(() {});
                     },
                     beforeTextPaste: (text) {
-                      print("Allowing to paste $text");
-
                       return true;
                     },
                     appContext: context,

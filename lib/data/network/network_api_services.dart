@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/base_manager.dart';
+import '../../View/ErrorScreen/error_screen.dart';
 import 'base_api_services.dart';
 
 class NetworkApiServices extends BaseApiServices {
@@ -111,6 +112,8 @@ class NetworkApiServices extends BaseApiServices {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('token', "");
           Get.offAndToNamed("/loginScreen");
+        } else if (e.response!.statusCode == 500) {
+          Get.to(const ErrorScreen());
         }
       }
 
@@ -242,6 +245,8 @@ class NetworkApiServices extends BaseApiServices {
             prefs.setString('token', "");
             Get.offAndToNamed("/loginScreen");
           }
+        } else if (e.response!.statusCode == 500) {
+          Get.to(const ErrorScreen());
         }
       }
       return ResponseData<dynamic>(

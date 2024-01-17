@@ -67,6 +67,8 @@ dependencies:
   url_launcher: ^6.2.1
   permission_handler: ^11.0.1
   flutter_launcher_icons: ^0.13.1
+  connectivity_plus: ^5.0.2
+  expansion_tile_group: ^1.2.4
 
 flutter_launcher_icons:
   android: "launcher_icon"

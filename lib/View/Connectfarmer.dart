@@ -35,7 +35,8 @@ class _ConnectfarmerState extends State<Connectfarmer> {
         buildconnectfarmer(context);
       } else if (resp.status == ResponseStatus.PRIVATE) {
         var message = resp.data;
-        utils.showToast(message["message"]);
+
+        utils.showToast(message["message"]["connect_code"][0]);
       } else {
         utils.showToast(resp.data);
         utils.showToast("Error");
@@ -49,7 +50,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
         builder: (context) {
           Future.delayed(const Duration(seconds: 2), () {
             //   connectCodeController.text = "";
-            Navigator.of(context).pop(true);
+            Navigator.of(context).pop();
           });
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -73,7 +74,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                     //sizedBoxHeight(46.h),
                     Align(
                       alignment: Alignment.center,
-                      child: Text("Farmer Added Succesfully",
+                      child: Text("Request Send Succesfully",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             fontSize: 22.sp,
