@@ -4,6 +4,7 @@ import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/global.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/view_models/onBoarding/LoginAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,12 +31,14 @@ class _LoginScreenState extends State<LoginScreen> {
   _logincheck() async {
     final isValid = _form.currentState?.validate();
     if (isValid!) {
+      Utils.loader();
       Map<String, String> updata = {
         "email": tecEmail.text,
         "password": tecPassword.text
       };
       final resp = await LoginAPI(updata).loginApi();
       if (resp.status == ResponseStatus.SUCCESS) {
+        Get.back();
         print("reslo ${resp.data}");
         SharedPreferences prefs = await SharedPreferences.getInstance();
         // print("token " + jsonResp["data"]["accessToken"]);

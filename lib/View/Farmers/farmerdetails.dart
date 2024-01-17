@@ -20,7 +20,7 @@ class Farmerdetails extends StatefulWidget {
 
 class _FarmerdetailsState extends State<Farmerdetails> {
   String id = Get.arguments["id"];
-  int selectedCurrentFeed = 0;
+  RxInt selectedCurrentFeed = 0.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -111,83 +111,86 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                 ),
                               ),
                               sizedBoxHeight(22.h),
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 109.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: const Color(0xff9E9E9E)),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 7.w, vertical: 9.h),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Text(
-                                            farmerData
-                                                .farmerDetails!
-                                                .feedDetails![
-                                                    selectedCurrentFeed]
-                                                .livestockName!,
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 11.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.black),
-                                          ),
-                                          Text(
-                                            "${farmerData.farmerDetails!.feedDetails![selectedCurrentFeed].currentFeedAvailable} Kg",
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.black),
-                                          ),
-                                        ],
+                              Obx(
+                                () => Row(
+                                  children: [
+                                    Container(
+                                      width: 109.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: const Color(0xff9E9E9E)),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 7.w, vertical: 9.h),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                              farmerData
+                                                  .farmerDetails!
+                                                  .feedDetails![
+                                                      selectedCurrentFeed.value]
+                                                  .livestockName!,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 11.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.black),
+                                            ),
+                                            Text(
+                                              "${farmerData.farmerDetails!.feedDetails![selectedCurrentFeed.value].currentFeedAvailable} Kg",
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.black),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  sizedBoxWidth(7.h),
-                                  Container(
-                                    // width: 210.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: const Color(0xff9E9E9E)),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 6.w, vertical: 9.h),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Reordering Date - ",
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 12.sp,
-                                                color: AppColors.black,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Text(
-                                            Utils.convertISOToFormattedDate(
-                                                farmerData
-                                                    .farmerDetails!
-                                                    .feedDetails![
-                                                        selectedCurrentFeed]
-                                                    .reorderingDate!),
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 12.sp,
-                                                color: AppColors.black,
-                                                fontWeight: FontWeight.w600),
-                                          )
-                                        ],
+                                    sizedBoxWidth(7.h),
+                                    Container(
+                                      // width: 210.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: const Color(0xff9E9E9E)),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6.w, vertical: 9.h),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Reordering Date - ",
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            Text(
+                                              Utils.convertISOToFormattedDate(
+                                                  farmerData
+                                                      .farmerDetails!
+                                                      .feedDetails![
+                                                          selectedCurrentFeed
+                                                              .value]
+                                                      .reorderingDate!),
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w600),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -358,28 +361,28 @@ class _FarmerdetailsState extends State<Farmerdetails> {
   }
 
   Widget currentFeedSelection({required String imagePath, required int index}) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedCurrentFeed = index;
-        });
-      },
-      child: Container(
-        width: 40.w,
-        height: 30.h,
-        decoration: BoxDecoration(
-            // dec
-            color: selectedCurrentFeed == index
-                ? const Color.fromARGB(255, 236, 248, 239)
-                : AppColors.white,
-            borderRadius: BorderRadius.circular(5.h),
-            border: Border.all(
-                color: selectedCurrentFeed == index
-                    ? AppColors.buttoncolour
-                    : AppColors.grey4D4D4D)),
-        child: Padding(
-          padding: EdgeInsets.all(4.h),
-          child: Image.network("${ApiUrls.baseImageUrl}/$imagePath"),
+    return Obx(
+      () => InkWell(
+        onTap: () {
+          selectedCurrentFeed.value = index;
+        },
+        child: Container(
+          width: 40.w,
+          height: 30.h,
+          decoration: BoxDecoration(
+              // dec
+              color: selectedCurrentFeed.value == index
+                  ? const Color.fromARGB(255, 236, 248, 239)
+                  : AppColors.white,
+              borderRadius: BorderRadius.circular(5.h),
+              border: Border.all(
+                  color: selectedCurrentFeed.value == index
+                      ? AppColors.buttoncolour
+                      : AppColors.grey4D4D4D)),
+          child: Padding(
+            padding: EdgeInsets.all(4.h),
+            child: Image.network("${ApiUrls.baseImageUrl}/$imagePath"),
+          ),
         ),
       ),
     );

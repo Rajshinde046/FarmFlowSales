@@ -1,3 +1,4 @@
+import 'package:expansion_tile_group/expansion_tile_group.dart';
 import 'package:farm_flow_sales/Common/getx_controller.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
@@ -14,6 +15,7 @@ class Faqscontent extends StatefulWidget {
 
 class _FaqscontentState extends State<Faqscontent> {
   CommonGetXController commonGetXController = Get.put(CommonGetXController());
+  int selectedTile = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,115 +62,106 @@ class _FaqscontentState extends State<Faqscontent> {
         backgroundColor: Colors.white,
       ),
       backgroundColor: AppColors.white,
-      body: SingleChildScrollView(
-        physics: const ScrollPhysics(),
-        child: Column(
-          children: [
-            sizedBoxHeight(26.h),
-            ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: commonGetXController.faqModel.data!.length,
-                itemBuilder: (ctx, index) {
-                  return Container(
-                      margin: EdgeInsets.only(bottom: 23.h),
-                      child: FaqExpanded(
-                        isExpanded2: index == 0 ? true : false,
-                        title: commonGetXController
-                            .faqModel.data![index].question!,
-                        desc:
-                            commonGetXController.faqModel.data![index].answer!,
-                      ));
-                })
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class FaqExpanded extends StatefulWidget {
-  bool isExpanded2;
-  String title;
-  String desc;
-
-  FaqExpanded({
-    super.key,
-    required this.isExpanded2,
-    required this.title,
-    required this.desc,
-  });
-
-  @override
-  State<FaqExpanded> createState() => _FaqExpandedState();
-}
-
-class _FaqExpandedState extends State<FaqExpanded> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Container(
-        width: 358.w,
-        // height: 70.h,
-        decoration: BoxDecoration(
-          color: AppColors.greyF1F1F1,
-          borderRadius: BorderRadius.circular(10.r),
-        ),
-        child: ExpansionTile(
-          childrenPadding:
-              EdgeInsets.only(left: 0.w, right: 0.w, bottom: 8.h, top: 10.h),
-          initiallyExpanded: widget.isExpanded2,
-          onExpansionChanged: (bool expanding) {
-            setState(() {
-              widget.isExpanded2 = expanding;
-            });
-          },
-          trailing: Image.asset(
-            widget.isExpanded2
-                ? "assets/images/faqsminus.png"
-                : "assets/images/faqsplus.png",
-            width: 30.w,
-            height: 30.h,
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 275.w,
-                child: Text(
-                  widget.title,
-                  maxLines: 2,
-                  style: TextStyle(
-                      fontSize: 16.sp,
-                      color: const Color(0xFF141414),
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-            ],
-          ),
-          children: <Widget>[
-            Container(
-              width: 370.w,
-              height: 30.h,
-              decoration: const BoxDecoration(
-                color: AppColors.white,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 15.h),
+      body: commonGetXController.faqModel.data!.faqs!.isEmpty
+          ? Center(
               child: Text(
-                widget.desc,
+                "No Data Available !",
                 style: TextStyle(
-                  fontSize: 16.sp,
-                  color: const Color(0xFF4D4D4D),
-                ),
+                    fontSize: 20.sp,
+                    color: const Color(0xFF141414),
+                    fontWeight: FontWeight.w500),
               ),
             )
-          ],
-        ),
-      ),
+          : SingleChildScrollView(
+              physics: const ScrollPhysics(),
+              child: Column(
+                children: [
+                  sizedBoxHeight(26.h),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    child: ExpansionTileGroup(
+                        spaceBetweenItem: 23,
+                        toggleType: ToggleType.expandOnlyCurrent,
+                        children: List.generate(
+                            commonGetXController.faqModel.data!.faqs!.length,
+                            (index) => ExpansionTileItem(
+                                  isHasBottomBorder: true,
+                                  isHasLeftBorder: true,
+                                  isHasRightBorder: true,
+                                  isHasTopBorder: true,
+                                  collapsedBackgroundColor:
+                                      AppColors.greyF1F1F1,
+                                  borderRadius: BorderRadius.circular(10),
+                                  onExpansionChanged: (bool expanding) {
+                                    if (expanding) {
+                                      setState(() {
+                                        selectedTile = index;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        selectedTile = -1;
+                                      });
+                                    }
+                                  },
+                                  backgroundColor: AppColors.greyF1F1F1,
+                                  childrenPadding: EdgeInsets.only(
+                                      left: 0.w,
+                                      right: 0.w,
+                                      bottom: 8.h,
+                                      top: 10.h),
+                                  initiallyExpanded: index == selectedTile,
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 275.w,
+                                        child: Text(
+                                          commonGetXController.faqModel.data!
+                                              .faqs![index].question!,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              fontSize: 16.sp,
+                                              color: const Color(0xFF141414),
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: Image.asset(
+                                    index == selectedTile
+                                        ? "assets/images/faqsminus.png"
+                                        : "assets/images/faqsplus.png",
+                                    width: 30.w,
+                                    height: 30.h,
+                                  ),
+                                  children: <Widget>[
+                                    Container(
+                                      width: 370.w,
+                                      height: 30.h,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.white,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 14.w, vertical: 15.h),
+                                      child: Text(
+                                        commonGetXController.faqModel.data!
+                                            .faqs![index].answer!,
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          color: const Color(0xFF4D4D4D),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ))),
+                  )
+                ],
+              ),
+            ),
     );
   }
 }

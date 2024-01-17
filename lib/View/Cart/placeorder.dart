@@ -1,5 +1,7 @@
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
+import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Utils/utils.dart';
 import '../../controller/cart_controller.dart';
 
 class Placedorder extends StatefulWidget {
@@ -49,91 +52,95 @@ class _PlacedorderState extends State<Placedorder> {
 
   buildorderconfirmpopup() {
     return showDialog(
+      barrierDismissible: false,
       context: context,
-      builder: (context) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // SizedBox(
-          //   height: 45,
-          //   width: 45,
-          //   child: FittedBox(
-          //     child: FloatingActionButton(
-          //         elevation: 0,
-          //         backgroundColor: Colors.white,
-          //         onPressed: () {
-          //           Navigator.push(
-          //               context,
-          //               MaterialPageRoute(
-          //                   builder: (context) => SchduleAppointment()));
-          //         },
-          //         child: Icon(
-          //           Icons.close,
-          //           size: 30,
-          //         )),
-          //   ),
-          // ),
-          AlertDialog(
-            insetPadding:
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-            backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-            contentPadding: const EdgeInsets.fromLTRB(15, 30, 15, 24),
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              side: BorderSide(
-                  color: Get.isDarkMode ? Colors.grey : Colors.white),
-            ),
-            // contentPadding:
-            //     EdgeInsets.all(
-            //         10),
-            //   title: ,
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Center(
-                  child: SizedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 45),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        "Your Order Has Been Placed Successfully!",
-                        style: GoogleFonts.poppins(
-                            fontSize: 20.sp,
-                            color: const Color(0xff4D4D4D),
-                            fontWeight: FontWeight.w500),
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // SizedBox(
+            //   height: 45,
+            //   width: 45,
+            //   child: FittedBox(
+            //     child: FloatingActionButton(
+            //         elevation: 0,
+            //         backgroundColor: Colors.white,
+            //         onPressed: () {
+            //           Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) => SchduleAppointment()));
+            //         },
+            //         child: Icon(
+            //           Icons.close,
+            //           size: 30,
+            //         )),
+            //   ),
+            // ),
+            AlertDialog(
+              insetPadding:
+                  const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+              contentPadding: const EdgeInsets.fromLTRB(15, 30, 15, 24),
+              shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                side: BorderSide(
+                    color: Get.isDarkMode ? Colors.grey : Colors.white),
+              ),
+              // contentPadding:
+              //     EdgeInsets.all(
+              //         10),
+              //   title: ,
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Center(
+                    child: SizedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 45),
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          "Your Order Has Been Placed Successfully!",
+                          style: GoogleFonts.poppins(
+                              fontSize: 20.sp,
+                              color: const Color(0xff4D4D4D),
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed("/sideMenu");
-                  },
-                  child: Container(
-                    height: 50.h,
-                    width: 120.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.h),
-                        color: AppColors.buttoncolour),
-                    child: Center(
-                      child: Text(
-                        "Ok",
-                        style:
-                            TextStyle(color: AppColors.white, fontSize: 18.sp),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed("/sideMenu");
+                    },
+                    child: Container(
+                      height: 50.h,
+                      width: 120.w,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.h),
+                          color: AppColors.buttoncolour),
+                      child: Center(
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(
+                              color: AppColors.white, fontSize: 18.sp),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                )
-              ],
+                  const SizedBox(
+                    height: 20,
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -503,6 +510,7 @@ class _PlacedorderState extends State<Placedorder> {
               customButtonCurve(
                   text: "Confirm Delivery",
                   onTap: () {
+                    Utils.loader();
                     String formattedDate = "";
                     if (cartController.selectedStartDate.isNotEmpty) {
                       List<String> dateSplit =
@@ -525,7 +533,12 @@ class _PlacedorderState extends State<Placedorder> {
                       cartController.netValue,
                     )
                         .then((value) {
-                      buildorderconfirmpopup();
+                      Get.back();
+                      if (value.status == ResponseStatus.FAILED) {
+                        utils.showToast(value.message);
+                      } else {
+                        buildorderconfirmpopup();
+                      }
                     });
                   }),
               sizedBoxHeight(30.h)

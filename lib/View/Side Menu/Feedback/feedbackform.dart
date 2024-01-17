@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
@@ -89,12 +91,6 @@ class _FeedbackformState extends State<Feedbackform> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const Spacer(),
-                      Icon(
-                        Icons.more_vert,
-                        color: AppColors.black,
-                        size: 35.h,
-                      )
                     ],
                   ),
                 ),
@@ -183,6 +179,7 @@ class _FeedbackformState extends State<Feedbackform> {
                           "experience_id": selectedIndex,
                           "comment": messagecontroller.text,
                         });
+                        log(data.fields.toString());
                         FeedbackAPI().feedbackApi(data).then((value) {
                           FocusManager.instance.primaryFocus?.unfocus();
                           messagecontroller.clear();

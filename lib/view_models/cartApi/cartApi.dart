@@ -75,6 +75,8 @@ class CartApi {
       },
       ApiUrls.placeOrderApi,
     );
+    Map<String, dynamic> responseData =
+        Map<String, dynamic>.from(response.data);
     log(response.data.toString());
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
@@ -85,7 +87,9 @@ class CartApi {
         return ResponseData<dynamic>(
             responseData['message'], ResponseStatus.FAILED);
       }
+    } else {
+      return ResponseData<dynamic>(
+          responseData['message'], ResponseStatus.FAILED);
     }
-    return response;
   }
 }

@@ -120,16 +120,20 @@ class _WarehouseState extends State<Warehouse> {
                                                 ),
                                               ),
                                               sizedBoxWidth(7.w),
-                                              RichText(
-                                                text: TextSpan(
-                                                    text: warehouseData
-                                                        .location!.name,
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 14.sp,
-                                                        color: const Color(
-                                                            0xff4D4D4D),
-                                                        fontWeight:
-                                                            FontWeight.w400)),
+                                              SizedBox(
+                                                width: Get.width / 1.7,
+                                                child: RichText(
+                                                  maxLines: 3,
+                                                  text: TextSpan(
+                                                      text: warehouseData
+                                                          .location!.name,
+                                                      style: GoogleFonts.poppins(
+                                                          fontSize: 14.sp,
+                                                          color: const Color(
+                                                              0xff4D4D4D),
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                                ),
                                               )
                                             ],
                                           ),

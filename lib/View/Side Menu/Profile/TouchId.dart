@@ -56,7 +56,6 @@ class _TouchIdState extends State<TouchId> {
             snackStyle: SnackStyle.FLOATING,
             snackPosition: SnackPosition.BOTTOM);
       }
-      print('is Auth $isAuth');
     } on PlatformException catch (e) {
       print('exception is : $e');
     }

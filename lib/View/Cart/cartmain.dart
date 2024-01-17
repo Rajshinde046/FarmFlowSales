@@ -82,7 +82,13 @@ class _CartmainState extends State<Cartmain> {
                         width: 200,
                         fit: BoxFit.contain,
                       )),
-                      textGrey4D4D4D_22("Cart Is Empty !"),
+                      Text(
+                          "Cart's feeling a bit empty? Let's plant some products in there!",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500,
+                          )),
                     ],
                   )
                 : SafeArea(
@@ -105,57 +111,6 @@ class _CartmainState extends State<Cartmain> {
                             ),
                           ),
                           sizedBoxHeight(11.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                radius: 12.h,
-                                backgroundColor: AppColors.buttoncolour,
-                                child: Center(
-                                  child: Icon(
-                                    Icons.check,
-                                    size: 15.h,
-                                    color: AppColors.white,
-                                  ),
-                                ),
-                              ),
-                              sizedBoxWidth(6.w),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "your order is eligible for free delivery.",
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 16.sp,
-                                      color: AppColors.buttoncolour,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  RichText(
-                                      text: TextSpan(
-                                          text:
-                                              "select this option at checkout.",
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16.sp,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w400),
-                                          children: [
-                                        TextSpan(
-                                          text: "Details",
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16.sp,
-                                              color: AppColors.buttoncolour,
-                                              fontWeight: FontWeight.w600),
-                                        )
-                                      ]))
-                                ],
-                              )
-                            ],
-                          ),
-                          sizedBoxHeight(31.h),
-                          // CustomButton(text: "Proceed To Buy (3 Items)", onTap: () {}),
                           InkWell(
                             onTap: () {
                               List<int> listV = [];

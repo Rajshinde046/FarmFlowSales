@@ -143,13 +143,26 @@ class _OrderMainState extends State<OrderMain> {
                                       itemCount: ongoingOrderModel.data!.length,
                                       itemBuilder: (_, index) {
                                         return InkWell(
-                                          onTap: () {
-                                            Get.toNamed("/orderdetails",
+                                          onTap: () async {
+                                            var result = await Get.toNamed(
+                                                "/orderdetails",
                                                 arguments: {
                                                   "id": ongoingOrderModel
                                                       .data![index]
                                                       .orderHeaderId!,
                                                 });
+                                            if (result != null &&
+                                                result == true) {
+                                              isOngoingLoading.value = true;
+                                              OrderApi()
+                                                  .getOngoingOrderData()
+                                                  .then((value) {
+                                                ongoingOrderModel =
+                                                    OngoingOrderModel.fromJson(
+                                                        value.data);
+                                                isOngoingLoading.value = false;
+                                              });
+                                            }
                                           },
                                           child: SalesOrderMainTile(
                                             ongoingOrderModel.data![index]
@@ -374,7 +387,7 @@ class _OrderMainState extends State<OrderMain> {
                                           onTap: () {
                                             Get.toNamed("/orderdetails",
                                                 arguments: {
-                                                  "id": ongoingOrderModel
+                                                  "id": completedOrderModel
                                                       .data![index]
                                                       .orderHeaderId!,
                                                 });

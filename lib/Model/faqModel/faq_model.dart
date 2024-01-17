@@ -1,7 +1,7 @@
 class FaqModel {
   int? status;
   bool? success;
-  List<Data>? data;
+  Data? data;
   String? message;
 
   FaqModel({this.status, this.success, this.data, this.message});
@@ -9,12 +9,7 @@ class FaqModel {
   FaqModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     success = json['success'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
@@ -23,7 +18,7 @@ class FaqModel {
     data['status'] = status;
     data['success'] = success;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     data['message'] = message;
     return data;
@@ -31,20 +26,43 @@ class FaqModel {
 }
 
 class Data {
+  List<Faqs>? faqs;
+
+  Data({this.faqs});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    if (json['faqs'] != null) {
+      faqs = <Faqs>[];
+      json['faqs'].forEach((v) {
+        faqs!.add(Faqs.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (faqs != null) {
+      data['faqs'] = faqs!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Faqs {
   int? id;
   String? question;
   String? answer;
   int? faqCategoryXid;
   String? faqCategory;
 
-  Data(
+  Faqs(
       {this.id,
       this.question,
       this.answer,
       this.faqCategoryXid,
       this.faqCategory});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Faqs.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     question = json['question'];
     answer = json['answer'];

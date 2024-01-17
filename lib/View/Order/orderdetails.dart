@@ -1,6 +1,8 @@
 import 'package:dotted_line/dotted_line.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Model/orderModel/order_details_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
+import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/utils.dart';
@@ -339,6 +341,16 @@ class _OrderdetailsState extends State<Orderdetails> {
                                             sizedBoxHeight(2.h),
                                             Text(
                                               "Quantity : ${orderDetailsModel.data!.productList![index].quantity}",
+                                              style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w300,
+                                                  color:
+                                                      const Color(0XFF4D4D4D),
+                                                  fontFamily: "Poppins"),
+                                            ),
+                                            sizedBoxHeight(2.h),
+                                            Text(
+                                              "Lot : ${orderDetailsModel.data!.productList![index].lot}",
                                               style: TextStyle(
                                                   fontSize: 16.sp,
                                                   fontWeight: FontWeight.w300,
@@ -831,6 +843,51 @@ class _OrderdetailsState extends State<Orderdetails> {
                                       ),
                                     ),
                             ),
+                            orderDetailsModel.data!.deliveryAgent == null
+                                ? sizedBoxHeight(20.h)
+                                : const SizedBox(),
+                            orderDetailsModel.data!.deliveryAgent == null
+                                ? Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.w),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Utils.loader();
+                                        OrderApi()
+                                            .cancelOrderApi(orderDetailsModel
+                                                .data!.orderHeaderId
+                                                .toString())
+                                            .then((value) {
+                                          Get.back();
+                                          if (value.status ==
+                                              ResponseStatus.FAILED) {
+                                            utils.showToast(value.message);
+                                          } else {
+                                            utils.showToast(
+                                                value.data["message"]);
+                                            Get.back(result: true);
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50.h,
+                                        width: 358.w,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.h),
+                                            color: AppColors.buttoncolour),
+                                        child: Center(
+                                          child: Text(
+                                            "Cancel Order",
+                                            style: TextStyle(
+                                                color: AppColors.white,
+                                                fontSize: 18.sp),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox(),
                             sizedBoxHeight(26.h),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -881,16 +938,16 @@ class _OrderdetailsState extends State<Orderdetails> {
                                                   fontWeight: FontWeight.w600,
                                                   fontFamily: "Poppins"),
                                             ),
-                                            sizedBoxHeight(8.h),
-                                            Text(
-                                              "Order g: 408-0073624-7437935",
-                                              style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color:
-                                                      const Color(0XFF141414),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "Poppins"),
-                                            ),
+                                            // sizedBoxHeight(8.h),
+                                            // Text(
+                                            //   "Order g: 408-0073624-7437935",
+                                            //   style: TextStyle(
+                                            //       fontSize: 14.sp,
+                                            //       color:
+                                            //           const Color(0XFF141414),
+                                            //       fontWeight: FontWeight.w400,
+                                            //       fontFamily: "Poppins"),
+                                            // ),
                                             sizedBoxHeight(7.h),
                                             Text(
                                               "Ordered: ${Utils.convertDate(orderDetailsModel.data!.oderSummary!)}",

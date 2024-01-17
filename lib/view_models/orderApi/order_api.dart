@@ -28,6 +28,24 @@ class OrderApi {
     return response;
   }
 
+  Future<ResponseData<dynamic>> cancelOrderApi(String id) async {
+    final response = await NetworkApiServices().getApi1(
+      ApiUrls.cancelOrderApi + id,
+    );
+    log(response.data.toString());
+    if (response.status == ResponseStatus.SUCCESS) {
+      Map<String, dynamic> responseData =
+          Map<String, dynamic>.from(response.data);
+      if (responseData['success']) {
+        return response;
+      } else {
+        return ResponseData<dynamic>(
+            responseData['message'], ResponseStatus.FAILED);
+      }
+    }
+    return response;
+  }
+
   Future<ResponseData<dynamic>> getCompletedOrderData(
       String filterNumber) async {
     final response = await NetworkApiServices().getApi1(

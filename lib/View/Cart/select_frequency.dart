@@ -49,8 +49,8 @@ class _selectFrequencyState extends State<selectFrequency> {
     // showDatePicker is a pre-made funtion of Flutter
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
+      initialDate: DateTime.now().add(Duration(days: 1)),
+      firstDate: DateTime.now().add(Duration(days: 1)),
       lastDate: DateTime(3000),
       builder: (context, child) {
         return Theme(
@@ -148,7 +148,7 @@ class _selectFrequencyState extends State<selectFrequency> {
                   value: selectedFrequency,
                 ),
                 sizedBoxHeight(25.h),
-                selectedFrequency == "One Time"
+                selectedFrequency == "One Time" || selectedFrequency == null
                     ? const SizedBox()
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -160,7 +160,7 @@ class _selectFrequencyState extends State<selectFrequency> {
                           ),
                         ],
                       ),
-                selectedFrequency == "One Time"
+                selectedFrequency == "One Time" || selectedFrequency == null
                     ? const SizedBox()
                     : Form(
                         key: _formKey,
