@@ -47,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         token = resp.data["data"]["access_token"];
         Get.toNamed('/sideMenu');
       } else if (resp.status == ResponseStatus.PRIVATE) {
+        Get.back();
         String? message = resp.data['data'];
         utils.showToast("$message");
       } else {
@@ -72,49 +73,45 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 250.h,
+                height: 0.297.sh,
                 color: const Color(0xFF0E5F02),
-                child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.start,
+                child: Stack(
+                  //  alignment: Alignment.topCenter,
                   children: [
-                    Stack(
-                      //  alignment: Alignment.topCenter,
-                      children: [
-                        Positioned(
-                          left: -12 * fem,
-                          top: -18 * fem,
-                          child: SvgPicture.asset(
-                            "assets/grass.svg",
-                            // fit: BoxFit.fill,
-                            // width: MediaQuery.of(context).size.width,
-                            width: 430.w,
+                    Positioned(
+                      left: -12 * fem,
+                      top: -18 * fem,
+                      child: SvgPicture.asset(
+                        "assets/grass.svg",
+                        // fit: BoxFit.fill,
+                        // width: MediaQuery.of(context).size.width,
+                        width: 430.w,
+                      ),
+                    ),
+                    Positioned(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 25.h,
                           ),
-                        ),
-                        Positioned(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 25.h,
-                              ),
-                              Center(
-                                child: Image.asset(
-                                  "assets/logo.png",
-                                  height: 200.h,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 25.h,
-                              ),
-                            ],
+                          Center(
+                            child: Image.asset(
+                              "assets/logo.png",
+                              height: 200.h,
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: 25.h,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
               Container(
+                height: 0.6.sh,
                 color: const Color(0xFF0E5F02),
                 child: Container(
                   // height: double.infinity,
