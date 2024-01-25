@@ -115,6 +115,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   void _presentDatePicker() {
     // showDatePicker is a pre-made funtion of Flutter
+    DateTime eighteenYearsAgo =
+        DateTime.now().subtract(const Duration(days: 365 * 18));
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -140,11 +142,31 @@ class _PersonalInfoState extends State<PersonalInfo> {
       if (pickedDate == null) {
         return;
       }
-      setState(() {
-        _selectedDate = pickedDate;
-        datecontroller.text =
-            "${_selectedDate!.day.toString()}/${_selectedDate!.month.toString().padLeft(2, '0')}/${_selectedDate!.year.toString().padLeft(2, '0')}";
-      });
+      if (pickedDate.isBefore(eighteenYearsAgo)) {
+        setState(() {
+          _selectedDate = pickedDate;
+          datecontroller.text =
+              "${_selectedDate!.day.toString()}/${_selectedDate!.month.toString().padLeft(2, '0')}/${_selectedDate!.year.toString().padLeft(2, '0')}";
+        });
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Age Restriction"),
+              content: const Text("Sorry, you must be above 18 years age"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      }
     });
   }
 

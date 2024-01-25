@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../Model/dashboardModel/dashboard_model.dart';
+import '../Model/weather_model.dart';
 
 //import '../models/dashboardModel.dart';
 
@@ -15,4 +16,7 @@ class DashboardController extends GetxController {
   RxString weatherCondition = "".obs;
   RxBool isDashboardApiLoading = true.obs;
   DashboardModel dashboardModel = DashboardModel();
+  RxBool isWeatherForecastLoading = false.obs;
+  double? currentLat = 0, currentLng = 0;
+  List<WeatherModel> weatherModel = [];
 }
