@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Model/orderModel/completed_order_model.dart';
 import 'package:farm_flow_sales/Model/orderModel/ongoing_order_model.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
@@ -448,8 +449,8 @@ Widget SalesOrderMainTile(
                       ? Image.asset("assets/images/person.png")
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(60),
-                          child: Image.network(
-                            "${ApiUrls.baseImageUrl}/$image",
+                          child: CachedNetworkImage(
+                            imageUrl: "${ApiUrls.baseImageUrl}/$image",
                             width: 65,
                             height: 65,
                           ),

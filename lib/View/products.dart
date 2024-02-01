@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart';
 import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart';
 import 'package:farm_flow_sales/Model/livestockModel/inventory_livestock_model.dart';
@@ -36,15 +37,18 @@ class ProductspageState extends State<Productspage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      inventoriesController.isApiCalling.value = true;
+      if (inventoriesController.isProductFirst) {
+        inventoriesController.isApiCalling.value = true;
+      }
+
+      await InventoriesApi().getFeedLivestockApi().then((value) {
+        inventoryLivestockModel = InventoryLivestockModel.fromJson(value.data);
+      });
       await InventoriesApi().getInventoriesData("", [], 0).then((value1) async {
         inventoriesController.inventoriesDataModel.value =
             InventoriesDataModel.fromJson(value1.data);
-        await InventoriesApi().getFeedLivestockApi().then((value) {
-          inventoryLivestockModel =
-              InventoryLivestockModel.fromJson(value.data);
-          inventoriesController.isApiCalling.value = false;
-        });
+        inventoriesController.isProductFirst = false;
+        inventoriesController.isApiCalling.value = false;
       });
     });
 
@@ -81,7 +85,9 @@ class ProductspageState extends State<Productspage> {
                           inventoriesController.isApiCalling.value = true;
                           await InventoriesApi()
                               .getInventoriesData(
-                                  searchController.text, filterList, 0)
+                                  searchController.text.toLowerCase(),
+                                  filterList,
+                                  0)
                               .then((value) {
                             inventoriesController.inventoriesDataModel.value =
                                 InventoriesDataModel.fromJson(value.data);
@@ -356,7 +362,8 @@ class _ProductContainerState extends State<ProductContainer> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network("${ApiUrls.baseImageUrl}/${widget.png}",
+              CachedNetworkImage(
+                  imageUrl: "${ApiUrls.baseImageUrl}/${widget.png}",
                   height: 97.h),
               sizedBoxWidth(26.w),
               Flexible(

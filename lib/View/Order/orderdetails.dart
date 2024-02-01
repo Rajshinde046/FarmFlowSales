@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Model/orderModel/order_details_model.dart';
@@ -313,8 +314,9 @@ class _OrderdetailsState extends State<Orderdetails> {
                                                 color: const Color(0xff918E8E),
                                               ),
                                               color: AppColors.white),
-                                          child: Image.network(
-                                            "${ApiUrls.baseImageUrl}/${orderDetailsModel.data!.productList![index].smallImageUrl}",
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                "${ApiUrls.baseImageUrl}/${orderDetailsModel.data!.productList![index].smallImageUrl}",
                                             width: 76.w,
                                             height: 71.h,
                                           ),

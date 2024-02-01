@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class InventoriesController extends GetxController {
   RxBool isApiCalling = true.obs;
+  bool isProductFirst = true;
   RxInt cartSubTotalValue = 0.obs;
   int wareHouseId = 0;
   Rx<InventoriesDataModel> inventoriesDataModel = InventoriesDataModel().obs;

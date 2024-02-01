@@ -9,13 +9,13 @@ import 'package:farm_flow_sales/View/Connectfarmer.dart';
 import 'package:farm_flow_sales/View/Order/ordersmain.dart';
 import 'package:farm_flow_sales/View/dashboard.dart';
 import 'package:farm_flow_sales/View/products.dart';
+import 'package:farm_flow_sales/controller/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../Common/dialog/exit_app_dialog.dart';
 import 'side_bar.dart';
-// import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 
 class SideMenu extends StatefulWidget {
   const SideMenu({super.key});
@@ -56,19 +56,6 @@ class _SideMenuState extends State<SideMenu>
         textBlack10("text")
       ],
     ),
-    // Icon(
-    //   Icons.home_rounded,
-    //   size: 25.w,
-    //   color: Colors.white,
-    // ),
-    // Image.asset("assets/logo/logo.png",
-    //   height: 30.w,
-    //   width: 30.w,
-    // ),
-    // Icon(
-    //   Icons.toggle_on_outlined,
-    //   color: Colors.white,
-    // ),
     Icon(
       Icons.smart_display_outlined,
       color: Colors.white,
@@ -89,6 +76,8 @@ class _SideMenuState extends State<SideMenu>
     {"imageUrl": "assets/images/bottom_icon5.svg", "label": "Connect"},
   ];
 
+  DashboardController controller = Get.put(DashboardController());
+
   @override
   void initState() {
     _animationController = AnimationController(
@@ -101,7 +90,7 @@ class _SideMenuState extends State<SideMenu>
     scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(CurvedAnimation(
         parent: _animationController, curve: Curves.fastOutSlowIn));
 
-    selectedIndex = Get.arguments ?? 2;
+    controller.selectedIndex.value = Get.arguments ?? 2;
 
     super.initState();
   }
@@ -112,150 +101,149 @@ class _SideMenuState extends State<SideMenu>
     super.dispose();
   }
 
-  var selectedIndex = 2;
   // int activePage = 0;
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => backbuttonpressed(context),
-      child: SafeArea(
-        child: Scaffold(
-            // ex
-            // backgroundColor: Colors.transparent,
-            // backgroundColor: AppColors.transparent,
-            // resizeToAvoidBottomInset: false,
-            extendBody: true,
-            body: Container(
-              color: AppColors.transparent,
-              child: Stack(
-                children: [
-                  AnimatedPositioned(
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.fastOutSlowIn,
-                    left: isSideMenuClosed ? -300.w : 0,
-                    width: 300.w,
-                    height: MediaQuery.of(context).size.height,
-                    child: const SideBar(),
-                  ),
-                  Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()
-                      ..setEntry(3, 2, 0.001)
-                      ..rotateY(
-                          animation.value - 30 * animation.value * pi / 180),
-                    child: Transform.translate(
-                      offset: Offset(animation.value * 300.w, 0),
-                      child: Transform.scale(
-                        scale: scaleAnimation.value,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(isSideMenuClosed ? 0 : 24)),
-                            child: screens[selectedIndex]
-                            // const
-                            // Center(child: Home()),
+    return Obx(
+      () => WillPopScope(
+        onWillPop: () => backbuttonpressed(context),
+        child: SafeArea(
+          child: Scaffold(
+              // ex
+              // backgroundColor: Colors.transparent,
+              // backgroundColor: AppColors.transparent,
+              // resizeToAvoidBottomInset: false,
+              extendBody: true,
+              body: Container(
+                color: AppColors.transparent,
+                child: Stack(
+                  children: [
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.fastOutSlowIn,
+                      left: isSideMenuClosed ? -300.w : 0,
+                      width: 300.w,
+                      height: MediaQuery.of(context).size.height,
+                      child: const SideBar(),
+                    ),
+                    Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(
+                            animation.value - 30 * animation.value * pi / 180),
+                      child: Transform.translate(
+                        offset: Offset(animation.value * 300.w, 0),
+                        child: Transform.scale(
+                          scale: scaleAnimation.value,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(isSideMenuClosed ? 0 : 24)),
+                              child: screens[controller.selectedIndex.value]
+                              // const
+                              // Center(child: Home()),
+                              ),
+                        ),
+                      ),
+                    ),
+                    controller.selectedIndex.value == 2
+                        ? AnimatedPositioned(
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.fastOutSlowIn,
+                            top: 5.h,
+                            left: 4.w,
+                            child: IconButton(
+                              iconSize: 50.h,
+                              onPressed: () {
+                                if (isSideMenuClosed) {
+                                  _animationController.forward();
+                                } else {
+                                  _animationController.reverse();
+                                }
+                                setState(() {
+                                  isSideMenuClosed = !isSideMenuClosed;
+                                });
+                              },
+                              icon: isSideMenuClosed
+                                  ? Container(
+                                      height: 42.h,
+                                      width: 42.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(25.h),
+                                        color: AppColors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade400,
+                                            blurRadius: 5.h,
+                                            spreadRadius: 2.h,
+                                          )
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/images/menu.svg",
+                                            height: 18.h,
+                                            width: 18.h,
+                                            color: AppColors.black,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Icon(
+                                      Icons.cancel,
+                                      size: 29.w,
+                                      color: Colors.white,
+                                    ),
                             ),
-                      ),
-                    ),
-                  ),
-                  selectedIndex == 2
-                      ? AnimatedPositioned(
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.fastOutSlowIn,
-                          top: 5.h,
-                          left: 4.w,
-                          child: IconButton(
-                            iconSize: 50.h,
-                            onPressed: () {
-                              if (isSideMenuClosed) {
-                                _animationController.forward();
-                              } else {
-                                _animationController.reverse();
-                              }
-                              setState(() {
-                                isSideMenuClosed = !isSideMenuClosed;
-                              });
-                            },
-                            icon: isSideMenuClosed
-                                ? Container(
-                                    height: 42.h,
-                                    width: 42.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(25.h),
-                                      color: AppColors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.shade400,
-                                          blurRadius: 5.h,
-                                          spreadRadius: 2.h,
-                                        )
-                                      ],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/images/menu.svg",
-                                          height: 18.h,
-                                          width: 18.h,
-                                          color: AppColors.black,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.cancel,
-                                    size: 29.w,
-                                    color: Colors.white,
-                                  ),
-                          ),
-                        )
-                      : const SizedBox(),
-                ],
+                          )
+                        : const SizedBox(),
+                  ],
+                ),
               ),
-            ),
-            bottomNavigationBar: isSideMenuClosed
-                ? Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: Container(
-                      height: 70.h,
-                      decoration: BoxDecoration(
-                          color: AppColors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade400,
-                              blurRadius: 5.h,
-                              spreadRadius: 2.h,
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(35.h)),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.h),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(
-                                bottomBarData.length,
-                                (index) => activeIcon(
-                                    "assets/images/bottom_icon1_i.svg",
-                                    index))),
+              bottomNavigationBar: isSideMenuClosed
+                  ? Padding(
+                      padding: EdgeInsets.only(bottom: 10.h),
+                      child: Container(
+                        height: 70.h,
+                        decoration: BoxDecoration(
+                            color: AppColors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade400,
+                                blurRadius: 5.h,
+                                spreadRadius: 2.h,
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(35.h)),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.h),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: List.generate(bottomBarData.length,
+                                  (index) => activeIcon(index))),
+                        ),
                       ),
-                    ),
-                  )
-                : const SizedBox()),
+                    )
+                  : const SizedBox()),
+        ),
       ),
     );
   }
 
-  Widget activeIcon(String imagePath, int index) {
+  Widget activeIcon(int index) {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedIndex = index;
+          controller.selectedIndex.value = index;
         });
         // selectedIndex = index;
       },
-      child: selectedIndex == index
+      child: controller.selectedIndex.value == index
           ? Container(
               height: 50.h,
               width:

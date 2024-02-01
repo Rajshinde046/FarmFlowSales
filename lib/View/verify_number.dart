@@ -1,16 +1,23 @@
+import 'dart:async';
+
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
 import 'package:farm_flow_sales/view_models/onBoarding/VerifyNumberAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:http/http.dart' as http;
 import 'package:farm_flow_sales/common/limit_range.dart';
 
 import '../controller/verify_otp_controller.dart';
@@ -26,6 +33,8 @@ class _VerifyNumberState extends State<VerifyNumber> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController pincode = TextEditingController();
   final controllerVerifyOtp = Get.put(VerifyOtpController());
+  late Timer _timer;
+  int _countdown = 120;
 
   String? phoneNumber;
   int? id;
@@ -34,27 +43,93 @@ class _VerifyNumberState extends State<VerifyNumber> {
   @override
   void initState() {
     super.initState();
+    startTimer();
     phoneNumber = Get.arguments["phonenumber"];
     id = Get.arguments["id"];
+  }
+
+  resendOtpApi(String id) async {
+    try {
+      print(id);
+      var headers = {
+        'Authorization':
+            'Basic KzIkcVBiSlIzNncmaGUoalMmV0R6ZkpqdEVoSlVLVXA6dCRCZHEmSnQmc3Y0eUdqY0VVcTg5aEVZZHVSalhIMnU='
+      };
+      var request = http.MultipartRequest(
+          'POST',
+          Uri.parse(
+            ApiUrls.resendOtpApi,
+          ));
+      request.fields.addAll({'id': id});
+
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      var resp = await response.stream.bytesToString();
+      if (response.statusCode == 200) {
+        _countdown = 120;
+        startTimer();
+        Fluttertoast.showToast(msg: "OTP resent successfully");
+
+        print(resp);
+      } else if (response.statusCode == 429) {
+        print(resp);
+        Fluttertoast.showToast(
+            msg: "You can resend OTP only after a 2-minute interval");
+      } else {
+        print(response.reasonPhrase);
+        Fluttertoast.showToast(msg: "Something went wrong");
+      }
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(msg: "Something went wrong");
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    const oneSecond = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSecond, (timer) {
+      setState(() {
+        if (_countdown > 0) {
+          _countdown--;
+        } else {
+          timer.cancel();
+
+          utils.showToast("OTP Expired");
+        }
+      });
+    });
   }
 
   NetworkApiServices networkApiServices = NetworkApiServices();
   _verifycheck() async {
     final isValid = _form.currentState?.validate();
     if (isValid!) {
+      Utils.loader();
       Map<String, String> updata = {
         "id": id.toString(),
         "otp": pincode.text,
       };
       final resp = await VerifyNumberAPI(updata).verifynumberApi();
       if (resp.status == ResponseStatus.SUCCESS) {
+        Get.back();
         // int? id = resp.data['data']['id'];
-
+        _timer.cancel();
+        _countdown = 120;
+        pincode.clear();
         Get.toNamed('/ResetPassword', arguments: {'id': id.toString()});
       } else if (resp.status == ResponseStatus.PRIVATE) {
+        Get.back();
         String? message = resp.data['data'];
         utils.showToast("$message");
       } else {
+        Get.back();
         utils.showToast(resp.message);
       }
     }
@@ -137,8 +212,18 @@ class _VerifyNumberState extends State<VerifyNumber> {
                     appContext: context,
                   ),
                 ),
-
-                sizedBoxHeight(10.h),
+                sizedBoxHeight(30.h),
+                Center(
+                  child: Text(
+                    '${_countdown ~/ 60}:${(_countdown % 60).toString().padLeft(2, '0')}',
+                    style: GoogleFonts.roboto(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                sizedBoxHeight(30.h),
                 InkWell(
                   onTap: () {
                     controllerVerifyOtp.resendOtpApi(id.toString());
