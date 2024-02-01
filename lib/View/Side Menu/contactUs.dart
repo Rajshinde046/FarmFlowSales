@@ -20,7 +20,6 @@ class ContactUs extends StatefulWidget {
 class _ContactUsState extends State<ContactUs> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   final residentialstatustexteditingcontroller = TextEditingController();
-
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();

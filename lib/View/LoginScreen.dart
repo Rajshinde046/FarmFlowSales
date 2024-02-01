@@ -65,8 +65,6 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
           child: SingleChildScrollView(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Form(
           key: _form,
           child: Column(
@@ -75,43 +73,17 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 height: 0.297.sh,
                 color: const Color(0xFF0E5F02),
-                child: Stack(
-                  //  alignment: Alignment.topCenter,
-                  children: [
-                    Positioned(
-                      left: -12 * fem,
-                      top: -18 * fem,
-                      child: SvgPicture.asset(
-                        "assets/grass.svg",
-                        // fit: BoxFit.fill,
-                        // width: MediaQuery.of(context).size.width,
-                        width: 430.w,
-                      ),
-                    ),
-                    Positioned(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 25.h,
-                          ),
-                          Center(
-                            child: Image.asset(
-                              "assets/logo.png",
-                              height: 200.h,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 25.h,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                child: Center(
+                  child: Image.asset(
+                    "assets/grass.png",
+                    height: 0.297.sh,
+                    width: Get.width,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Container(
-                height: 0.6.sh,
+                height: 0.66.sh,
                 color: const Color(0xFF0E5F02),
                 child: Container(
                   // height: double.infinity,

@@ -49,7 +49,23 @@ class _Dashboard extends State<Dashboard> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      dashboardController.isDashboardApiLoading.value = true;
+      if (dashboardController.isDashboardFirst) {
+        dashboardController.isDashboardApiLoading.value = true;
+      }
+
+      await NotificationAPI().getNotificationCount().then((value) {
+        NotificationCountModel notificationCountModel =
+            NotificationCountModel.fromJson(value.data);
+        dashboardController.notificationCount.value =
+            notificationCountModel.data.toString();
+        //     getCurrentAddress();
+      });
+      await DashboardApi().getDashboardData().then((value) async {
+        dashboardController.dashboardModel =
+            DashboardModel.fromJson(value.data);
+        dashboardController.isDashboardFirst = false;
+        dashboardController.isDashboardApiLoading.value = false;
+      });
       _clockStream = Stream<DateTime>.periodic(const Duration(seconds: 1), (_) {
         return DateTime.now();
       });
@@ -59,21 +75,6 @@ class _Dashboard extends State<Dashboard> {
       } else {
         dashboardController.permissionStatus.value = "denied";
       }
-
-      await DashboardApi().getDashboardData().then((value) async {
-        dashboardController.dashboardModel =
-            DashboardModel.fromJson(value.data);
-        NotificationAPI().getNotificationCount().then((value) {
-          NotificationCountModel notificationCountModel =
-              NotificationCountModel.fromJson(value.data);
-          dashboardController.notificationCount.value =
-              notificationCountModel.data.toString();
-          //     getCurrentAddress();
-
-          dashboardController.isDashboardApiLoading.value = false;
-        });
-        dashboardController.isDashboardApiLoading.value = false;
-      });
     });
     super.initState();
   }
@@ -81,6 +82,7 @@ class _Dashboard extends State<Dashboard> {
   Future getCurrentAddress() async {
     final serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled && !await location.requestService()) {
+      dashboardController.permissionStatus.value = "denied";
       return;
     }
 
@@ -404,7 +406,7 @@ class _Dashboard extends State<Dashboard> {
                                       InkWell(
                                         onTap: () {
                                           if (dashboardController
-                                                  .permissionStatus.value ==
+                                                  .permissionStatus.value !=
                                               "denied") {
                                             Get.to(
                                                 const WeatherForecastScreen());
@@ -593,7 +595,7 @@ class _Dashboard extends State<Dashboard> {
                                                                             width:
                                                                                 200,
                                                                             decoration:
-                                                                                BoxDecoration(borderRadius: BorderRadius.circular(20.h), color: AppColors.buttoncolour),
+                                                                                BoxDecoration(borderRadius: BorderRadius.circular(20.h), color: const Color.fromARGB(255, 0, 0, 0)),
                                                                             child:
                                                                                 Center(
                                                                               child: Text(
@@ -984,38 +986,45 @@ class _Dashboard extends State<Dashboard> {
 
   Widget deliveriesCard(String image, String title, String number, int index) {
     return Expanded(
-      child: Container(
-        height: 155.h,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(index == 0 ? 10.h : 0),
-              bottomLeft: Radius.circular(index == 0 ? 10.h : 0),
-              topRight: Radius.circular(index == 2 ? 10.h : 0),
-              bottomRight: Radius.circular(index == 2 ? 10.h : 0)),
-          color: AppColors.white,
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
-          child: Column(
-            children: [
-              Image.asset(
-                image,
-                // "assets/images/timer.png",
-                height: 30.h,
-                width: 18.w,
-              ),
+      child: InkWell(
+        onTap: () {
+          if (index == 2) {
+            dashboardController.selectedIndex.value = 0;
+          }
+        },
+        child: Container(
+          height: 155.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(index == 0 ? 10.h : 0),
+                bottomLeft: Radius.circular(index == 0 ? 10.h : 0),
+                topRight: Radius.circular(index == 2 ? 10.h : 0),
+                bottomRight: Radius.circular(index == 2 ? 10.h : 0)),
+            color: AppColors.white,
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
+            child: Column(
+              children: [
+                Image.asset(
+                  image,
+                  // "assets/images/timer.png",
+                  height: 30.h,
+                  width: 18.w,
+                ),
 
-              sizedBoxHeight(10.h),
+                sizedBoxHeight(10.h),
 
-              textblack14M(title
-                  // "In Progress Delivery"
-                  ),
+                textblack14M(title
+                    // "In Progress Delivery"
+                    ),
 
-              // sizedBoxHeight(10.h),
-              const Spacer(),
+                // sizedBoxHeight(10.h),
+                const Spacer(),
 
-              textGreen20W7000Mon(number)
-            ],
+                textGreen20W7000Mon(number)
+              ],
+            ),
           ),
         ),
       ),
