@@ -5,7 +5,6 @@ import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/view_models/farmer/ConnectFarmerAPI.dart';
-import 'package:farm_flow_sales/view_models/connectFarmerApi/connect_farmer_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,7 +23,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   TextEditingController connectCode = TextEditingController();
 
-  _codecheck() async {
+  _codecheck(BuildContext context) async {
     final isValid = _form.currentState?.validate();
     if (isValid!) {
       Map<String, String> updata = {
@@ -32,11 +31,18 @@ class _ConnectfarmerState extends State<Connectfarmer> {
       };
       final resp = await ConnectFarmerAPI(updata).connectFarmerApi();
       if (resp.status == ResponseStatus.SUCCESS) {
-        buildconnectfarmer(context);
+        // Future.delayed(const Duration(microseconds: 1), () {
+        //   buildconnectfarmer(context);
+        // });
+        connectCode.clear();
+        utils.showToast("Request Send Succesfully");
       } else if (resp.status == ResponseStatus.PRIVATE) {
         var message = resp.data;
-
-        utils.showToast(message["message"]["connect_code"][0]);
+        if (message.toString().contains("Already Connected to this farmer")) {
+          utils.showToast(message["data"]);
+        } else {
+          utils.showToast(message["data"]["connect_code"][0]);
+        }
       } else {
         utils.showToast(resp.data);
         utils.showToast("Error");
@@ -44,13 +50,15 @@ class _ConnectfarmerState extends State<Connectfarmer> {
     }
   }
 
+//5IKQ5mQYVy
   buildconnectfarmer(context) {
     return showDialog(
         context: context,
         builder: (context) {
-          Future.delayed(const Duration(seconds: 2), () {
-            //   connectCodeController.text = "";
-            Navigator.of(context).pop();
+          Future.delayed(const Duration(seconds: 1), () {
+            //  connectCode.text = "";
+            log("CALLING THIS");
+            Get.back();
           });
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -174,8 +182,8 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                               fontWeight: FontWeight.w500,
                             ),
                             readOnly: false,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            // autovalidateMode:
+                            //     AutovalidateMode.onUserInteraction,
                             cursorColor: AppColors.buttoncolour,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
@@ -232,7 +240,7 @@ class _ConnectfarmerState extends State<Connectfarmer> {
                           customButtonCurve(
                               text: "Connect To Farmer",
                               onTap: () {
-                                _codecheck();
+                                _codecheck(context);
                               })
                         ],
                       ),

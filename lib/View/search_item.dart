@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:farm_flow_sales/Common/limit_range.dart';
-import '../Model/inventoriesModel/inventories_model.dart';
 import '../Model/inventoriesModel/inventory_details_model.dart';
 import '../Utils/texts.dart';
 import '../controller/inventories_controller.dart';

@@ -77,7 +77,6 @@ class _ForgotPinState extends State<ForgotPin> {
                       width: 200.w,
                       height: 200.w,
                     ),
-
                     SizedBox(
                       width: 270.w,
                       child: textBlack16W5000(
@@ -85,45 +84,45 @@ class _ForgotPinState extends State<ForgotPin> {
                       ),
                     ),
                     sizedBoxHeight(35.h),
-
                     Align(
                       alignment: Alignment.centerLeft,
                       child: textBlack16W5000("Phone Number"),
                     ),
-
                     sizedBoxHeight(8.h),
-
                     CustomTextFormField(
-                        texttype: TextInputType.phone,
-                        textEditingController: phoneController,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(10),
-                        ],
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please Enter a Phone Number";
-                          } else if (!RegExp(
-                                  r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$')
-                              .hasMatch(value)) {
-                            return "Please Enter a Valid Phone Number";
-                          }
-                          return null;
-                        },
-                        hintText: "Enter your Phone Number",
-                        validatorText: "Enter your Phone Number"),
-                    // Spacer(),
-
+                      textEditingController: phoneController,
+                      texttype: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(9),
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      leadingIcon: Text(
+                        "+353",
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                      hintText: "",
+                      validator: (value) {
+                        if (value == value.isEmpty) {
+                          return 'Mobile number is required';
+                        } else if (!value.toString().startsWith("8")) {
+                          return 'Enter a valid mobile number starting with 8';
+                        } else if (!RegExp(r'(^(?:[+0]9)?[0-9]{9}$)')
+                            .hasMatch(value)) {
+                          return 'Enter valid mobile number';
+                        }
+                        // v3 = true;
+                        return null;
+                      },
+                      validatorText: "",
+                      isInputPassword: false,
+                    ),
                     sizedBoxHeight(180.h),
                     customButtonCurve(
                         text: "Next",
                         onTap: () {
                           _forgotcheck();
-                          // final isValid = _form.currentState?.validate();
-                          // if (isValid!) {
-                          //   Get.toNamed("/verifyNumber",
-                          //       arguments: phoneController.text);
-                          // }
                         }),
                   ],
                 ),

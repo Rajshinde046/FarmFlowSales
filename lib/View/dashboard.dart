@@ -988,8 +988,11 @@ class _Dashboard extends State<Dashboard> {
     return Expanded(
       child: InkWell(
         onTap: () {
+          dashboardController.selectedIndex.value = 0;
           if (index == 2) {
-            dashboardController.selectedIndex.value = 0;
+            dashboardController.selectedTab.value = 1;
+          } else {
+            dashboardController.selectedTab.value = 0;
           }
         },
         child: Container(

@@ -72,7 +72,7 @@ class _ContactState extends State<Contact> {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Are you sure you want to call ${type}?",
+                    "Are you sure you want to call $type?",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
@@ -88,7 +88,7 @@ class _ContactState extends State<Contact> {
                   children: [
                     InkWell(
                       onTap: () {
-                        launch("tel://${number}");
+                        launch("tel://$number");
                       },
                       child: Container(
                         height: 48.h,
@@ -186,7 +186,7 @@ class _ContactState extends State<Contact> {
                   children: [
                     InkWell(
                       onTap: () {
-                        launch("mailto:${email}");
+                        launch("mailto:$email");
                       },
                       child: Container(
                         height: 48.h,
@@ -203,7 +203,7 @@ class _ContactState extends State<Contact> {
                         ),
                       ),
                     ),
-                    Gap(15),
+                    const Gap(15),
                     InkWell(
                       onTap: () {
                         Navigator.pop(context);
@@ -601,7 +601,7 @@ class _ContactState extends State<Contact> {
                                 }),
                           ),
                           contactListModel.data!.deliveryAgents!.isEmpty
-                              ? SizedBox()
+                              ? const SizedBox()
                               : sizedBoxHeight(15),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -729,7 +729,7 @@ class _ContactState extends State<Contact> {
                                                   // ),
                                                 ),
                                                 sizedBoxWidth(5.w),
-                                                Container(
+                                                SizedBox(
                                                   width: Get.width / 2.3,
                                                   child: RichText(
                                                     maxLines: 2,

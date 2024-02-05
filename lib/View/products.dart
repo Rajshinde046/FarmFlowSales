@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart';
 import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart';
 import 'package:farm_flow_sales/Model/livestockModel/inventory_livestock_model.dart';
@@ -18,7 +16,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'search_item.dart';
 
 class Productspage extends StatefulWidget {
@@ -163,28 +161,31 @@ class ProductspageState extends State<Productspage> {
                                         .data!
                                         .length,
                                     itemBuilder: (ctx, index) {
-                                      return ProductContainer(
-                                        txt: inventoriesController
-                                            .inventoriesDataModel
-                                            .value
-                                            .data![index]
-                                            .title!,
-                                        png: inventoriesController
-                                            .inventoriesDataModel
-                                            .value
-                                            .data![index]
-                                            .smallImageUrl!,
-                                        data: inventoriesController
-                                            .inventoriesDataModel
-                                            .value
-                                            .data![index],
-                                        maxValue: inventoriesController
-                                            .inventoriesDataModel
-                                            .value
-                                            .data![index]
-                                            .lots![0]
-                                            .quantity!,
-                                      );
+                                      return index > 3
+                                          ? SizedBox()
+                                          : ProductContainer(
+                                              txt: inventoriesController
+                                                  .inventoriesDataModel
+                                                  .value
+                                                  .data![index]
+                                                  .title!,
+                                              png: inventoriesController
+                                                  .inventoriesDataModel
+                                                  .value
+                                                  .data![index]
+                                                  .media![0]
+                                                  .imageUrl!,
+                                              data: inventoriesController
+                                                  .inventoriesDataModel
+                                                  .value
+                                                  .data![index],
+                                              maxValue: inventoriesController
+                                                  .inventoriesDataModel
+                                                  .value
+                                                  .data![index]
+                                                  .lots![0]
+                                                  .quantity!,
+                                            );
                                     }),
                               )
                             ],
@@ -363,8 +364,20 @@ class _ProductContainerState extends State<ProductContainer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CachedNetworkImage(
-                  imageUrl: "${ApiUrls.baseImageUrl}/${widget.png}",
-                  height: 97.h),
+                progressIndicatorBuilder: (context, url, progress) =>
+                    CircularProgressIndicator(value: progress.progress),
+                memCacheWidth: 45,
+                memCacheHeight: 60,
+                maxHeightDiskCache: 60,
+                maxWidthDiskCache: 45,
+                imageUrl: "${ApiUrls.baseImageUrl}${widget.png}",
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+              // Image.network(
+              //   "${ApiUrls.baseImageUrl}${widget.png}",
+              //   height: 97.h,
+              // ),
               sizedBoxWidth(26.w),
               Flexible(
                 child: Column(

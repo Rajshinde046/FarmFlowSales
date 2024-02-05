@@ -11,7 +11,6 @@ import 'package:lottie/lottie.dart';
 import 'package:farm_flow_sales/Common/limit_range.dart';
 
 import '../../Model/cartModel/cartModel.dart';
-import '../../Utils/texts.dart';
 import '../../controller/inventories_controller.dart';
 import '../../view_models/cartApi/cartApi.dart';
 

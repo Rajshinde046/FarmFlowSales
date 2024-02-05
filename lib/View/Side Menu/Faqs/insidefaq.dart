@@ -78,7 +78,7 @@ class _FaqscontentState extends State<Faqscontent> {
                 children: [
                   sizedBoxHeight(26.h),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
                     child: ExpansionTileGroup(
                         spaceBetweenItem: 23,
                         toggleType: ToggleType.expandOnlyCurrent,

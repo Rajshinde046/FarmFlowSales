@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Model/orderModel/completed_order_model.dart';
 import 'package:farm_flow_sales/Model/orderModel/ongoing_order_model.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
+import 'package:farm_flow_sales/controller/dashboard_controller.dart';
 import 'package:farm_flow_sales/view_models/orderApi/order_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,22 +32,30 @@ class OrderMain extends StatefulWidget {
   State<OrderMain> createState() => _OrderMainState();
 }
 
-class _OrderMainState extends State<OrderMain> {
+class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
   OngoingOrderModel ongoingOrderModel = OngoingOrderModel();
-
+  DashboardController dashboardController = Get.put(DashboardController());
   CompletedOrderModel completedOrderModel = CompletedOrderModel();
   RxBool isOngoingLoading = true.obs;
   RxBool isCompletedLoading = true.obs;
+  TabController? tabController;
   @override
   void initState() {
-    OrderApi().getOngoingOrderData().then((value) {
-      ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
-      isOngoingLoading.value = false;
-    });
-    OrderApi().getCompletedOrderData("0").then((value) {
-      completedOrderModel = CompletedOrderModel.fromJson(value.data);
-      isCompletedLoading.value = false;
-    });
+    tabController = TabController(length: 3, vsync: this);
+    if (dashboardController.selectedTab.value == 0) {
+      tabController!.animateTo(0);
+      OrderApi().getOngoingOrderData().then((value) {
+        ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
+        isOngoingLoading.value = false;
+      });
+    } else {
+      tabController!.animateTo(1);
+      OrderApi().getCompletedOrderData("0").then((value) {
+        completedOrderModel = CompletedOrderModel.fromJson(value.data);
+        isCompletedLoading.value = false;
+      });
+    }
+
     super.initState();
   }
 
@@ -63,6 +71,7 @@ class _OrderMainState extends State<OrderMain> {
             flexibleSpace: Padding(
               padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
               child: TabBar(
+                controller: tabController,
                 onTap: ((value) {
                   if (value == 0) {
                     isOngoingLoading.value = true;
@@ -99,6 +108,7 @@ class _OrderMainState extends State<OrderMain> {
           ),
           backgroundColor: AppColors.white,
           body: TabBarView(
+            controller: tabController,
             physics: const NeverScrollableScrollPhysics(),
             children: [
               Column(
@@ -449,8 +459,8 @@ Widget SalesOrderMainTile(
                       ? Image.asset("assets/images/person.png")
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(60),
-                          child: CachedNetworkImage(
-                            imageUrl: "${ApiUrls.baseImageUrl}/$image",
+                          child: Image.network(
+                            "${ApiUrls.baseImageUrl}/$image",
                             width: 65,
                             height: 65,
                           ),
@@ -507,7 +517,7 @@ Widget SalesOrderMainTile(
                         ),
                       ),
                       sizedBoxWidth(5.w),
-                      Container(
+                      SizedBox(
                         width: Get.width / 1.7,
                         child: Text(
                           location.isEmpty ? "Unknown" : location,
