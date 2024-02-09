@@ -84,7 +84,7 @@ class _SecureLoginState extends State<SecureLogin> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(const ForgotPin());
+                    Get.to(() => const ForgotPin());
                   },
                   child: Text(
                     "Forgot Pin?",

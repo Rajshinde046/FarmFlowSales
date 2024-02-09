@@ -9,7 +9,7 @@ class InventoriesController extends GetxController {
   int wareHouseId = 0;
   Rx<InventoriesDataModel> inventoriesDataModel = InventoriesDataModel().obs;
 
-  ViewCartModel viewCartModel = ViewCartModel();
+  Rx<ViewCartModel> viewCartModel = ViewCartModel().obs;
   RxBool isLoading = true.obs;
   bool fromWarehouse = false;
 }

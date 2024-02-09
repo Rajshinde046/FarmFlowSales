@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Model/salesModel/sales_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
@@ -336,10 +337,18 @@ Widget SalesMainTile(
                       ? Image.asset("assets/images/person.png")
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(60),
-                          child: Image.network(
-                            "${ApiUrls.baseImageUrl}/$image",
-                            width: 65,
-                            height: 65,
+                          child: CachedNetworkImage(
+                            memCacheHeight: 65,
+                            maxHeightDiskCache: 65,
+                            maxWidthDiskCache: 65,
+                            memCacheWidth: 65,
+                            imageUrl: "${ApiUrls.baseImageUrl}/$image",
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(
+                              color: AppColors.buttoncolour,
+                            ),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                           ),
                         ),
                 ),

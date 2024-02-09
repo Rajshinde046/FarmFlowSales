@@ -113,23 +113,6 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
               sizedBoxHeight(29.h),
-              // GestureDetector(
-              //   onTap: () {
-              //     Get.to(const DeleteAccountScreen());
-              //   },
-              //   child: Padding(
-              //     padding: EdgeInsets.symmetric(horizontal: 16.w),
-              //     child: Text(
-              //       "Request Deletion Of Account",
-              //       style: TextStyle(
-              //           fontSize: 20.sp,
-              //           color: const Color(0XFF0E5F02),
-              //           fontFamily: "Poppins",
-              //           fontWeight: FontWeight.w500),
-              //     ),
-              //   ),
-              // ),
-              // sizedBoxHeight(12.h),
               GestureDetector(
                 onTap: () {
                   buildprofilelogoutdialog(context);

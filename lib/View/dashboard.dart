@@ -140,7 +140,6 @@ class _Dashboard extends State<Dashboard> {
             onPressed: () {
               inventoriesController.fromWarehouse = false;
               Get.toNamed('/searchnmain');
-              // Get.to(() => const SearchProductCategories());
             },
             //  _incrementCounter,
             tooltip: 'Search',
@@ -408,7 +407,7 @@ class _Dashboard extends State<Dashboard> {
                                           if (dashboardController
                                                   .permissionStatus.value !=
                                               "denied") {
-                                            Get.to(
+                                            Get.to(() =>
                                                 const WeatherForecastScreen());
                                           }
                                         },

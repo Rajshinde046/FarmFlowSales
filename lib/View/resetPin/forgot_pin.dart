@@ -36,7 +36,7 @@ class _ForgotPinState extends State<ForgotPin> {
       final resp = await ForgotPasswordAPI(updata).forgotpinApi();
       if (resp.status == ResponseStatus.SUCCESS) {
         int? id = resp.data['data']['id'];
-        Get.to(const ForogotPinVerifyNumber(),
+        Get.to(() => const ForogotPinVerifyNumber(),
             arguments: {'id': id, 'phonenumber': phoneController.text});
       } else if (resp.status == ResponseStatus.PRIVATE) {
         String? message = resp.data['data']['phone_number'].first;

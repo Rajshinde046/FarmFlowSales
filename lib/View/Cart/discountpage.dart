@@ -202,7 +202,7 @@ class Discount extends StatelessWidget {
                             : (mRP - discountController.discountValue!);
 
                         CartApi().getViewCartData().then((value) {
-                          inventoriesController.viewCartModel =
+                          inventoriesController.viewCartModel.value =
                               ViewCartModel.fromJson(value.data);
                         }).then((value) {
                           Get.toNamed("/placeordermain", arguments: {

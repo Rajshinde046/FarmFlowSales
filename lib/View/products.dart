@@ -161,31 +161,28 @@ class ProductspageState extends State<Productspage> {
                                         .data!
                                         .length,
                                     itemBuilder: (ctx, index) {
-                                      return index > 3
-                                          ? SizedBox()
-                                          : ProductContainer(
-                                              txt: inventoriesController
-                                                  .inventoriesDataModel
-                                                  .value
-                                                  .data![index]
-                                                  .title!,
-                                              png: inventoriesController
-                                                  .inventoriesDataModel
-                                                  .value
-                                                  .data![index]
-                                                  .media![0]
-                                                  .imageUrl!,
-                                              data: inventoriesController
-                                                  .inventoriesDataModel
-                                                  .value
-                                                  .data![index],
-                                              maxValue: inventoriesController
-                                                  .inventoriesDataModel
-                                                  .value
-                                                  .data![index]
-                                                  .lots![0]
-                                                  .quantity!,
-                                            );
+                                      return ProductContainer(
+                                        txt: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .title!,
+                                        png: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .smallImageUrl!,
+                                        data: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index],
+                                        maxValue: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .lots![0]
+                                            .quantity!,
+                                      );
                                     }),
                               )
                             ],
@@ -284,10 +281,18 @@ class ProductspageState extends State<Productspage> {
             },
           ),
         ),
-        Image.network(
-            '${ApiUrls.baseImageUrl}/${inventoryLivestockModel.data![index].smallImageUrl}',
-            width: 40.w,
-            height: 24.h),
+        CachedNetworkImage(
+          memCacheHeight: 24,
+          maxHeightDiskCache: 40,
+          maxWidthDiskCache: 24,
+          memCacheWidth: 40,
+          imageUrl:
+              '${ApiUrls.baseImageUrl}/${inventoryLivestockModel.data![index].smallImageUrl}',
+          placeholder: (context, url) => const CircularProgressIndicator(
+            color: AppColors.buttoncolour,
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
         sizedBoxWidth(5.w),
         textblack14M(inventoryLivestockModel.data![index].name!),
       ],
@@ -364,20 +369,16 @@ class _ProductContainerState extends State<ProductContainer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CachedNetworkImage(
-                progressIndicatorBuilder: (context, url, progress) =>
-                    CircularProgressIndicator(value: progress.progress),
-                memCacheWidth: 45,
-                memCacheHeight: 60,
-                maxHeightDiskCache: 60,
-                maxWidthDiskCache: 45,
-                imageUrl: "${ApiUrls.baseImageUrl}${widget.png}",
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                memCacheWidth: 80,
+                memCacheHeight: 97,
+                maxHeightDiskCache: 97,
+                maxWidthDiskCache: 80,
+                imageUrl: "${ApiUrls.baseImageUrl}/${widget.png}",
+                placeholder: (context, url) => const CircularProgressIndicator(
+                  color: AppColors.buttoncolour,
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-              // Image.network(
-              //   "${ApiUrls.baseImageUrl}${widget.png}",
-              //   height: 97.h,
-              // ),
               sizedBoxWidth(26.w),
               Flexible(
                 child: Column(
@@ -503,8 +504,19 @@ class _ProductContainerState extends State<ProductContainer> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network("${ApiUrls.baseImageUrl}/${widget.png}",
-                        height: 97.h),
+                    CachedNetworkImage(
+                      memCacheHeight: 97,
+                      maxHeightDiskCache: 97,
+                      maxWidthDiskCache: 85,
+                      memCacheWidth: 85,
+                      imageUrl: "${ApiUrls.baseImageUrl}/${widget.png}",
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(
+                        color: AppColors.buttoncolour,
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                     sizedBoxWidth(26.w),
                     Flexible(
                       child: textBlack18W5000(widget.txt),

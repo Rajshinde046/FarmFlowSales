@@ -83,7 +83,7 @@ class _ForgotPinVerifyNumberState extends State<ForogotPinVerifyNumber> {
         // int? id = resp.data['data']['id'];
 
         Get.to(
-          const SetNewPinScreen(),
+          () => const SetNewPinScreen(),
         );
       } else if (resp.status == ResponseStatus.PRIVATE) {
         Get.back();

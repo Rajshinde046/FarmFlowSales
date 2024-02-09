@@ -90,7 +90,9 @@ class _SideMenuState extends State<SideMenu>
     scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(CurvedAnimation(
         parent: _animationController, curve: Curves.fastOutSlowIn));
 
-    controller.selectedIndex.value = Get.arguments ?? 2;
+    Future.delayed(Duration(microseconds: 100), () {
+      controller.selectedIndex.value = Get.arguments ?? 2;
+    });
 
     super.initState();
   }

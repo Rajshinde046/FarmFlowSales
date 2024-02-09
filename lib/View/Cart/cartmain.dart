@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
@@ -48,10 +49,10 @@ class _CartmainState extends State<Cartmain> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       inventoriesController.isLoading.value = true;
       CartApi().getViewCartData().then((value) {
-        inventoriesController.viewCartModel =
+        inventoriesController.viewCartModel.value =
             ViewCartModel.fromJson(value.data);
         inventoriesController.cartSubTotalValue.value =
-            inventoriesController.viewCartModel.data!.subTotal!;
+            inventoriesController.viewCartModel.value.data!.subTotal!;
         inventoriesController.isLoading.value = false;
       });
     });
@@ -69,7 +70,7 @@ class _CartmainState extends State<Cartmain> {
                 child: CircularProgressIndicator(
                 color: AppColors.buttoncolour,
               ))
-            : inventoriesController.viewCartModel.data!.cart!.isEmpty
+            : inventoriesController.viewCartModel.value.data!.cart!.isEmpty
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,7 +115,7 @@ class _CartmainState extends State<Cartmain> {
                             onTap: () {
                               List<int> listV = [];
                               for (var a in inventoriesController
-                                  .viewCartModel.data!.cart!) {
+                                  .viewCartModel.value.data!.cart!) {
                                 listV.add(a.id!);
                               }
                               cartController.cartDataId = listV;
@@ -128,7 +129,7 @@ class _CartmainState extends State<Cartmain> {
                                   color: AppColors.buttoncolour),
                               child: Center(
                                 child: Text(
-                                  "Proceed To Buy (${inventoriesController.viewCartModel.data!.cart!.length} Items)",
+                                  "Proceed To Buy (${inventoriesController.viewCartModel.value.data!.cart!.length} Items)",
                                   style: TextStyle(
                                       color: AppColors.white, fontSize: 18.sp),
                                 ),
@@ -141,12 +142,13 @@ class _CartmainState extends State<Cartmain> {
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: inventoriesController
-                                    .viewCartModel.data!.cart!.length,
+                                    .viewCartModel.value.data!.cart!.length,
                                 itemBuilder: (ctx, index) {
                                   return CartCardDetails(
                                       index: index,
                                       maxValue: inventoriesController
                                           .viewCartModel
+                                          .value
                                           .data!
                                           .cart![index]
                                           .getItems![0]
@@ -180,17 +182,16 @@ class _CartCardDetailsState extends State<CartCardDetails> {
   @override
   void initState() {
     counter = inventoriesController
-        .viewCartModel.data!.cart![widget.index].quantity!.obs;
+        .viewCartModel.value.data!.cart![widget.index].quantity!.obs;
     price.value = counter.value *
         inventoriesController
-            .viewCartModel.data!.cart![widget.index].getItems![0].price!;
+            .viewCartModel.value.data!.cart![widget.index].getItems![0].price!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 358.w,
       margin: const EdgeInsets.only(bottom: 15),
       // height: 120.h,
       decoration: const BoxDecoration(
@@ -210,10 +211,16 @@ class _CartCardDetailsState extends State<CartCardDetails> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              "${ApiUrls.baseImageUrl}/${inventoriesController.viewCartModel.data!.cart![widget.index].getItems![0].item!.smallImageUrl}",
-              width: 57.w,
-              height: 99.h,
+            CachedNetworkImage(
+              height: 99,
+              width: 60,
+              fit: BoxFit.contain,
+              imageUrl:
+                  "${ApiUrls.baseImageUrl}/${inventoriesController.viewCartModel.value.data!.cart![widget.index].getItems![0].item!.smallImageUrl}",
+              placeholder: (context, url) => const CircularProgressIndicator(
+                color: AppColors.buttoncolour,
+              ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             sizedBoxWidth(31.w),
             Column(
@@ -221,8 +228,8 @@ class _CartCardDetailsState extends State<CartCardDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  inventoriesController.viewCartModel.data!.cart![widget.index]
-                      .getItems![0].item!.title!,
+                  inventoriesController.viewCartModel.value.data!
+                      .cart![widget.index].getItems![0].item!.title!,
                   style: GoogleFonts.poppins(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w500,
@@ -231,8 +238,8 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                 ),
                 sizedBoxHeight(7.h),
                 Text(
-                  inventoriesController.viewCartModel.data!.cart![widget.index]
-                      .getItems![0].lotName!,
+                  inventoriesController.viewCartModel.value.data!
+                      .cart![widget.index].getItems![0].lotName!,
                   style: GoogleFonts.poppins(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.normal,
@@ -245,12 +252,17 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "€ ${price.value}",
-                        style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.black),
+                      Container(
+                        width: 60,
+                        child: FittedBox(
+                          child: Text(
+                            "€ ${price.value}",
+                            style: GoogleFonts.poppins(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black),
+                          ),
+                        ),
                       ),
                       sizedBoxWidth(91.w),
                       Padding(
@@ -265,28 +277,32 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                                     .manageCartData(
                                         inventoriesController
                                             .viewCartModel
+                                            .value
                                             .data!
                                             .cart![widget.index]
                                             .itemMasterLotXid!,
                                         counter.value)
                                     .then((value) {
                                   if (counter.value == 0) {
-                                    inventoriesController.isLoading.value =
-                                        true;
+                                    // inventoriesController.isLoading.value =
+                                    //     true;
                                     CartApi().getViewCartData().then((value) {
-                                      inventoriesController.viewCartModel =
+                                      inventoriesController
+                                              .viewCartModel.value =
                                           ViewCartModel.fromJson(value.data);
                                       inventoriesController
                                               .cartSubTotalValue.value =
-                                          inventoriesController
-                                              .viewCartModel.data!.subTotal!;
-                                      inventoriesController.isLoading.value =
-                                          false;
+                                          inventoriesController.viewCartModel
+                                              .value.data!.subTotal!;
+                                      // inventoriesController.isLoading.value =
+                                      //     false;
+                                      // setState(() {});
                                     });
                                   } else {
                                     int totalPriceV = 0;
                                     inventoriesController
                                         .viewCartModel
+                                        .value
                                         .data!
                                         .cart![widget.index]
                                         .quantity = counter.value;
@@ -294,6 +310,7 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                                     price.value = counter.value *
                                         inventoriesController
                                             .viewCartModel
+                                            .value
                                             .data!
                                             .cart![widget.index]
                                             .getItems![0]
@@ -302,15 +319,17 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                                     for (int i = 0;
                                         i <
                                             inventoriesController.viewCartModel
-                                                .data!.cart!.length;
+                                                .value.data!.cart!.length;
                                         i++) {
                                       totalPriceV += inventoriesController
                                               .viewCartModel
+                                              .value
                                               .data!
                                               .cart![i]
                                               .quantity! *
                                           inventoriesController
                                               .viewCartModel
+                                              .value
                                               .data!
                                               .cart![i]
                                               .getItems![0]
@@ -319,6 +338,7 @@ class _CartCardDetailsState extends State<CartCardDetails> {
 
                                     inventoriesController
                                         .cartSubTotalValue.value = totalPriceV;
+                                    setState(() {});
                                   }
                                   Map<String, dynamic> responseData =
                                       Map<String, dynamic>.from(value.data);
@@ -366,6 +386,7 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                                     .manageCartData(
                                         inventoriesController
                                             .viewCartModel
+                                            .value
                                             .data!
                                             .cart![widget.index]
                                             .itemMasterLotXid!,
@@ -374,28 +395,36 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                                   int totalPriceV = 0;
                                   inventoriesController
                                       .viewCartModel
+                                      .value
                                       .data!
                                       .cart![widget.index]
                                       .quantity = counter.value;
                                   price.value = counter.value *
                                       inventoriesController
                                           .viewCartModel
+                                          .value
                                           .data!
                                           .cart![widget.index]
                                           .getItems![0]
                                           .price!;
                                   for (int i = 0;
                                       i <
-                                          inventoriesController
-                                              .viewCartModel.data!.cart!.length;
+                                          inventoriesController.viewCartModel
+                                              .value.data!.cart!.length;
                                       i++) {
                                     totalPriceV += inventoriesController
                                             .viewCartModel
+                                            .value
                                             .data!
                                             .cart![i]
                                             .quantity! *
-                                        inventoriesController.viewCartModel
-                                            .data!.cart![i].getItems![0].price!;
+                                        inventoriesController
+                                            .viewCartModel
+                                            .value
+                                            .data!
+                                            .cart![i]
+                                            .getItems![0]
+                                            .price!;
                                   }
 
                                   inventoriesController

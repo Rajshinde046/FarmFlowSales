@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
@@ -63,10 +64,19 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               width: 88.w,
                               height: 88.h,
                             )
-                          : Image.network(
-                              "${ApiUrls.baseImageUrl}/${farmerData.farmerDetails!.profilePhoto}",
-                              width: 88.w,
-                              height: 88.h,
+                          : CachedNetworkImage(
+                              memCacheHeight: 88,
+                              maxHeightDiskCache: 88,
+                              maxWidthDiskCache: 88,
+                              memCacheWidth: 88,
+                              imageUrl:
+                                  "${ApiUrls.baseImageUrl}/${farmerData.farmerDetails!.profilePhoto}",
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(
+                                color: AppColors.buttoncolour,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                     ),
                     sizedBoxHeight(23.h),
@@ -381,7 +391,13 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                       : AppColors.grey4D4D4D)),
           child: Padding(
             padding: EdgeInsets.all(4.h),
-            child: Image.network("${ApiUrls.baseImageUrl}/$imagePath"),
+            child: CachedNetworkImage(
+              imageUrl: "${ApiUrls.baseImageUrl}/$imagePath",
+              placeholder: (context, url) => const CircularProgressIndicator(
+                color: AppColors.buttoncolour,
+              ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
         ),
       ),

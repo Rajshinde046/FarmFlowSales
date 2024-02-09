@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Model/contactListModel/contact_list_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
@@ -268,12 +269,20 @@ class _ContactState extends State<Contact> {
                         width: 76.w,
                         height: 76.h,
                       )
-                    : Image.network(
-                        "${ApiUrls.baseImageUrl}/$profileImage",
-                        // "assets/images/person.png",
-                        width: 76.w,
-                        height: 76.h,
+                    : CachedNetworkImage(
+                        memCacheHeight: 76,
+                        maxHeightDiskCache: 76,
+                        maxWidthDiskCache: 76,
+                        memCacheWidth: 76,
+                        imageUrl: "${ApiUrls.baseImageUrl}/$profileImage",
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(
+                          color: AppColors.buttoncolour,
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
+
                 SizedBox(
                   height: 11.h,
                 ),
@@ -495,10 +504,24 @@ class _ContactState extends State<Contact> {
                                                           width: 66.w,
                                                           height: 66.w,
                                                         )
-                                                      : Image.network(
-                                                          "${ApiUrls.baseImageUrl}/${contactListModel.data!.deliveryAgents![index].profilePhoto}",
-                                                          width: 66.w,
-                                                          height: 66.w,
+                                                      : CachedNetworkImage(
+                                                          memCacheHeight: 66,
+                                                          maxHeightDiskCache:
+                                                              66,
+                                                          maxWidthDiskCache: 66,
+                                                          memCacheWidth: 66,
+                                                          imageUrl:
+                                                              "${ApiUrls.baseImageUrl}/${contactListModel.data!.deliveryAgents![index].profilePhoto}",
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              const CircularProgressIndicator(
+                                                            color: AppColors
+                                                                .buttoncolour,
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              const Icon(
+                                                                  Icons.error),
                                                         ),
                                                 ),
                                               ),
@@ -654,12 +677,20 @@ class _ContactState extends State<Contact> {
                                                 width: 66.w,
                                                 height: 66.w,
                                               )
-                                            : Image.network(
-                                                "${ApiUrls.baseImageUrl}/${contactListModel.data!.coop!.profilePhoto}",
-                                                // image,
-                                                // "assets/images/connect2.png",
-                                                width: 66.w,
-                                                height: 66.w,
+                                            : CachedNetworkImage(
+                                                memCacheHeight: 66,
+                                                maxHeightDiskCache: 66,
+                                                maxWidthDiskCache: 66,
+                                                memCacheWidth: 66,
+                                                imageUrl:
+                                                    "${ApiUrls.baseImageUrl}/${contactListModel.data!.coop!.profilePhoto}",
+                                                placeholder: (context, url) =>
+                                                    const CircularProgressIndicator(
+                                                  color: AppColors.buttoncolour,
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
                                               ),
                                       ),
 

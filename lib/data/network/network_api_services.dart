@@ -44,7 +44,7 @@ class NetworkApiServices extends BaseApiServices {
           prefs.setString('token', "");
           Get.offAndToNamed("/loginScreen");
         } else if (e.response!.statusCode == 500) {
-          Get.to(const ErrorScreen());
+          Get.to(() => const ErrorScreen());
         }
       }
 
@@ -178,7 +178,7 @@ class NetworkApiServices extends BaseApiServices {
             Get.offAndToNamed("/loginScreen");
           }
         } else if (e.response!.statusCode == 500) {
-          Get.to(const ErrorScreen());
+          Get.to(() => const ErrorScreen());
         }
       }
       return ResponseData<dynamic>(

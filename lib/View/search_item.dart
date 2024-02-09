@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
@@ -55,10 +56,18 @@ class _SearchItemState extends State<SearchItem> {
         .map((item) => Container(
               margin: const EdgeInsets.all(5.0),
               child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                  child: Image.network(
-                      "${ApiUrls.baseImageUrl}/${item.imageUrl!}",
-                      width: Get.width)),
+                borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                child: CachedNetworkImage(
+                  memCacheWidth: Get.width.toInt(),
+                  maxWidthDiskCache: Get.width.toInt(),
+                  imageUrl: "${ApiUrls.baseImageUrl}/${item.imageUrl!}",
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(
+                    color: AppColors.buttoncolour,
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              ),
             ))
         .toList();
     return WillPopScope(
@@ -177,24 +186,7 @@ class _SearchItemState extends State<SearchItem> {
                   );
                 }).toList(),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     indicatorRow(),
-              //     sizedBoxWidth(5.w),
-              //     indicatorRow(indexBool: true),
-              //     sizedBoxWidth(5.w),
-              //     indicatorRow(),
-              //     sizedBoxWidth(5.w),
-              //     indicatorRow(),
-              //     sizedBoxWidth(5.w),
-              //     indicatorRow(),
-              //     Icon(Icons.play_arrow_outlined,
-              //         color: AppColors.buttoncolour, size: 22.h)
-              //   ],
-              // ),
               sizedBoxHeight(10.h),
-
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -449,9 +441,18 @@ class _SearchItemState extends State<SearchItem> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(
-                        "${ApiUrls.baseImageUrl}/${widget.data.data!.smallImageUrl}",
-                        height: 97.h),
+                    CachedNetworkImage(
+                      memCacheHeight: 97,
+                      maxHeightDiskCache: 97,
+                      imageUrl:
+                          "${ApiUrls.baseImageUrl}/${widget.data.data!.smallImageUrl}",
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(
+                        color: AppColors.buttoncolour,
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                     sizedBoxWidth(26.w),
                     Flexible(
                       child: textBlack18W5000(widget.data.data!.title!),

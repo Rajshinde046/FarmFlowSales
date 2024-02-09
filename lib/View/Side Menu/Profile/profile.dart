@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
@@ -137,8 +138,19 @@ class _ProfileState extends State<Profile> {
                                                     .isEmpty
                                                 ? Image.asset(
                                                     "assets/images/profile.png")
-                                                : Image.network(
-                                                    "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}"),
+                                                : CachedNetworkImage(
+                                                    imageUrl:
+                                                        "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}",
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        const CircularProgressIndicator(
+                                                      color: AppColors
+                                                          .buttoncolour,
+                                                    ),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        const Icon(Icons.error),
+                                                  ),
                                       ),
                                     ),
                                   ),
