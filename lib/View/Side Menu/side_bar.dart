@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/View/Side%20Menu/Profile/profile.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 
 import '../../Model/ProfileModel/profile_info_model.dart';
 import '../../Utils/api_urls.dart';
+import '../../Utils/colors.dart';
 import '../../controller/profile_controller.dart';
 import '../../view_models/profileApi/ProfileAPI.dart';
 import 'Profile/personalinfo.dart';
@@ -137,8 +139,22 @@ class _SideBarState extends State<SideBar> {
                                                   .isEmpty
                                               ? Image.asset(
                                                   "assets/images/profile.png")
-                                              : Image.network(
-                                                  "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}"),
+                                              : CachedNetworkImage(
+                                                  memCacheHeight: 97,
+                                                  maxHeightDiskCache: 97,
+                                                  maxWidthDiskCache: 85,
+                                                  memCacheWidth: 85,
+                                                  imageUrl:
+                                                      "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}",
+                                                  placeholder: (context, url) =>
+                                                      const CircularProgressIndicator(
+                                                    color:
+                                                        AppColors.buttoncolour,
+                                                  ),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
+                                                ),
                                     ),
                             )),
                         sizedBoxWidth(15.w),

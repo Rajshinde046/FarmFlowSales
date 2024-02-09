@@ -10,6 +10,7 @@ import 'package:farm_flow_sales/view_models/profileApi/ProfileAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -60,6 +61,8 @@ class _SecureLoginState extends State<SecureLogin> {
               child: CustomTextFormField(
                 texttype: TextInputType.number,
                 textEditingController: pincontroller,
+                isInputPassword: true,
+                leadingIcon: SvgPicture.asset("assets/images/password.svg"),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(4),
@@ -81,7 +84,7 @@ class _SecureLoginState extends State<SecureLogin> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(const ForgotPin());
+                    Get.to(() => const ForgotPin());
                   },
                   child: Text(
                     "Forgot Pin?",

@@ -315,10 +315,19 @@ class _OrderdetailsState extends State<Orderdetails> {
                                               ),
                                               color: AppColors.white),
                                           child: CachedNetworkImage(
+                                            memCacheHeight: 71,
+                                            maxHeightDiskCache: 71,
+                                            maxWidthDiskCache: 76,
+                                            memCacheWidth: 76,
                                             imageUrl:
                                                 "${ApiUrls.baseImageUrl}/${orderDetailsModel.data!.productList![index].smallImageUrl}",
-                                            width: 76.w,
-                                            height: 71.h,
+                                            placeholder: (context, url) =>
+                                                const CircularProgressIndicator(
+                                              color: AppColors.buttoncolour,
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
                                           ),
                                         ),
                                         sizedBoxWidth(15.w),

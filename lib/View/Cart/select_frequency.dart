@@ -49,8 +49,8 @@ class _selectFrequencyState extends State<selectFrequency> {
     // showDatePicker is a pre-made funtion of Flutter
     showDatePicker(
       context: context,
-      initialDate: DateTime.now().add(Duration(days: 1)),
-      firstDate: DateTime.now().add(Duration(days: 1)),
+      initialDate: DateTime.now().add(const Duration(days: 1)),
+      firstDate: DateTime.now().add(const Duration(days: 1)),
       lastDate: DateTime(3000),
       builder: (context, child) {
         return Theme(

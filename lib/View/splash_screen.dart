@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:farm_flow_sales/View/no_internet_screen.dart';
 import 'package:farm_flow_sales/View/secure_login.dart';
 import 'package:farm_flow_sales/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,24 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var _connectionStatus;
+  Future<void> checkInternet() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult == ConnectivityResult.wifi ||
+        connectivityResult == ConnectivityResult.mobile) {
+      setState(() {
+        _connectionStatus = connectivityResult;
+      });
+    } else {
+      setState(() {
+        _connectionStatus = connectivityResult;
+
+        //  Navigator.pushReplacementNamed(context, "/noInternet");
+      });
+    }
+  }
+
   Future<void> _getAuth() async {
     bool? isAuth = false;
     LocalAuthentication authentication = LocalAuthentication();
@@ -49,36 +69,63 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5), () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString('token');
-      if (token == "" || token == null) {
-        Get.offAndToNamed("/loginScreen");
+    checkInternet();
+    Future.delayed(const Duration(seconds: 2), () async {
+      if (_connectionStatus == ConnectivityResult.none) {
+        var result = await Get.to(NoInternetscreen());
+        if (result != null && result) {
+          Timer(const Duration(seconds: 6), () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            var token = prefs.getString('token');
+            if (token == "" || token == null) {
+              Get.offAndToNamed("/loginScreen");
+            } else {
+              ProfileAPI().getProfileInfo().then((value) async {
+                profileController.profileInfoModel.value =
+                    ProfileInfoModel.fromJson(value.data);
+                await prefs.setBool(
+                    "pin", profileController.profileInfoModel.value.data!.pin!);
+              });
+              if (profileController.profileInfoModel.value.data!.pin != null) {
+                if (profileController.profileInfoModel.value.data!.pin!) {
+                  Get.off(const SecureLogin());
+                }
+              } else {
+                if (token == "" || token == null) {
+                  Get.offAndToNamed("/loginScreen");
+                } else {
+                  Get.offAndToNamed("/sideMenu");
+                }
+              }
+            }
+          });
+        }
       } else {
-        ProfileAPI().getProfileInfo().then((value) async {
-          profileController.profileInfoModel.value =
-              ProfileInfoModel.fromJson(value.data);
-          await prefs.setBool(
-              "pin", profileController.profileInfoModel.value.data!.pin!);
-        });
-        if (
-            // prefs.getBool('fingerprint') != null ||
-            profileController.profileInfoModel.value.data!.pin != null) {
-          //   if (prefs.getBool('pin') == null
-          // //  && prefs.getBool('fingerprint')!
-          //   ) {
-          //     _getAuth();
-          //   } else
-          if (profileController.profileInfoModel.value.data!.pin!) {
-            Get.off(const SecureLogin());
-          }
-        } else {
+        Timer(const Duration(seconds: 6), () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var token = prefs.getString('token');
           if (token == "" || token == null) {
             Get.offAndToNamed("/loginScreen");
           } else {
-            Get.offAndToNamed("/sideMenu");
+            ProfileAPI().getProfileInfo().then((value) async {
+              profileController.profileInfoModel.value =
+                  ProfileInfoModel.fromJson(value.data);
+              await prefs.setBool(
+                  "pin", profileController.profileInfoModel.value.data!.pin!);
+            });
+            if (profileController.profileInfoModel.value.data!.pin != null) {
+              if (profileController.profileInfoModel.value.data!.pin!) {
+                Get.off(const SecureLogin());
+              }
+            } else {
+              if (token == "" || token == null) {
+                Get.offAndToNamed("/loginScreen");
+              } else {
+                Get.offAndToNamed("/sideMenu");
+              }
+            }
           }
-        }
+        });
       }
     });
   }

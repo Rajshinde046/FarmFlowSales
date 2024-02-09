@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/controller/notification_controller.dart';
@@ -525,12 +526,19 @@ class _NotificationCardState extends State<NotificationCard> {
               //   fit: BoxFit.cover,
               // ),
               // NetworkImage("url"),
-              Image.network(
-                ApiUrls.baseImageUrl + widget.imageUrl,
-                width: 42.w,
-                height: 42.w,
-                fit: BoxFit.cover,
+
+              CachedNetworkImage(
+                memCacheHeight: 42,
+                maxHeightDiskCache: 42,
+                maxWidthDiskCache: 42,
+                memCacheWidth: 42,
+                imageUrl: ApiUrls.baseImageUrl + widget.imageUrl,
+                placeholder: (context, url) => const CircularProgressIndicator(
+                  color: AppColors.buttoncolour,
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
+
               SizedBox(
                 width: 13.h,
               ),

@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         });
       } else {
         setState(() {
-          Get.to(NoInternetscreen());
+          Get.to(() => NoInternetscreen());
         });
       }
     });

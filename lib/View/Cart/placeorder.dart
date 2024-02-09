@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
@@ -362,8 +363,8 @@ class _PlacedorderState extends State<Placedorder> {
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount:
-                      inventoriesController.viewCartModel.data!.cart!.length,
+                  itemCount: inventoriesController
+                      .viewCartModel.value.data!.cart!.length,
                   itemBuilder: (ctx, index) {
                     return Container(
                       width: 358.w, margin: const EdgeInsets.only(bottom: 15),
@@ -385,10 +386,19 @@ class _PlacedorderState extends State<Placedorder> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.network(
-                              "${ApiUrls.baseImageUrl}/${inventoriesController.viewCartModel.data!.cart![index].getItems![0].item!.smallImageUrl}",
-                              width: 57.w,
-                              height: 99.h,
+                            CachedNetworkImage(
+                              memCacheHeight: 99,
+                              maxHeightDiskCache: 99,
+                              maxWidthDiskCache: 57,
+                              memCacheWidth: 57,
+                              imageUrl:
+                                  "${ApiUrls.baseImageUrl}/${inventoriesController.viewCartModel.value.data!.cart![index].getItems![0].item!.smallImageUrl}",
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(
+                                color: AppColors.buttoncolour,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                             sizedBoxWidth(31.w),
                             Column(
@@ -396,8 +406,14 @@ class _PlacedorderState extends State<Placedorder> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  inventoriesController.viewCartModel.data!
-                                      .cart![index].getItems![0].item!.title!,
+                                  inventoriesController
+                                      .viewCartModel
+                                      .value
+                                      .data!
+                                      .cart![index]
+                                      .getItems![0]
+                                      .item!
+                                      .title!,
                                   style: GoogleFonts.poppins(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w500,
@@ -406,8 +422,8 @@ class _PlacedorderState extends State<Placedorder> {
                                 ),
                                 sizedBoxHeight(3.h),
                                 Text(
-                                  inventoriesController.viewCartModel.data!
-                                      .cart![index].getItems![0].lotName!,
+                                  inventoriesController.viewCartModel.value
+                                      .data!.cart![index].getItems![0].lotName!,
                                   style: GoogleFonts.poppins(
                                       fontSize: 15.sp,
                                       color: const Color(0xff4D4D4D),
@@ -419,7 +435,7 @@ class _PlacedorderState extends State<Placedorder> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "€ ${inventoriesController.viewCartModel.data!.cart![index].getItems![0].price! * inventoriesController.viewCartModel.data!.cart![index].quantity!}",
+                                      "€ ${inventoriesController.viewCartModel.value.data!.cart![index].getItems![0].price! * inventoriesController.viewCartModel.value.data!.cart![index].quantity!}",
                                       style: GoogleFonts.poppins(
                                           fontSize: 18.sp,
                                           fontWeight: FontWeight.w600,

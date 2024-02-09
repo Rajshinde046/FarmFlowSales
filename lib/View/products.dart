@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart';
 import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart';
 import 'package:farm_flow_sales/Model/livestockModel/inventory_livestock_model.dart';
@@ -18,7 +16,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'search_item.dart';
 
 class Productspage extends StatefulWidget {
@@ -283,10 +281,18 @@ class ProductspageState extends State<Productspage> {
             },
           ),
         ),
-        Image.network(
-            '${ApiUrls.baseImageUrl}/${inventoryLivestockModel.data![index].smallImageUrl}',
-            width: 40.w,
-            height: 24.h),
+        CachedNetworkImage(
+          memCacheHeight: 24,
+          maxHeightDiskCache: 40,
+          maxWidthDiskCache: 24,
+          memCacheWidth: 40,
+          imageUrl:
+              '${ApiUrls.baseImageUrl}/${inventoryLivestockModel.data![index].smallImageUrl}',
+          placeholder: (context, url) => const CircularProgressIndicator(
+            color: AppColors.buttoncolour,
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
         sizedBoxWidth(5.w),
         textblack14M(inventoryLivestockModel.data![index].name!),
       ],
@@ -363,8 +369,16 @@ class _ProductContainerState extends State<ProductContainer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CachedNetworkImage(
-                  imageUrl: "${ApiUrls.baseImageUrl}/${widget.png}",
-                  height: 97.h),
+                memCacheWidth: 80,
+                memCacheHeight: 97,
+                maxHeightDiskCache: 97,
+                maxWidthDiskCache: 80,
+                imageUrl: "${ApiUrls.baseImageUrl}/${widget.png}",
+                placeholder: (context, url) => const CircularProgressIndicator(
+                  color: AppColors.buttoncolour,
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
               sizedBoxWidth(26.w),
               Flexible(
                 child: Column(
@@ -490,8 +504,19 @@ class _ProductContainerState extends State<ProductContainer> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network("${ApiUrls.baseImageUrl}/${widget.png}",
-                        height: 97.h),
+                    CachedNetworkImage(
+                      memCacheHeight: 97,
+                      maxHeightDiskCache: 97,
+                      maxWidthDiskCache: 85,
+                      memCacheWidth: 85,
+                      imageUrl: "${ApiUrls.baseImageUrl}/${widget.png}",
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(
+                        color: AppColors.buttoncolour,
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                     sizedBoxWidth(26.w),
                     Flexible(
                       child: textBlack18W5000(widget.txt),

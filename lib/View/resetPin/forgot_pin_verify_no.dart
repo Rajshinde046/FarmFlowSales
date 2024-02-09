@@ -1,20 +1,24 @@
+import 'dart:async';
+
 import 'package:farm_flow_sales/Common/custom_appbar.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/View/resetPin/set_new_pin.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
 import 'package:farm_flow_sales/view_models/onBoarding/VerifyNumberAPI.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:farm_flow_sales/common/limit_range.dart';
 
+import 'package:http/http.dart' as http;
+import '../../Utils/api_urls.dart';
 import '../../controller/verify_otp_controller.dart';
 
 class ForogotPinVerifyNumber extends StatefulWidget {
@@ -32,35 +36,100 @@ class _ForgotPinVerifyNumberState extends State<ForogotPinVerifyNumber> {
   String? phoneNumber;
   int? id;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  late Timer _timer;
+  int _countdown = 120;
 
   @override
   void initState() {
     super.initState();
+    startTimer();
     phoneNumber = Get.arguments["phonenumber"];
     id = Get.arguments["id"];
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    const oneSecond = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSecond, (timer) {
+      setState(() {
+        if (_countdown > 0) {
+          _countdown--;
+        } else {
+          timer.cancel();
+
+          utils.showToast("OTP Expired");
+        }
+      });
+    });
   }
 
   NetworkApiServices networkApiServices = NetworkApiServices();
   _verifycheck() async {
     final isValid = _form.currentState?.validate();
     if (isValid!) {
+      Utils.loader();
       Map<String, String> updata = {
         "id": id.toString(),
         "otp": pincode.text,
       };
       final resp = await VerifyNumberAPI(updata).verifynumberApi();
       if (resp.status == ResponseStatus.SUCCESS) {
+        Get.back();
         // int? id = resp.data['data']['id'];
 
         Get.to(
-          const SetNewPinScreen(),
+          () => const SetNewPinScreen(),
         );
       } else if (resp.status == ResponseStatus.PRIVATE) {
+        Get.back();
         String? message = resp.data['data'];
         utils.showToast("$message");
       } else {
+        Get.back();
         utils.showToast(resp.message);
       }
+    }
+  }
+
+  resendOtpApi(String id) async {
+    try {
+      print(id);
+      var headers = {
+        'Authorization':
+            'Basic KzIkcVBiSlIzNncmaGUoalMmV0R6ZkpqdEVoSlVLVXA6dCRCZHEmSnQmc3Y0eUdqY0VVcTg5aEVZZHVSalhIMnU='
+      };
+      var request = http.MultipartRequest(
+          'POST',
+          Uri.parse(
+            ApiUrls.resendOtpApi,
+          ));
+      request.fields.addAll({'id': id});
+
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      var resp = await response.stream.bytesToString();
+      if (response.statusCode == 200) {
+        _countdown = 120;
+        startTimer();
+        utils.showToast("OTP resent successfully");
+
+        print(resp);
+      } else if (response.statusCode == 429) {
+        print(resp);
+        utils.showToast("You can resend OTP only after a 2-minute interval");
+      } else {
+        print(response.reasonPhrase);
+        utils.showToast("Something went wrong");
+      }
+    } catch (e) {
+      print(e);
+      utils.showToast("Something went wrong");
     }
   }
 

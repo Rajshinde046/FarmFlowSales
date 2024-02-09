@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:farm_flow_sales/Common/CommonTextFormField.dart';
 import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
@@ -32,10 +34,12 @@ class _LoginScreenState extends State<LoginScreen> {
     final isValid = _form.currentState?.validate();
     if (isValid!) {
       Utils.loader();
-      Map<String, String> updata = {
+      Map<String, dynamic> updata = {
         "email": tecEmail.text,
-        "password": tecPassword.text
+        "password": tecPassword.text,
+        "principal_type_xid": 2,
       };
+      log(updata.toString());
       final resp = await LoginAPI(updata).loginApi();
       if (resp.status == ResponseStatus.SUCCESS) {
         Get.back();
