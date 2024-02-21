@@ -42,15 +42,21 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
   TabController? tabController;
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
     if (dashboardController.selectedTab.value == 0) {
       tabController!.animateTo(0);
       OrderApi().getOngoingOrderData().then((value) {
         ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
         isOngoingLoading.value = false;
       });
-    } else {
+    } else if (dashboardController.selectedTab.value == 1) {
       tabController!.animateTo(1);
+      OrderApi().getOngoingOrderData().then((value) {
+        ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
+        isOngoingLoading.value = false;
+      });
+    } else {
+      tabController!.animateTo(2);
       OrderApi().getCompletedOrderData("0").then((value) {
         completedOrderModel = CompletedOrderModel.fromJson(value.data);
         isCompletedLoading.value = false;
@@ -64,7 +70,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -75,6 +81,13 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                 controller: tabController,
                 onTap: ((value) {
                   if (value == 0) {
+                    isOngoingLoading.value = true;
+                    OrderApi().getOngoingOrderData().then((value) {
+                      ongoingOrderModel =
+                          OngoingOrderModel.fromJson(value.data);
+                      isOngoingLoading.value = false;
+                    });
+                  } else if (value == 1) {
                     isOngoingLoading.value = true;
                     OrderApi().getOngoingOrderData().then((value) {
                       ongoingOrderModel =
@@ -97,6 +110,9 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                 tabs: const [
                   Tab(
                     text: "Ongoing",
+                  ),
+                  Tab(
+                    text: "Pending",
                   ),
                   Tab(
                     text: "Completed",
@@ -136,6 +152,111 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                             EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
                         child: Text(
                           "Ongoing Orders",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500, fontSize: 18.sp),
+                        ),
+                      ),
+                      sizedBoxHeight(13.h),
+                      Obx(
+                        () => isOngoingLoading.value
+                            ? Container(
+                                margin: EdgeInsets.only(top: Get.height / 3.5),
+                                child: const Center(
+                                    child: CircularProgressIndicator(
+                                  color: AppColors.buttoncolour,
+                                )))
+                            : SizedBox(
+                                height: Get.height / 1.4,
+                                width: Get.width,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(23, 5, 23, 0),
+                                  child: ongoingOrderModel.data!.isEmpty
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            LottieBuilder.asset(
+                                                "assets/lotties/no_data_found.json"),
+                                            textGrey4D4D4D_22(
+                                                "No Ongoing Orders Found !"),
+                                          ],
+                                        )
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          itemCount:
+                                              ongoingOrderModel.data!.length,
+                                          itemBuilder: (_, index) {
+                                            return InkWell(
+                                              onTap: () async {
+                                                var result = await Get.toNamed(
+                                                    "/orderdetails",
+                                                    arguments: {
+                                                      "id": ongoingOrderModel
+                                                          .data![index]
+                                                          .orderHeaderId!,
+                                                    });
+                                                if (result != null &&
+                                                    result == true) {
+                                                  isOngoingLoading.value = true;
+                                                  OrderApi()
+                                                      .getOngoingOrderData()
+                                                      .then((value) {
+                                                    ongoingOrderModel =
+                                                        OngoingOrderModel
+                                                            .fromJson(
+                                                                value.data);
+                                                    isOngoingLoading.value =
+                                                        false;
+                                                  });
+                                                }
+                                              },
+                                              child: SalesOrderMainTile(
+                                                ongoingOrderModel.data![index]
+                                                    .getFarmer!.profilePhoto!,
+                                                ongoingOrderModel.data![index]
+                                                    .getFarmer!.userName!,
+                                                ongoingOrderModel.data![index]
+                                                    .getFarmer!.phoneNumber!,
+                                                ongoingOrderModel
+                                                    .data![index].address!,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              RefreshIndicator(
+                strokeWidth: 3,
+                displacement: 250,
+                backgroundColor: Colors.white,
+                color: AppColors.buttoncolour,
+                onRefresh: () async {
+                  await Future.delayed(const Duration(milliseconds: 1500));
+                  isOngoingLoading.value = true;
+                  OrderApi().getOngoingOrderData().then((value) {
+                    ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
+                    isOngoingLoading.value = false;
+                  });
+                  setState(() {});
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
+                        child: Text(
+                          "Pending Orders",
                           style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.w500, fontSize: 18.sp),
                         ),
