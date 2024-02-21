@@ -192,8 +192,9 @@ class _CartCardDetailsState extends State<CartCardDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       margin: const EdgeInsets.only(bottom: 15),
-      // height: 120.h,
+      height: 120.h,
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           color: Color(0xffF1F1F1),
@@ -212,9 +213,10 @@ class _CartCardDetailsState extends State<CartCardDetails> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CachedNetworkImage(
-              height: 99,
-              width: 60,
-              fit: BoxFit.contain,
+              memCacheHeight: 97,
+              maxHeightDiskCache: 97,
+              maxWidthDiskCache: 85,
+              memCacheWidth: 85,
               imageUrl:
                   "${ApiUrls.baseImageUrl}/${inventoriesController.viewCartModel.value.data!.cart![widget.index].getItems![0].item!.smallImageUrl}",
               placeholder: (context, url) => const CircularProgressIndicator(
@@ -223,233 +225,256 @@ class _CartCardDetailsState extends State<CartCardDetails> {
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             sizedBoxWidth(31.w),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  inventoriesController.viewCartModel.value.data!
-                      .cart![widget.index].getItems![0].item!.title!,
-                  style: GoogleFonts.poppins(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xff141414),
+            Flexible(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    inventoriesController.viewCartModel.value.data!
+                        .cart![widget.index].getItems![0].item!.title!,
+                    style: GoogleFonts.poppins(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xff141414),
+                    ),
                   ),
-                ),
-                sizedBoxHeight(7.h),
-                Text(
-                  inventoriesController.viewCartModel.value.data!
-                      .cart![widget.index].getItems![0].lotName!,
-                  style: GoogleFonts.poppins(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.normal,
-                    color: const Color(0xff141414),
+                  sizedBoxHeight(7.h),
+                  Text(
+                    inventoriesController.viewCartModel.value.data!
+                        .cart![widget.index].getItems![0].lotName!,
+                    style: GoogleFonts.poppins(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.normal,
+                      color: const Color(0xff141414),
+                    ),
                   ),
-                ),
-                sizedBoxHeight(7.h),
-                Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 60,
-                        child: FittedBox(
-                          child: Text(
+                  sizedBoxHeight(7.h),
+                  Obx(
+                    () => Flexible(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
                             "€ ${price.value}",
                             style: GoogleFonts.poppins(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black),
                           ),
-                        ),
-                      ),
-                      sizedBoxWidth(91.w),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (counter.value > 0) {
-                                counter.value--;
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (counter.value > 0) {
+                                        counter.value--;
 
-                                CartApi()
-                                    .manageCartData(
-                                        inventoriesController
-                                            .viewCartModel
-                                            .value
-                                            .data!
-                                            .cart![widget.index]
-                                            .itemMasterLotXid!,
-                                        counter.value)
-                                    .then((value) {
-                                  if (counter.value == 0) {
-                                    // inventoriesController.isLoading.value =
-                                    //     true;
-                                    CartApi().getViewCartData().then((value) {
-                                      inventoriesController
-                                              .viewCartModel.value =
-                                          ViewCartModel.fromJson(value.data);
-                                      inventoriesController
-                                              .cartSubTotalValue.value =
-                                          inventoriesController.viewCartModel
-                                              .value.data!.subTotal!;
-                                      // inventoriesController.isLoading.value =
-                                      //     false;
-                                      // setState(() {});
+                                        CartApi()
+                                            .manageCartData(
+                                                inventoriesController
+                                                    .viewCartModel
+                                                    .value
+                                                    .data!
+                                                    .cart![widget.index]
+                                                    .itemMasterLotXid!,
+                                                counter.value)
+                                            .then((value) {
+                                          if (counter.value == 0) {
+                                            // inventoriesController.isLoading.value =
+                                            //     true;
+                                            CartApi()
+                                                .getViewCartData()
+                                                .then((value) {
+                                              inventoriesController
+                                                      .viewCartModel.value =
+                                                  ViewCartModel.fromJson(
+                                                      value.data);
+                                              inventoriesController
+                                                      .cartSubTotalValue.value =
+                                                  inventoriesController
+                                                      .viewCartModel
+                                                      .value
+                                                      .data!
+                                                      .subTotal!;
+                                              // inventoriesController.isLoading.value =
+                                              //     false;
+                                              // setState(() {});
+                                            });
+                                          } else {
+                                            int totalPriceV = 0;
+                                            inventoriesController
+                                                .viewCartModel
+                                                .value
+                                                .data!
+                                                .cart![widget.index]
+                                                .quantity = counter.value;
+
+                                            price.value = counter.value *
+                                                inventoriesController
+                                                    .viewCartModel
+                                                    .value
+                                                    .data!
+                                                    .cart![widget.index]
+                                                    .getItems![0]
+                                                    .price!;
+
+                                            for (int i = 0;
+                                                i <
+                                                    inventoriesController
+                                                        .viewCartModel
+                                                        .value
+                                                        .data!
+                                                        .cart!
+                                                        .length;
+                                                i++) {
+                                              totalPriceV +=
+                                                  inventoriesController
+                                                          .viewCartModel
+                                                          .value
+                                                          .data!
+                                                          .cart![i]
+                                                          .quantity! *
+                                                      inventoriesController
+                                                          .viewCartModel
+                                                          .value
+                                                          .data!
+                                                          .cart![i]
+                                                          .getItems![0]
+                                                          .price!;
+                                            }
+
+                                            inventoriesController
+                                                .cartSubTotalValue
+                                                .value = totalPriceV;
+                                            setState(() {});
+                                          }
+                                          Map<String, dynamic> responseData =
+                                              Map<String, dynamic>.from(
+                                                  value.data);
+                                          utils.showToast(
+                                              responseData["message"]);
+                                        });
+                                      }
+                                      // widget.onChanged(counter);
                                     });
-                                  } else {
-                                    int totalPriceV = 0;
-                                    inventoriesController
-                                        .viewCartModel
-                                        .value
-                                        .data!
-                                        .cart![widget.index]
-                                        .quantity = counter.value;
-
-                                    price.value = counter.value *
-                                        inventoriesController
-                                            .viewCartModel
-                                            .value
-                                            .data!
-                                            .cart![widget.index]
-                                            .getItems![0]
-                                            .price!;
-
-                                    for (int i = 0;
-                                        i <
-                                            inventoriesController.viewCartModel
-                                                .value.data!.cart!.length;
-                                        i++) {
-                                      totalPriceV += inventoriesController
-                                              .viewCartModel
-                                              .value
-                                              .data!
-                                              .cart![i]
-                                              .quantity! *
+                                  },
+                                  child: SvgPicture.asset(
+                                    // "assets/images/minusbutton.svg",
+                                    "assets/images/minus1.svg",
+                                    width: 20.w,
+                                    // width: 20.w,
+                                    // height: 40.h,
+                                  ),
+                                ),
+                              ),
+                              sizedBoxWidth(12.w),
+                              Obx(
+                                () => SizedBox(
+                                  width: 14.w,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text(
+                                      "${counter.value}",
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: const Color(0xff141414),
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              sizedBoxWidth(8.w),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (counter.value < widget.maxValue) {
+                                        counter.value++;
+                                        CartApi()
+                                            .manageCartData(
+                                                inventoriesController
+                                                    .viewCartModel
+                                                    .value
+                                                    .data!
+                                                    .cart![widget.index]
+                                                    .itemMasterLotXid!,
+                                                counter.value)
+                                            .then((value) {
+                                          int totalPriceV = 0;
                                           inventoriesController
                                               .viewCartModel
                                               .value
                                               .data!
-                                              .cart![i]
-                                              .getItems![0]
-                                              .price!;
-                                    }
+                                              .cart![widget.index]
+                                              .quantity = counter.value;
+                                          price.value = counter.value *
+                                              inventoriesController
+                                                  .viewCartModel
+                                                  .value
+                                                  .data!
+                                                  .cart![widget.index]
+                                                  .getItems![0]
+                                                  .price!;
+                                          for (int i = 0;
+                                              i <
+                                                  inventoriesController
+                                                      .viewCartModel
+                                                      .value
+                                                      .data!
+                                                      .cart!
+                                                      .length;
+                                              i++) {
+                                            totalPriceV += inventoriesController
+                                                    .viewCartModel
+                                                    .value
+                                                    .data!
+                                                    .cart![i]
+                                                    .quantity! *
+                                                inventoriesController
+                                                    .viewCartModel
+                                                    .value
+                                                    .data!
+                                                    .cart![i]
+                                                    .getItems![0]
+                                                    .price!;
+                                          }
 
-                                    inventoriesController
-                                        .cartSubTotalValue.value = totalPriceV;
-                                    setState(() {});
-                                  }
-                                  Map<String, dynamic> responseData =
-                                      Map<String, dynamic>.from(value.data);
-                                  utils.showToast(responseData["message"]);
-                                });
-                              }
-                              // widget.onChanged(counter);
-                            });
-                          },
-                          child: SvgPicture.asset(
-                            // "assets/images/minusbutton.svg",
-                            "assets/images/minus1.svg",
-                            width: 20.w,
-                            // width: 20.w,
-                            // height: 40.h,
+                                          inventoriesController
+                                              .cartSubTotalValue
+                                              .value = totalPriceV;
+                                          Map<String, dynamic> responseData =
+                                              Map<String, dynamic>.from(
+                                                  value.data);
+                                          utils.showToast(
+                                              responseData["message"]);
+                                        });
+                                      }
+                                      // widget.onChanged(counter);
+                                    });
+                                  },
+                                  child: SvgPicture.asset(
+                                    // "assets/images/plusreorder.svg",
+                                    "assets/images/plus1.svg",
+                                    width: 20.w,
+                                    // width: 20.w,
+                                    // height: 40.h,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
+                        ],
                       ),
-                      sizedBoxWidth(12.w),
-                      Obx(
-                        () => SizedBox(
-                          width: 14.w,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              "${counter.value}",
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: const Color(0xff141414),
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ),
-                      sizedBoxWidth(8.w),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (counter.value < widget.maxValue) {
-                                counter.value++;
-                                CartApi()
-                                    .manageCartData(
-                                        inventoriesController
-                                            .viewCartModel
-                                            .value
-                                            .data!
-                                            .cart![widget.index]
-                                            .itemMasterLotXid!,
-                                        counter.value)
-                                    .then((value) {
-                                  int totalPriceV = 0;
-                                  inventoriesController
-                                      .viewCartModel
-                                      .value
-                                      .data!
-                                      .cart![widget.index]
-                                      .quantity = counter.value;
-                                  price.value = counter.value *
-                                      inventoriesController
-                                          .viewCartModel
-                                          .value
-                                          .data!
-                                          .cart![widget.index]
-                                          .getItems![0]
-                                          .price!;
-                                  for (int i = 0;
-                                      i <
-                                          inventoriesController.viewCartModel
-                                              .value.data!.cart!.length;
-                                      i++) {
-                                    totalPriceV += inventoriesController
-                                            .viewCartModel
-                                            .value
-                                            .data!
-                                            .cart![i]
-                                            .quantity! *
-                                        inventoriesController
-                                            .viewCartModel
-                                            .value
-                                            .data!
-                                            .cart![i]
-                                            .getItems![0]
-                                            .price!;
-                                  }
-
-                                  inventoriesController
-                                      .cartSubTotalValue.value = totalPriceV;
-                                  Map<String, dynamic> responseData =
-                                      Map<String, dynamic>.from(value.data);
-                                  utils.showToast(responseData["message"]);
-                                });
-                              }
-                              // widget.onChanged(counter);
-                            });
-                          },
-                          child: SvgPicture.asset(
-                            // "assets/images/plusreorder.svg",
-                            "assets/images/plus1.svg",
-                            width: 20.w,
-                            // width: 20.w,
-                            // height: 40.h,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

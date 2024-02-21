@@ -13,7 +13,7 @@ class ApiUrls {
 
   //Profile API
   static const profileInfoAPI = "${base}sales/profile-info";
-  static const updateProfileInfoAPI = "${base}sales/profile-update";
+  static const updateProfileInfoAPI = "${base}sales/profile-  ";
   static const deleteProfileApi = "${base}sales/profile-delete";
 
   //Warehouses API
