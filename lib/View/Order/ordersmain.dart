@@ -51,7 +51,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
       });
     } else if (dashboardController.selectedTab.value == 1) {
       tabController!.animateTo(1);
-      OrderApi().getOngoingOrderData().then((value) {
+      OrderApi().getPendingOrdersList().then((value) {
         ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
         isOngoingLoading.value = false;
       });
@@ -89,7 +89,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                     });
                   } else if (value == 1) {
                     isOngoingLoading.value = true;
-                    OrderApi().getOngoingOrderData().then((value) {
+                    OrderApi().getPendingOrdersList().then((value) {
                       ongoingOrderModel =
                           OngoingOrderModel.fromJson(value.data);
                       isOngoingLoading.value = false;
@@ -241,7 +241,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 1500));
                   isOngoingLoading.value = true;
-                  OrderApi().getOngoingOrderData().then((value) {
+                  OrderApi().getPendingOrdersList().then((value) {
                     ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
                     isOngoingLoading.value = false;
                   });
@@ -307,7 +307,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                                                     result == true) {
                                                   isOngoingLoading.value = true;
                                                   OrderApi()
-                                                      .getOngoingOrderData()
+                                                      .getPendingOrdersList()
                                                       .then((value) {
                                                     ongoingOrderModel =
                                                         OngoingOrderModel
