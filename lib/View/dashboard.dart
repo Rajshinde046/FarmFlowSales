@@ -281,7 +281,7 @@ class _Dashboard extends State<Dashboard> {
                             const Spacer(),
                             Stack(
                               children: [
-                                Container(
+                                SizedBox(
                                   height: 42.h,
                                   width: 45.h,
                                 ),

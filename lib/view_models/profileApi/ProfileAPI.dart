@@ -25,6 +25,26 @@ class ProfileAPI {
     return response;
   }
 
+  Future<ResponseData<dynamic>> deleteProfileImageAPI() async {
+    final response = await NetworkApiServices().postApi(
+      {},
+      ApiUrls.deleteProfileImageAPI,
+    );
+
+    if (response.status == ResponseStatus.SUCCESS) {
+      Map<String, dynamic> responseData =
+          Map<String, dynamic>.from(response.data);
+      if (responseData['success']) {
+        print(response);
+        print(responseData);
+      } else {
+        return ResponseData<dynamic>(
+            responseData['message'], ResponseStatus.FAILED);
+      }
+    }
+    return response;
+  }
+
   Future<ResponseData<dynamic>> updateProfileApi(
       {required Map<String, dynamic> map}) async {
     final response = await NetworkApiServices().postApi(

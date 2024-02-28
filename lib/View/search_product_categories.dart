@@ -450,7 +450,7 @@ class _ProductContainerState extends State<ProductContainer> {
           padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CachedNetworkImage(
                 memCacheHeight: 97,

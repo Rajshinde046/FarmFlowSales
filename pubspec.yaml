@@ -70,6 +70,8 @@ dependencies:
   connectivity_plus: ^5.0.2
   expansion_tile_group: ^1.2.4
   cached_network_image:
+  onesignal_flutter: ^3.5.1
+  firebase_core:
 
 flutter_launcher_icons:
   android: "launcher_icon"

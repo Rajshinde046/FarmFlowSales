@@ -265,7 +265,7 @@ class _ContactState extends State<Contact> {
                 profileImage.isEmpty
                     ? Image.asset(
                         "assets/images/Contactoerson.png",
-                        // "assets/images/person.png",
+                        // "assets/default_image.jpg",
                         width: 76.w,
                         height: 76.h,
                       )

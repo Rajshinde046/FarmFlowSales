@@ -100,7 +100,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: Get.width / 0.8,
                                 height: 30,
                                 child: ListView.builder(
@@ -301,8 +301,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                         itemCount:
                             farmerData.farmerDetails!.farmDetails!.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                              child: Column(
+                          return Column(
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -358,7 +357,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               ),
                               sizedBoxHeight(17.h),
                             ],
-                          ));
+                          );
                         }),
                   ],
                 );

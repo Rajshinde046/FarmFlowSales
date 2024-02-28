@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class NoInternetscreen extends StatefulWidget {
+  const NoInternetscreen({super.key});
+
   @override
   _NoInternetscreenState createState() => _NoInternetscreenState();
 }
@@ -20,7 +22,7 @@ class _NoInternetscreenState extends State<NoInternetscreen> {
           body: Column(children: [
         Center(
           child: Container(
-            margin: EdgeInsets.only(top: 150),
+            margin: const EdgeInsets.only(top: 150),
             height: 180.h,
             width: Get.width,
             child: Lottie.asset("assets/lotties/no_internet.json",
@@ -37,13 +39,13 @@ class _NoInternetscreenState extends State<NoInternetscreen> {
                     height: 15.0,
                   ),
                   Text("Whoops!",
-                      style: Theme.of(context).textTheme.headline3!.copyWith(
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
                           fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                   const SizedBox(
                     height: 30.0,
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                         "Internet Connection is Down!\n\nEnsure your internet's up and running.",
                         textAlign: TextAlign.center,

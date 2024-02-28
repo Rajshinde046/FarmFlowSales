@@ -31,9 +31,6 @@ class _SideMenuState extends State<SideMenu>
   late Animation<double> animation;
   late Animation<double> scaleAnimation;
   late bool logedIn;
-  // final _controller = NotchBottomBarController(index: 0);
-
-  // final _pageController = PageController(initialPage: 0);
 
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
 
@@ -90,7 +87,7 @@ class _SideMenuState extends State<SideMenu>
     scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(CurvedAnimation(
         parent: _animationController, curve: Curves.fastOutSlowIn));
 
-    Future.delayed(Duration(microseconds: 100), () {
+    Future.delayed(const Duration(microseconds: 100), () {
       controller.selectedIndex.value = Get.arguments ?? 2;
     });
 
@@ -112,10 +109,6 @@ class _SideMenuState extends State<SideMenu>
         onWillPop: () => backbuttonpressed(context),
         child: SafeArea(
           child: Scaffold(
-              // ex
-              // backgroundColor: Colors.transparent,
-              // backgroundColor: AppColors.transparent,
-              // resizeToAvoidBottomInset: false,
               extendBody: true,
               body: Container(
                 color: AppColors.transparent,
@@ -243,21 +236,14 @@ class _SideMenuState extends State<SideMenu>
         setState(() {
           controller.selectedIndex.value = index;
         });
-        // selectedIndex = index;
       },
       child: controller.selectedIndex.value == index
           ? Container(
               height: 50.h,
-              width:
-                  // selectedIndex == index ? 210.w :
-                  50.h,
+              width: 50.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.h),
-                color:
-                    // selectedIndex == index
-                    //     ?
-                    AppColors.buttoncolour,
-                // : AppColors.greyF1F1F1
+                color: AppColors.buttoncolour,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -267,24 +253,10 @@ class _SideMenuState extends State<SideMenu>
                     width: 22.h,
                     child: SvgPicture.asset(
                       bottomBarData[index]["imageUrl"],
-                      // height: 35.h,
-                      // width: 35.h,
-                      color:
-                          // selectedIndex == index
-                          //     ?
-                          AppColors.white,
-                      // : AppColors.buttoncolour,
+                      color: AppColors.white,
                       fit: BoxFit.fill,
-                      // color: AppColors.greyD3B3F43,
-                      // colorFilter: AppColors.greyD3B3F43,
                     ),
                   ),
-
-                  // selectedIndex == index ? sizedBoxWidth(10.w) : SizedBox(),
-                  // // /
-                  // selectedIndex == index
-                  //     ? textWhite16(bottomBarData[index]["label"])
-                  //     : SizedBox()
                 ],
               ),
             )
@@ -296,23 +268,11 @@ class _SideMenuState extends State<SideMenu>
                   width: 22.h,
                   child: SvgPicture.asset(
                     bottomBarData[index]["imageUrl"],
-                    // height: 35.h,
-                    // width: 35.h,
-                    color:
-                        // selectedIndex == index
-                        //     ?
-                        // AppColors.white,
-                        // :
-                        AppColors.buttoncolour,
+                    color: AppColors.buttoncolour,
                     fit: BoxFit.fill,
-                    // color: AppColors.greyD3B3F43,
-                    // colorFilter: AppColors.greyD3B3F43,
                   ),
                 ),
-
                 sizedBoxHeight(5.h),
-
-                // textWhite16(bottomBarData[index]["label"])
                 textGreen14(bottomBarData[index]["label"])
               ],
             ),

@@ -2,7 +2,6 @@ import 'package:farm_flow_sales/Model/notificationModel/notification_status_mode
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/global.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
-import 'package:farm_flow_sales/View/deleteAccount/deleteAccountScreen.dart';
 import 'package:farm_flow_sales/view_models/notificationApi/notificationApi.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';

@@ -75,7 +75,7 @@ class _SalesState extends State<Sales> {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Are you sure you want to call ${name}?",
+                    "Are you sure you want to call $name?",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
@@ -91,7 +91,7 @@ class _SalesState extends State<Sales> {
                   children: [
                     InkWell(
                       onTap: () {
-                        launch("tel://${number}");
+                        launch("tel://$number");
                       },
                       child: Container(
                         height: 48.h,
@@ -334,7 +334,7 @@ Widget SalesMainTile(
                     borderRadius: BorderRadius.circular(60), //<-- SEE HERE
                   ),
                   child: image.isEmpty
-                      ? Image.asset("assets/images/person.png")
+                      ? Image.asset("assets/default_image.jpg")
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(60),
                           child: CachedNetworkImage(
