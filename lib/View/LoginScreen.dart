@@ -31,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController tecPassword = TextEditingController();
 
   _logincheck() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final isValid = _form.currentState?.validate();
     if (isValid!) {
       Utils.loader();
@@ -38,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         "email": tecEmail.text,
         "password": tecPassword.text,
         "principal_type_xid": 2,
+        "player_id": prefs.getString('playerId'),
       };
       log(updata.toString());
       final resp = await LoginAPI(updata).loginApi();

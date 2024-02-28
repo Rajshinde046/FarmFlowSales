@@ -60,25 +60,6 @@ class _PlacedorderState extends State<Placedorder> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // SizedBox(
-            //   height: 45,
-            //   width: 45,
-            //   child: FittedBox(
-            //     child: FloatingActionButton(
-            //         elevation: 0,
-            //         backgroundColor: Colors.white,
-            //         onPressed: () {
-            //           Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => SchduleAppointment()));
-            //         },
-            //         child: Icon(
-            //           Icons.close,
-            //           size: 30,
-            //         )),
-            //   ),
-            // ),
             AlertDialog(
               insetPadding:
                   const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
@@ -89,10 +70,6 @@ class _PlacedorderState extends State<Placedorder> {
                 side: BorderSide(
                     color: Get.isDarkMode ? Colors.grey : Colors.white),
               ),
-              // contentPadding:
-              //     EdgeInsets.all(
-              //         10),
-              //   title: ,
               content: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -347,7 +324,7 @@ class _PlacedorderState extends State<Placedorder> {
                                   text: country,
                                   style: GoogleFonts.montserrat(
                                       fontSize: 16.sp,
-                                      color: Color(0xff4D4D4D),
+                                      color: const Color(0xff4D4D4D),
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -384,13 +361,13 @@ class _PlacedorderState extends State<Placedorder> {
                             left: 22.w, right: 16.w, top: 8.h, bottom: 13.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CachedNetworkImage(
-                              memCacheHeight: 99,
-                              maxHeightDiskCache: 99,
-                              maxWidthDiskCache: 57,
-                              memCacheWidth: 57,
+                              memCacheHeight: 97,
+                              maxHeightDiskCache: 97,
+                              maxWidthDiskCache: 85,
+                              memCacheWidth: 85,
                               imageUrl:
                                   "${ApiUrls.baseImageUrl}/${inventoriesController.viewCartModel.value.data!.cart![index].getItems![0].item!.smallImageUrl}",
                               placeholder: (context, url) =>

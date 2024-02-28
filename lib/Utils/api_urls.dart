@@ -15,6 +15,7 @@ class ApiUrls {
   static const profileInfoAPI = "${base}sales/profile-info";
   static const updateProfileInfoAPI = "${base}sales/profile-update";
   static const deleteProfileApi = "${base}sales/profile-delete";
+  static const deleteProfileImageAPI = "${base}delete_profile/image";
 
   //Warehouses API
   static const warehouseApi = "${base}warehouse/list";

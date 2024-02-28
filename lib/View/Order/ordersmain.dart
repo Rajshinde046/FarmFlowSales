@@ -76,7 +76,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             flexibleSpace: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
+              padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 8.h),
               child: TabBar(
                 controller: tabController,
                 onTap: ((value) {
@@ -104,7 +104,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                   }
                 }),
                 labelStyle: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.normal, fontSize: 16.sp),
+                    fontWeight: FontWeight.normal, fontSize: 14.sp),
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: Colors.white,
                 tabs: const [
@@ -622,7 +622,7 @@ Widget SalesOrderMainTile(
                     borderRadius: BorderRadius.circular(60), //<-- SEE HERE
                   ),
                   child: image.isEmpty
-                      ? Image.asset("assets/images/person.png")
+                      ? Image.asset("assets/default_image.jpg")
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(60),
                           child: CachedNetworkImage(

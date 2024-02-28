@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart' as getx;
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'dart:typed_data';
 import 'package:farm_flow_sales/Utils/colors.dart';
 
 class Utils {
