@@ -5,6 +5,7 @@ import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -76,8 +77,8 @@ class _SearchItemState extends State<SearchItem> {
         return false;
       },
       child: Scaffold(
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(left: 30.w),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.all(25),
           child: customButtonCurve(
               text: 'Add to Cart',
               onTap: () {
@@ -407,7 +408,6 @@ class _SearchItemState extends State<SearchItem> {
         ),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
@@ -460,22 +460,25 @@ class _SearchItemState extends State<SearchItem> {
                   ],
                 ),
                 sizedBoxHeight(10.h),
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.data.data!.lots!.length,
-                    itemBuilder: (ctx, index) {
-                      return Container(
-                          margin: EdgeInsets.only(bottom: 10.h),
-                          child: insideDetContainer(
-                            index,
-                            widget.data.data!.lots![index].quantity!,
-                            widget.data.data!.lots![index].price!,
-                            widget.data.data!.lots![index].lotName!,
-                            inventoryDetailsModel
-                                .data!.lots![index].prevQuantity!,
-                            widget.data.data!.lots![index].itemMasterLotXid!,
-                          ));
-                    }),
+                SizedBox(
+                  height: 320,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 3,
+                      itemBuilder: (ctx, index) {
+                        return Container(
+                            margin: EdgeInsets.only(bottom: 10.h),
+                            child: insideDetContainer(
+                              index,
+                              widget.data.data!.lots![index].quantity!,
+                              widget.data.data!.lots![index].price!,
+                              widget.data.data!.lots![index].lotName!,
+                              inventoryDetailsModel
+                                  .data!.lots![index].prevQuantity!,
+                              widget.data.data!.lots![index].itemMasterLotXid!,
+                            ));
+                      }),
+                ),
               ],
             ),
           ),

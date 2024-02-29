@@ -152,7 +152,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                             Text(
                                               "${farmerData.farmerDetails!.feedDetails![selectedCurrentFeed.value].currentFeedAvailable} Kg",
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 12.sp,
+                                                  fontSize: 11.sp,
                                                   fontWeight: FontWeight.w600,
                                                   color: AppColors.black),
                                             ),
@@ -162,7 +162,6 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                     ),
                                     sizedBoxWidth(7.h),
                                     Container(
-                                      // width: 210.w,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
@@ -178,7 +177,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                             Text(
                                               "Reordering Date - ",
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 12.sp,
+                                                  fontSize: 11.sp,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500),
                                             ),
@@ -191,7 +190,7 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                                               .value]
                                                       .reorderingDate!),
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 12.sp,
+                                                  fontSize: 11.sp,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w600),
                                             )

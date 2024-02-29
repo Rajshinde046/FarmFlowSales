@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
@@ -380,6 +382,8 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
                       onTap: () {
                         final isValid = _pin.currentState?.validate();
                         if (isValid!) {
+                          log(profileController.profileInfoModel.value.data!.id!
+                              .toString());
                           SecurityApi()
                               .changePinApi(
                                   profileController
@@ -397,11 +401,6 @@ class _PasswordSecurityState extends State<PasswordSecurity> {
                             await prefs.setBool('pin', true);
                             utils.showToast(value.data["message"]);
                           });
-                        } else {
-                          Get.snackbar("Error", "Please Enter Required Fields",
-                              margin: const EdgeInsets.all(8),
-                              snackStyle: SnackStyle.FLOATING,
-                              snackPosition: SnackPosition.BOTTOM);
                         }
                       },
                       text: 'Submit',

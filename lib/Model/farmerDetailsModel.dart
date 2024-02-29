@@ -219,7 +219,8 @@ class FeedDetails {
     maxBinCapacity = json['max_bin_capacity'];
     reorderingDate = json['reordering_date'];
     feedLow = json['feed_low'];
-    feedLowPer = json['feed_low_per'].toInt();
+    feedLowPer =
+        json['feed_low_per'] == null ? 0 : json['feed_low_per'].toInt();
     livestockName = json['livestock_name'];
     livestockUri = json['livestock_uri'];
     container = json['container'];

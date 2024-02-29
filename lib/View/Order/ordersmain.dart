@@ -107,6 +107,8 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                     fontWeight: FontWeight.normal, fontSize: 14.sp),
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: Colors.white,
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white,
                 tabs: const [
                   Tab(
                     text: "Ongoing",

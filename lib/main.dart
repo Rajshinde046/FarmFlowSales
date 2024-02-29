@@ -25,10 +25,9 @@ Future<void> main() async {
 
   final status = await OneSignal.shared.getDeviceState();
   final String? osUserID = status?.userId;
-  log(osUserID!);
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('playerId', osUserID);
+  await prefs.setString('playerId', osUserID!);
   token = prefs.getString('token');
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));

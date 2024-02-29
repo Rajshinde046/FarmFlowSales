@@ -440,6 +440,15 @@ class _ContactState extends State<Contact> {
                                 contactListModel.data!.deliveryAgents!.isEmpty
                                     ? false
                                     : true,
+                            child: const SizedBox(
+                              height: 10,
+                            ),
+                          ),
+                          Visibility(
+                            visible:
+                                contactListModel.data!.deliveryAgents!.isEmpty
+                                    ? false
+                                    : true,
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
@@ -527,7 +536,6 @@ class _ContactState extends State<Contact> {
                                               ),
                                               sizedBoxWidth(8.w),
                                               SizedBox(
-                                                width: 195.w,
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -586,20 +594,20 @@ class _ContactState extends State<Contact> {
                                                           padding:
                                                               EdgeInsets.only(
                                                                   top: 3.h),
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            "assets/images/locationconnect.svg",
-                                                            // "assets/images/mail.png",
-                                                            width: 18.w,
-                                                            height: 18.h,
+                                                          child: Image.asset(
+                                                            "assets/images/mail.png",
+                                                            width: 13.w,
+                                                            height: 13.h,
                                                           ),
                                                         ),
                                                         sizedBoxWidth(5.w),
                                                         RichText(
                                                           text: TextSpan(
-                                                            text:
-                                                                "Newton, Athenry",
-                                                            // "Canada",
+                                                            text: contactListModel
+                                                                .data!
+                                                                .deliveryAgents![
+                                                                    index]
+                                                                .emailAddress,
                                                             style: TextStyle(
                                                               color: const Color(
                                                                   0XFF585858),
@@ -623,9 +631,7 @@ class _ContactState extends State<Contact> {
                                   );
                                 }),
                           ),
-                          contactListModel.data!.deliveryAgents!.isEmpty
-                              ? const SizedBox()
-                              : sizedBoxHeight(15),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -638,6 +644,9 @@ class _ContactState extends State<Contact> {
                                 ),
                               ),
                             ],
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
                           InkWell(
                             onTap: () {

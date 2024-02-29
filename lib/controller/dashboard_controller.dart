@@ -10,6 +10,7 @@ class DashboardController extends GetxController {
   RxString permissionStatus = "".obs;
   RxString tempValue = "00.0".obs;
   RxString humidityValue = "0".obs;
+  RxString userName = "".obs;
 
   RxInt selectedTab = 0.obs;
   RxInt selectedIndex = 2.obs;

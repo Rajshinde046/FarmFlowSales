@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:farm_flow_sales/View/no_internet_screen.dart';
 import 'package:farm_flow_sales/View/secure_login.dart';
+import 'package:farm_flow_sales/controller/dashboard_controller.dart';
 import 'package:farm_flow_sales/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,6 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   ProfileController profileController = Get.put(ProfileController());
+  DashboardController dashboardController = Get.put(DashboardController());
 
   @override
   void initState() {
@@ -83,6 +85,8 @@ class _SplashScreenState extends State<SplashScreen> {
               ProfileAPI().getProfileInfo().then((value) async {
                 profileController.profileInfoModel.value =
                     ProfileInfoModel.fromJson(value.data);
+                dashboardController.userName.value =
+                    profileController.profileInfoModel.value.data!.userName!;
                 await prefs.setBool(
                     "pin", profileController.profileInfoModel.value.data!.pin!);
               });
@@ -110,6 +114,8 @@ class _SplashScreenState extends State<SplashScreen> {
             ProfileAPI().getProfileInfo().then((value) async {
               profileController.profileInfoModel.value =
                   ProfileInfoModel.fromJson(value.data);
+              dashboardController.userName.value =
+                  profileController.profileInfoModel.value.data!.userName!;
               await prefs.setBool(
                   "pin", profileController.profileInfoModel.value.data!.pin!);
             });

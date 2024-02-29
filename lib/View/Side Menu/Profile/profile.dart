@@ -9,6 +9,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import '../../../Model/ProfileModel/profile_info_model.dart';
 import '../../../Utils/api_urls.dart';
+import '../../../controller/dashboard_controller.dart';
 import '../../../controller/profile_controller.dart';
 import '../../../view_models/profileApi/ProfileAPI.dart';
 import 'password_security.dart';
@@ -36,12 +37,16 @@ class _ProfileState extends State<Profile> {
   final ProfileImageController editProfileImage =
       Get.put(ProfileImageController());
   ProfileController profileController = Get.put(ProfileController());
+  DashboardController dashboardController = Get.put(DashboardController());
+
   @override
   void initState() {
     super.initState();
     ProfileAPI().getProfileInfo().then((value) {
       profileController.profileInfoModel.value =
           ProfileInfoModel.fromJson(value.data);
+      dashboardController.userName.value =
+          profileController.profileInfoModel.value.data!.userName!;
       isLoading.value = false;
     });
   }
@@ -72,7 +77,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Get.back();
+                              Navigator.pop(context);
                             },
                             child: CircleAvatar(
                               radius: 20.h,
@@ -137,7 +142,7 @@ class _ProfileState extends State<Profile> {
                                                     .profilePhoto!
                                                     .isEmpty
                                                 ? Image.asset(
-                                                    "assets/images/profile.png")
+                                                    "assets/default_image.jpg")
                                                 : CachedNetworkImage(
                                                     imageUrl:
                                                         "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}",

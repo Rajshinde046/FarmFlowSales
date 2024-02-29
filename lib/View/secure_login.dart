@@ -4,6 +4,7 @@ import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Model/ProfileModel/profile_info_model.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/View/resetPin/forgot_pin.dart';
+import 'package:farm_flow_sales/controller/dashboard_controller.dart';
 import 'package:farm_flow_sales/controller/profile_controller.dart';
 import 'package:farm_flow_sales/view_models/SecurityApi/security_api.dart';
 import 'package:farm_flow_sales/view_models/profileApi/ProfileAPI.dart';
@@ -29,6 +30,7 @@ class _SecureLoginState extends State<SecureLogin> {
   TextEditingController pincontroller = TextEditingController();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   ProfileController profileController = Get.put(ProfileController());
+  DashboardController dashboardController = Get.put(DashboardController());
 
   @override
   void initState() {
@@ -36,6 +38,8 @@ class _SecureLoginState extends State<SecureLogin> {
     ProfileAPI().getProfileInfo().then((value) {
       profileController.profileInfoModel.value =
           ProfileInfoModel.fromJson(value.data);
+      dashboardController.userName.value =
+          profileController.profileInfoModel.value.data!.userName!;
     });
   }
 

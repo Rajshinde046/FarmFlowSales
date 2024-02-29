@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
@@ -113,6 +115,7 @@ class _Dashboard extends State<Dashboard> {
     final locationData = await location.getLocation();
     dashboardController.currentLat = locationData.latitude!;
     dashboardController.currentLng = locationData.longitude;
+    log(locationData.latitude!.toString());
 
     await getCurrentWeatherData(
         locationData.latitude!, locationData.longitude!);
