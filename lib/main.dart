@@ -23,11 +23,11 @@ Future<void> main() async {
   OneSignal.shared.setAppId("19cd37f3-7bd7-4b1d-8c59-b3cce2386c9e");
   OneSignal.shared.promptUserForPushNotificationPermission();
 
-  final status = await OneSignal.shared.getDeviceState();
-  final String? osUserID = status?.userId;
-
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('playerId', osUserID!);
+  OneSignal.shared
+      .setSubscriptionObserver((OSSubscriptionStateChanges changes) async {
+    await prefs.setString('playerId', changes.to.userId!);
+  });
   token = prefs.getString('token');
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
