@@ -185,12 +185,6 @@ class _SetNewPinScreenState extends State<SetNewPinScreen> {
                                 utils.showToast(value.data["message"]);
                                 Get.offAndToNamed("/sideMenu");
                               });
-                            } else {
-                              Get.snackbar(
-                                  "Error", "Please Enter Required Fields",
-                                  margin: const EdgeInsets.all(8),
-                                  snackStyle: SnackStyle.FLOATING,
-                                  snackPosition: SnackPosition.BOTTOM);
                             }
                           },
                           text: 'Submit',

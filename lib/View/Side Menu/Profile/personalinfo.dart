@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -21,6 +22,7 @@ import '../../../Model/ProfileModel/profile_info_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../Utils/base_manager.dart';
 import '../../../Utils/utils.dart';
+import '../../../controller/dashboard_controller.dart';
 import '../../../controller/profile_controller.dart';
 import '../../../view_models/profileApi/ProfileAPI.dart';
 import 'profile.dart';
@@ -39,6 +41,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
       Get.put(ProfileImageController());
 
   ProfileController profileController = Get.put(ProfileController());
+  DashboardController dashboardController = Get.put(DashboardController());
 
   @override
   void initState() {
@@ -77,7 +80,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           .profileInfoModel.value.data!.profilePhoto!.isEmpty) {
         //
         imageFile = await Utils.assetImageToMultipartFile(
-            "assets/images/profile.png", "profile");
+            "assets/default_image.jpg", "profile");
       } else {
         imageFile = await Utils.networkImageToMultipartFile(
           "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}",
@@ -98,10 +101,12 @@ class _PersonalInfoState extends State<PersonalInfo> {
       ProfileAPI().getProfileInfo().then((value) {
         profileController.profileInfoModel.value =
             ProfileInfoModel.fromJson(value.data);
+        dashboardController.userName.value =
+            profileController.profileInfoModel.value.data!.userName!;
         utils.showToast("Profile added Successfully!");
 
         Get.back();
-        Get.back(result: true);
+        Get.back(closeOverlays: true, result: true);
       });
     } else {
       Get.back();
@@ -402,7 +407,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                                     .profilePhoto!
                                                     .isEmpty
                                                 ? Image.asset(
-                                                    "assets/images/profile.png")
+                                                    "assets/default_image.jpg")
                                                 : CachedNetworkImage(
                                                     imageUrl:
                                                         "${ApiUrls.baseImageUrl}/${profileController.profileInfoModel.value.data!.profilePhoto}",

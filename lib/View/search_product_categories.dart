@@ -676,23 +676,26 @@ class _ProductContainerState extends State<ProductContainer> {
                   ],
                 ),
                 sizedBoxHeight(10.h),
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.data.lots!.length,
-                    itemBuilder: (ctx, index) {
-                      return Container(
-                          margin: EdgeInsets.only(bottom: 10.h),
-                          child: insideDetContainer(
-                            index,
-                            widget.data.lots![index].quantity!,
-                            widget.data.lots![index].price!,
-                            widget.data.lots![index].lotName!,
-                            inventoryDetailsModel
-                                .data!.lots![index].prevQuantity!,
-                            inventoryDetailsModel
-                                .data!.lots![index].itemMasterLotXid!,
-                          ));
-                    }),
+                SizedBox(
+                  height: 320,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: widget.data.lots!.length,
+                      itemBuilder: (ctx, index) {
+                        return Container(
+                            margin: EdgeInsets.only(bottom: 10.h),
+                            child: insideDetContainer(
+                              index,
+                              widget.data.lots![index].quantity!,
+                              widget.data.lots![index].price!,
+                              widget.data.lots![index].lotName!,
+                              inventoryDetailsModel
+                                  .data!.lots![index].prevQuantity!,
+                              inventoryDetailsModel
+                                  .data!.lots![index].itemMasterLotXid!,
+                            ));
+                      }),
+                ),
               ],
             ),
           ),

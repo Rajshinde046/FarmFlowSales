@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Common/custom_appbar.dart';
 import '../../Model/weather_model.dart';
 import '../../Utils/colors.dart';
 import '../../Utils/sized_box.dart';
@@ -124,7 +125,16 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
     bool isDaytime = isDaytimeNow(currentTime, sunrise, sunset);
 
     return SafeArea(
-      child: Scaffold(
+      child: Scaffold(appBar: PreferredSize(
+            preferredSize: Size(Get.width, 56),
+            child: Container(
+                height: 56,
+                color: AppColors.pistaE3FFE9,
+                padding: const EdgeInsets.only(
+                  top: 20,
+                ),
+                child: customAppBar(
+                    text: "Weather Forecast", inBottomSheet: false))),
         body: Obx(
           () => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
