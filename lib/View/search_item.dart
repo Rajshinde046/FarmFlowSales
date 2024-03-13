@@ -197,7 +197,7 @@ class _SearchItemState extends State<SearchItem> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: Text(
-                          "General information",
+                          "General Information",
                           style: GoogleFonts.poppins(
                               fontSize: 22.sp,
                               color: AppColors.black,
@@ -461,10 +461,10 @@ class _SearchItemState extends State<SearchItem> {
                 ),
                 sizedBoxHeight(10.h),
                 SizedBox(
-                  height: 320,
+                  height: 287,
                   child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: 3,
+                      itemCount: widget.data.data!.lots!.length,
                       itemBuilder: (ctx, index) {
                         return Container(
                             margin: EdgeInsets.only(bottom: 10.h),

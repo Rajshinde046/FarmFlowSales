@@ -334,7 +334,11 @@ Widget SalesMainTile(
                     borderRadius: BorderRadius.circular(60), //<-- SEE HERE
                   ),
                   child: image.isEmpty
-                      ? Image.asset("assets/default_image.jpg")
+                      ? Image.asset(
+                          "assets/default_image.jpg",
+                          width: 65,
+                          height: 65,
+                        )
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(60),
                           child: CachedNetworkImage(
