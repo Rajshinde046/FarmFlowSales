@@ -194,7 +194,6 @@ class _CartCardDetailsState extends State<CartCardDetails> {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 15),
-      height: 120.h,
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           color: Color(0xffF1F1F1),

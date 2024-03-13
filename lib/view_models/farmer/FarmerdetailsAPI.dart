@@ -4,13 +4,14 @@ import 'package:farm_flow_sales/Utils/base_manager.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
 
 import '../../Model/farmerDetailsModel.dart';
+import '../../Utils/api_urls.dart';
 
 class FarmerDetailsAPI {
   FarmerDetailsAPI(this.data);
   var data;
   Future<FarmerDetailsModel> farmerDetailsApi() async {
     final response = await NetworkApiServices().getApi1(
-      "https://farmflow.betadelivery.com/api/farmer/$data",
+      "${ApiUrls.base}farmer/$data",
     );
 
     if (response.status == ResponseStatus.SUCCESS) {
