@@ -159,7 +159,8 @@ class _SideBarState extends State<SideBar> {
                                 width: 100,
                                 child: Obx(
                                   () => Text(
-                                    dashboardController.userName.value,
+                                    profileController
+                                        .profileInfoModel.value.data!.userName!,
                                     style: TextStyle(fontSize: 18.sp),
                                     maxLines: 2,
                                   ),
@@ -174,7 +175,7 @@ class _SideBarState extends State<SideBar> {
                             ],
                           ),
                         ),
-                        const Gap(39),
+                        const Gap(35),
                         const Icon(
                           Icons.edit,
                           color: Colors.white,

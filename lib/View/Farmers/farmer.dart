@@ -51,135 +51,153 @@ class _FarmerState extends State<Farmer> {
               : farmerData.data!.farmers!.isEmpty
                   ? const Center(child: Text('No farmer available'))
                   : SingleChildScrollView(
-                      child: ListView.separated(
-                      separatorBuilder: (context, index) {
-                        return sizedBoxHeight(13.h);
+                      child: RefreshIndicator(
+                      strokeWidth: 3,
+                      displacement: 250,
+                      backgroundColor: Colors.white,
+                      color: AppColors.buttoncolour,
+                      onRefresh: () async {
+                        await Future.delayed(
+                            const Duration(milliseconds: 1500));
+                        isLoading.value = true;
+                        FarmerListAPI().farmerApi().then((value) {
+                          farmerData = value;
+                          isLoading.value = false;
+                        });
+                        setState(() {});
                       },
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: farmerData.data!.farmers!.length,
-                      itemBuilder: (context, index) {
-                        String? Imagepath =
-                            farmerData.data!.farmers![index].profilePhoto;
-                        return Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Get.toNamed("/farmerdetails", arguments: {
-                                  "id": farmerData.data!.farmers![index].id
-                                      .toString()
-                                });
-                              },
-                              child: SizedBox(
-                                width: 358.w,
-                                child: Card(
-                                  elevation: 2,
-                                  // shadowColor: Color(0XFF00000029),
-                                  color: const Color(0xffF1F1F1),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      sizedBoxHeight(11.h),
-                                      Row(
-                                        children: [
-                                          Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 10.w),
-                                              child: Imagepath == null
-                                                  ? CircleAvatar(
-                                                      radius: 30.r,
-                                                      foregroundImage:
-                                                          const NetworkImage(
-                                                        ("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-pictur+e-973460_960_720.png"),
-                                                      ),
-                                                    )
-                                                  : CircleAvatar(
-                                                      radius: 30.r,
-                                                      foregroundImage:
-                                                          NetworkImage(
-                                                        "${ApiUrls.baseImageUrl}/$Imagepath",
-                                                        // width: 77.w,
-                                                        // height: 77.h,
-                                                      ),
-                                                    )),
-                                          sizedBoxWidth(9.w),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              RichText(
-                                                // overflow: TextOverflow.ellipsis,
-                                                text: TextSpan(
-                                                  text: farmerData.data!
-                                                      .farmers![index].userName,
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 18.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 3.h),
-                                                    child: SvgPicture.asset(
-                                                      "assets/images/call.svg",
-                                                      width: 11.w,
-                                                      height: 15.w,
-                                                    ),
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return sizedBoxHeight(13.h);
+                        },
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: farmerData.data!.farmers!.length,
+                        itemBuilder: (context, index) {
+                          String? Imagepath =
+                              farmerData.data!.farmers![index].profilePhoto;
+                          return Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed("/farmerdetails", arguments: {
+                                    "id": farmerData.data!.farmers![index].id
+                                        .toString()
+                                  });
+                                },
+                                child: SizedBox(
+                                  width: 358.w,
+                                  child: Card(
+                                    elevation: 2,
+                                    // shadowColor: Color(0XFF00000029),
+                                    color: const Color(0xffF1F1F1),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        sizedBoxHeight(11.h),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 10.w),
+                                                child: Imagepath == null
+                                                    ? CircleAvatar(
+                                                        radius: 30.r,
+                                                        foregroundImage:
+                                                            const NetworkImage(
+                                                          ("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-pictur+e-973460_960_720.png"),
+                                                        ),
+                                                      )
+                                                    : CircleAvatar(
+                                                        radius: 30.r,
+                                                        foregroundImage:
+                                                            NetworkImage(
+                                                          "${ApiUrls.baseImageUrl}/$Imagepath",
+                                                          // width: 77.w,
+                                                          // height: 77.h,
+                                                        ),
+                                                      )),
+                                            sizedBoxWidth(9.w),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                RichText(
+                                                  // overflow: TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                    text: farmerData
+                                                        .data!
+                                                        .farmers![index]
+                                                        .userName,
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 18.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black),
                                                   ),
-                                                  sizedBoxWidth(7.w),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                        text: farmerData
-                                                            .data!
-                                                            .farmers![index]
-                                                            .phoneNumber,
-                                                        style: GoogleFonts.poppins(
-                                                            fontSize: 14.sp,
-                                                            color: const Color(
-                                                                0xff4D4D4D),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400)),
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                right: 15.w,
-                                                top: 15.h,
-                                                bottom: 15.h),
-                                            child: Image.asset(
-                                              "assets/images/text.png",
-                                              width: 39.w,
-                                              height: 39.w,
+                                                ),
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 3.h),
+                                                      child: SvgPicture.asset(
+                                                        "assets/images/call.svg",
+                                                        width: 11.w,
+                                                        height: 15.w,
+                                                      ),
+                                                    ),
+                                                    sizedBoxWidth(7.w),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                          text: farmerData
+                                                              .data!
+                                                              .farmers![index]
+                                                              .phoneNumber,
+                                                          style: GoogleFonts.poppins(
+                                                              fontSize: 14.sp,
+                                                              color: const Color(
+                                                                  0xff4D4D4D),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400)),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 11.h,
-                                      )
-                                    ],
+                                            const Spacer(),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: 15.w,
+                                                  top: 15.h,
+                                                  bottom: 15.h),
+                                              child: Image.asset(
+                                                "assets/images/text.png",
+                                                width: 39.w,
+                                                height: 39.w,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 11.h,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
-                        );
-                      },
+                              )
+                            ],
+                          );
+                        },
+                      ),
                     ))),
         ),
       ),
