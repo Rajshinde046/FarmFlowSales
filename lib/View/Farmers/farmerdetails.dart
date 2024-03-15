@@ -64,19 +64,21 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               width: 88.w,
                               height: 88.h,
                             )
-                          : CachedNetworkImage(
-                              memCacheHeight: 88,
-                              maxHeightDiskCache: 88,
-                              maxWidthDiskCache: 88,
-                              memCacheWidth: 88,
-                              imageUrl:
-                                  "${ApiUrls.baseImageUrl}/${farmerData.farmerDetails!.profilePhoto}",
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(
-                                color: AppColors.buttoncolour,
+                          : ClipOval(
+                              child: CachedNetworkImage(
+                                memCacheHeight: 88,
+                                maxHeightDiskCache: 88,
+                                maxWidthDiskCache: 88,
+                                memCacheWidth: 88,
+                                imageUrl:
+                                    "${ApiUrls.baseImageUrl}/${farmerData.farmerDetails!.profilePhoto}",
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(
+                                  color: AppColors.buttoncolour,
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
                             ),
                     ),
                     sizedBoxHeight(23.h),

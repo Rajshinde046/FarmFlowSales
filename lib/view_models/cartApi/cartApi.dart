@@ -75,6 +75,7 @@ class CartApi {
       },
       ApiUrls.placeOrderApi,
     );
+    log(response.data.toString());
     Map<String, dynamic> responseData =
         Map<String, dynamic>.from(response.data);
     log(response.data.toString());
