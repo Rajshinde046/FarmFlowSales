@@ -20,12 +20,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  OneSignal.shared.setAppId("19cd37f3-7bd7-4b1d-8c59-b3cce2386c9e");
+  OneSignal.shared.setAppId("8dd88b07-6a9b-46ca-8094-b0ef14d9c660");
   OneSignal.shared.promptUserForPushNotificationPermission();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   OneSignal.shared
       .setSubscriptionObserver((OSSubscriptionStateChanges changes) async {
+    log(changes.to.userId!.toString());
     await prefs.setString('playerId', changes.to.userId!);
   });
   token = prefs.getString('token');
@@ -58,7 +59,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         });
       } else {
         setState(() {
-          Get.to(() => const NoInternetscreen());
+          Get.to(() => NoInternetscreen());
         });
       }
     });
