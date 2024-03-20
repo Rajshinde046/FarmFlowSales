@@ -20,11 +20,15 @@ class _FeedBackState extends State<FeedBack> {
   TextEditingController phoneController = TextEditingController();
   int focusedValue = 0;
   List feedbackData = [
-    {"image": "assets/images/bad.svg", "text": "It Was Very Bad"},
-    {"image": "assets/images/poor.svg", "text": "It Was Poor"},
-    {"image": "assets/images/medium.svg", "text": "It Was Medium"},
-    {"image": "assets/images/good.svg", "text": "It Was Good"},
-    {"image": "assets/images/excellent.svg", "text": "It Was Excellent"},
+    {"image": "assets/images/bad.svg", "text": "It Was Very Bad", "id": 5},
+    {"image": "assets/images/poor.svg", "text": "It Was Poor", "id": 4},
+    {"image": "assets/images/medium.svg", "text": "It Was Neutral", "id": 3},
+    {"image": "assets/images/good.svg", "text": "It Was Good", "id": 2},
+    {
+      "image": "assets/images/excellent.svg",
+      "text": "It Was Excellent",
+      "id": 1
+    },
 
     // {"image":"","text":""},
   ];
@@ -121,7 +125,7 @@ class _FeedBackState extends State<FeedBack> {
                               "/feedbackform",
                               arguments: {
                                 "text": feedbackData[focusedValue]["text"],
-                                "index": focusedValue + 1,
+                                "index": feedbackData[focusedValue]["id"],
                               },
                             );
                           }))
