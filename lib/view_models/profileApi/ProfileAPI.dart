@@ -56,8 +56,6 @@ class ProfileAPI {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
       if (responseData['success']) {
-        print(response);
-        print(responseData);
       } else {
         return ResponseData<dynamic>(
             responseData['message'], ResponseStatus.FAILED);
@@ -72,6 +70,25 @@ class ProfileAPI {
       {"reason": reason},
     );
     log(response.data.toString());
+    if (response.status == ResponseStatus.SUCCESS) {
+      Map<String, dynamic> responseData =
+          Map<String, dynamic>.from(response.data);
+      if (responseData['success']) {
+        return response;
+      } else {
+        return ResponseData<dynamic>(
+            responseData['message'], ResponseStatus.FAILED);
+      }
+    }
+    return response;
+  }
+
+  Future<ResponseData<dynamic>> logoutApi() async {
+    final response = await NetworkApiServices().postApi(
+      {},
+      ApiUrls.lougoutApi,
+    );
+    log(response.toString());
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);

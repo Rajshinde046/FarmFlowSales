@@ -3,12 +3,15 @@ import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/global.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/view_models/notificationApi/notificationApi.dart';
+import 'package:farm_flow_sales/view_models/profileApi/ProfileAPI.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Utils/base_manager.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -332,12 +335,16 @@ class _SettingsState extends State<Settings> {
                   children: [
                     InkWell(
                       onTap: () async {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        await prefs.setString('accessToken', "");
-                        await prefs.setString('token', "");
-                        token = null;
-                        Get.offAllNamed("/loginScreen");
+                        ProfileAPI().logoutApi().then((value) async {
+                          if (value.status == ResponseStatus.SUCCESS) {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            await prefs.setString('accessToken', "");
+                            await prefs.setString('token', "");
+                            token = null;
+                            Get.offAllNamed("/loginScreen");
+                          }
+                        });
                       },
                       child: Container(
                         height: 48.h,

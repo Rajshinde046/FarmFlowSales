@@ -64,4 +64,5 @@ class ApiUrls {
   static const faqApi = "${base}faq/";
   static const contactUsApi = "${base}contact_us";
   static const contactListApi = "${base}contact/list";
+  static const lougoutApi = "${base}logout";
 }
