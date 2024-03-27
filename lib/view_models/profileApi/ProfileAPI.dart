@@ -92,7 +92,7 @@ class ProfileAPI {
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
-      if (responseData['success']) {
+      if (responseData['message'] == "Logged out successfully.") {
         return response;
       } else {
         return ResponseData<dynamic>(
