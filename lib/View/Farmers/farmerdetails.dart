@@ -7,6 +7,7 @@ import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/view_models/farmer/FarmerdetailsAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -124,45 +125,96 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                               ),
                               sizedBoxHeight(22.h),
                               Obx(
-                                () => Row(
+                                () => Column(
                                   children: [
-                                    Container(
-                                      width: 109.w,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: const Color(0xff9E9E9E)),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 7.w, vertical: 9.h),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Text(
-                                              farmerData
-                                                  .farmerDetails!
-                                                  .feedDetails![
-                                                      selectedCurrentFeed.value]
-                                                  .livestockName!,
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 11.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: AppColors.black),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 109.w,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                color: const Color(0xff9E9E9E)),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 7.w, vertical: 9.h),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Text(
+                                                  farmerData
+                                                      .farmerDetails!
+                                                      .feedDetails![
+                                                          selectedCurrentFeed
+                                                              .value]
+                                                      .livestockName!,
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 11.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: AppColors.black),
+                                                ),
+                                                Text(
+                                                  "${farmerData.farmerDetails!.feedDetails![selectedCurrentFeed.value].currentFeedAvailable} Kg",
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 11.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: AppColors.black),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "${farmerData.farmerDetails!.feedDetails![selectedCurrentFeed.value].currentFeedAvailable} Kg",
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 11.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: AppColors.black),
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
+                                        sizedBoxWidth(7.h),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                color: const Color(0xff9E9E9E)),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 6.w, vertical: 9.h),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Reordering Date - ",
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 11.sp,
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  Utils.convertISOToFormattedDate(
+                                                      farmerData
+                                                          .farmerDetails!
+                                                          .feedDetails![
+                                                              selectedCurrentFeed
+                                                                  .value]
+                                                          .reorderingDate!),
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 11.sp,
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    sizedBoxWidth(7.h),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                     Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -177,20 +229,19 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Reordering Date - ",
+                                              "Max Bin Capacity - ",
                                               style: GoogleFonts.poppins(
                                                   fontSize: 11.sp,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              Utils.convertISOToFormattedDate(
-                                                  farmerData
-                                                      .farmerDetails!
-                                                      .feedDetails![
-                                                          selectedCurrentFeed
-                                                              .value]
-                                                      .reorderingDate!),
+                                              farmerData
+                                                  .farmerDetails!
+                                                  .feedDetails![
+                                                      selectedCurrentFeed.value]
+                                                  .maxBinCapacity!
+                                                  .toString(),
                                               style: GoogleFonts.poppins(
                                                   fontSize: 11.sp,
                                                   color: AppColors.black,
@@ -265,6 +316,19 @@ class _FarmerdetailsState extends State<Farmerdetails> {
                     TextFormField(
                       readOnly: true,
                       decoration: InputDecoration(
+                        prefixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset("assets/images/phone.svg"),
+                            sizedBoxWidth(5.w),
+                            Text(
+                              "+353",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                              ),
+                            )
+                          ],
+                        ),
                         errorStyle: TextStyle(fontSize: 16.sp),
                         contentPadding: EdgeInsets.all(17.h),
                         filled: true,
