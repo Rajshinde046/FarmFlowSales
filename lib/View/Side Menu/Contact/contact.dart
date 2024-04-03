@@ -706,7 +706,7 @@ class _ContactState extends State<Contact> {
                                       sizedBoxWidth(8.w),
 
                                       SizedBox(
-                                        width: 195.w,
+                                        width: 250.w,
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -770,7 +770,7 @@ class _ContactState extends State<Contact> {
                                                 ),
                                                 sizedBoxWidth(5.w),
                                                 SizedBox(
-                                                  width: Get.width / 2.3,
+                                                  width: Get.width / 2.2,
                                                   child: RichText(
                                                     maxLines: 2,
                                                     text: TextSpan(

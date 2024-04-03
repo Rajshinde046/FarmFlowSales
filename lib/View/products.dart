@@ -404,7 +404,7 @@ class _ProductContainerState extends State<ProductContainer> {
                         });
                       },
                       child: Container(
-                        width: 110.w,
+                        width: 155.w,
                         padding: EdgeInsets.symmetric(
                             vertical: 3.h, horizontal: 8.w),
                         decoration: BoxDecoration(
