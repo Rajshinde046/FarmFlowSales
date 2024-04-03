@@ -137,7 +137,7 @@ Widget textBlack16W700(String text) {
 Widget textBlack18W5000(String text) {
   return Text(
     text,
-    textAlign: TextAlign.center,
+    textAlign: TextAlign.left,
     style: TextStyle(
       fontSize: 18.sp,
       color: AppColors.black,

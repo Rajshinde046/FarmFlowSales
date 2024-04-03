@@ -488,7 +488,7 @@ class _ProductContainerState extends State<ProductContainer> {
                         });
                       },
                       child: Container(
-                        width: 110.w,
+                        width: 155.w,
                         padding: EdgeInsets.symmetric(
                             vertical: 3.h, horizontal: 8.w),
                         decoration: BoxDecoration(
@@ -498,6 +498,7 @@ class _ProductContainerState extends State<ProductContainer> {
                             borderRadius: BorderRadius.circular(20)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Obx(
                               () => textGreen14(' ${bagText.value}'),
