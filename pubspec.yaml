@@ -72,6 +72,8 @@ dependencies:
   cached_network_image:
   onesignal_flutter: ^3.5.1
   firebase_core:
+  firebase_crashlytics: ^3.4.9
+  firebase_analytics: ^10.8.0
 
 flutter_launcher_icons:
   android: "launcher_icon"
