@@ -400,7 +400,9 @@ class _ProductContainerState extends State<ProductContainer> {
   void initState() {
     price.value = widget.data.lots![0].price!;
     bagText.value = widget.data.lots![0].lotName!;
-    bagsQuantity.value = widget.data.lots![0].quantity!;
+    bagsQuantity.value = widget.data.lots![0].quantity == null
+        ? 0
+        : widget.data.lots![0].quantity!;
     counter.value = widget.data.lots![0].prevQuantity!;
     super.initState();
   }
@@ -567,8 +569,7 @@ class _ProductContainerState extends State<ProductContainer> {
                                       GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              if (counter.value <
-                                                  bagsQuantity.value) {
+                                              if (bagText.contains("Bulk")) {
                                                 counter.value++;
 
                                                 CartApi()
@@ -588,6 +589,31 @@ class _ProductContainerState extends State<ProductContainer> {
                                                   utils.showToast(
                                                       responseData["message"]);
                                                 });
+                                              } else {
+                                                if (counter.value <
+                                                    bagsQuantity.value) {
+                                                  counter.value++;
+
+                                                  CartApi()
+                                                      .manageCartData(
+                                                          widget
+                                                              .data
+                                                              .lots![selectedBag
+                                                                  .value]
+                                                              .itemMasterXid!,
+                                                          counter.value)
+                                                      .then((value) {
+                                                    Map<String, dynamic>
+                                                        responseData = Map<
+                                                                String,
+                                                                dynamic>.from(
+                                                            value.data);
+
+                                                    utils.showToast(
+                                                        responseData[
+                                                            "message"]);
+                                                  });
+                                                }
                                               }
                                             });
                                           },
@@ -687,7 +713,9 @@ class _ProductContainerState extends State<ProductContainer> {
                             margin: EdgeInsets.only(bottom: 10.h),
                             child: insideDetContainer(
                               index,
-                              widget.data.lots![index].quantity!,
+                              widget.data.lots![index].quantity == null
+                                  ? 0
+                                  : widget.data.lots![index].quantity!,
                               widget.data.lots![index].price!,
                               widget.data.lots![index].lotName!,
                               inventoryDetailsModel
@@ -781,20 +809,43 @@ class _ProductContainerState extends State<ProductContainer> {
                             GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if (counterValue.value < quantity) {
+                                    log("RUNNING TIHIS ==> ${bag}");
+                                    if (bag.contains("Bulk")) {
                                       if (selectedBag.value == index) {
                                         counter++;
                                       }
                                       counterValue.value++;
-                                    }
-                                    CartApi()
-                                        .manageCartData(id, counterValue.value)
-                                        .then((value) {
-                                      Map<String, dynamic> responseData =
-                                          Map<String, dynamic>.from(value.data);
 
-                                      utils.showToast(responseData["message"]);
-                                    });
+                                      CartApi()
+                                          .manageCartData(
+                                              id, counterValue.value)
+                                          .then((value) {
+                                        Map<String, dynamic> responseData =
+                                            Map<String, dynamic>.from(
+                                                value.data);
+
+                                        utils
+                                            .showToast(responseData["message"]);
+                                      });
+                                    } else {
+                                      if (counterValue.value < quantity) {
+                                        if (selectedBag.value == index) {
+                                          counter++;
+                                        }
+                                        counterValue.value++;
+                                      }
+                                      CartApi()
+                                          .manageCartData(
+                                              id, counterValue.value)
+                                          .then((value) {
+                                        Map<String, dynamic> responseData =
+                                            Map<String, dynamic>.from(
+                                                value.data);
+
+                                        utils
+                                            .showToast(responseData["message"]);
+                                      });
+                                    }
                                   });
                                 },
                                 child: SvgPicture.asset(

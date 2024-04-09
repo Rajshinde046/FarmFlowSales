@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
@@ -470,7 +472,9 @@ class _SearchItemState extends State<SearchItem> {
                             margin: EdgeInsets.only(bottom: 10.h),
                             child: insideDetContainer(
                               index,
-                              widget.data.data!.lots![index].quantity!,
+                              widget.data.data!.lots![index].quantity == null
+                                  ? 0
+                                  : widget.data.data!.lots![index].quantity!,
                               widget.data.data!.lots![index].price!,
                               widget.data.data!.lots![index].lotName!,
                               inventoryDetailsModel
@@ -519,7 +523,8 @@ class _SearchItemState extends State<SearchItem> {
                     GestureDetector(
                         onTap: () {
                           setState(() {
-                            if (counterValue.value > quantity) {
+                            log("${counter.value} ${counterValue.value}");
+                            if (counterValue.value > 0) {
                               if (selectedBag.value == index) {
                                 counter--;
                               }
@@ -543,20 +548,37 @@ class _SearchItemState extends State<SearchItem> {
                     GestureDetector(
                         onTap: () {
                           setState(() {
-                            if (counterValue.value < quantity) {
+                            log("RUNNING TIHIS ==> ${bag}");
+                            if (bag.contains("Bulk")) {
                               if (selectedBag.value == index) {
                                 counter++;
                               }
                               counterValue.value++;
-                            }
-                            CartApi()
-                                .manageCartData(id, counterValue.value)
-                                .then((value) {
-                              Map<String, dynamic> responseData =
-                                  Map<String, dynamic>.from(value.data);
 
-                              utils.showToast(responseData["message"]);
-                            });
+                              CartApi()
+                                  .manageCartData(id, counterValue.value)
+                                  .then((value) {
+                                Map<String, dynamic> responseData =
+                                    Map<String, dynamic>.from(value.data);
+
+                                utils.showToast(responseData["message"]);
+                              });
+                            } else {
+                              if (counterValue.value < quantity) {
+                                if (selectedBag.value == index) {
+                                  counter++;
+                                }
+                                counterValue.value++;
+                              }
+                              CartApi()
+                                  .manageCartData(id, counterValue.value)
+                                  .then((value) {
+                                Map<String, dynamic> responseData =
+                                    Map<String, dynamic>.from(value.data);
+
+                                utils.showToast(responseData["message"]);
+                              });
+                            }
                           });
                         },
                         child:
