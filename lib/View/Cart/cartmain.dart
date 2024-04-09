@@ -147,12 +147,21 @@ class _CartmainState extends State<Cartmain> {
                                   return CartCardDetails(
                                       index: index,
                                       maxValue: inventoriesController
-                                          .viewCartModel
-                                          .value
-                                          .data!
-                                          .cart![index]
-                                          .getItems![0]
-                                          .quantity!);
+                                                  .viewCartModel
+                                                  .value
+                                                  .data!
+                                                  .cart![index]
+                                                  .getItems![0]
+                                                  .quantity ==
+                                              null
+                                          ? 0
+                                          : inventoriesController
+                                              .viewCartModel
+                                              .value
+                                              .data!
+                                              .cart![index]
+                                              .getItems![0]
+                                              .quantity!);
                                 }),
                           ),
                           sizedBoxHeight(20.h),
@@ -391,7 +400,14 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if (counter.value < widget.maxValue) {
+                                    if (inventoriesController
+                                        .viewCartModel
+                                        .value
+                                        .data!
+                                        .cart![widget.index]
+                                        .getItems![0]
+                                        .lotName!
+                                        .contains("Bulk")) {
                                       counter.value++;
                                       CartApi()
                                           .manageCartData(
@@ -450,6 +466,68 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                                         utils
                                             .showToast(responseData["message"]);
                                       });
+                                    } else {
+                                      if (counter.value < widget.maxValue) {
+                                        counter.value++;
+                                        CartApi()
+                                            .manageCartData(
+                                                inventoriesController
+                                                    .viewCartModel
+                                                    .value
+                                                    .data!
+                                                    .cart![widget.index]
+                                                    .itemMasterLotXid!,
+                                                counter.value)
+                                            .then((value) {
+                                          int totalPriceV = 0;
+                                          inventoriesController
+                                              .viewCartModel
+                                              .value
+                                              .data!
+                                              .cart![widget.index]
+                                              .quantity = counter.value;
+                                          price.value = counter.value *
+                                              inventoriesController
+                                                  .viewCartModel
+                                                  .value
+                                                  .data!
+                                                  .cart![widget.index]
+                                                  .getItems![0]
+                                                  .price!;
+                                          for (int i = 0;
+                                              i <
+                                                  inventoriesController
+                                                      .viewCartModel
+                                                      .value
+                                                      .data!
+                                                      .cart!
+                                                      .length;
+                                              i++) {
+                                            totalPriceV += inventoriesController
+                                                    .viewCartModel
+                                                    .value
+                                                    .data!
+                                                    .cart![i]
+                                                    .quantity! *
+                                                inventoriesController
+                                                    .viewCartModel
+                                                    .value
+                                                    .data!
+                                                    .cart![i]
+                                                    .getItems![0]
+                                                    .price!;
+                                          }
+
+                                          inventoriesController
+                                              .cartSubTotalValue
+                                              .value = totalPriceV;
+                                          Map<String, dynamic> responseData =
+                                              Map<String, dynamic>.from(
+                                                  value.data);
+                                          utils.showToast(
+                                              responseData["message"]);
+                                        });
+                                      }
                                     }
                                     // widget.onChanged(counter);
                                   });
