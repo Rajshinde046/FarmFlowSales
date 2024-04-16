@@ -437,13 +437,15 @@ class _ProductContainerState extends State<ProductContainer> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             textBlack18W700Center('€ ${price.value}'),
-                            Text(
-                              "Quantity : ${bagsQuantity.value}",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 16.sp,
-                                  color: const Color(0xff0E5F02),
-                                  fontWeight: FontWeight.w500),
-                            )
+                            bagsQuantity.value == 0
+                                ? SizedBox()
+                                : Text(
+                                    "Quantity : ${bagsQuantity.value}",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16.sp,
+                                        color: const Color(0xff0E5F02),
+                                        fontWeight: FontWeight.w500),
+                                  )
                           ],
                         ),
                       ),
@@ -534,7 +536,9 @@ class _ProductContainerState extends State<ProductContainer> {
                             margin: EdgeInsets.only(bottom: 10.h),
                             child: insideDetContainer(
                               index,
-                              widget.data.lots![index].quantity!,
+                              widget.data.lots![index].quantity == null
+                                  ? 0
+                                  : widget.data.lots![index].quantity!,
                               widget.data.lots![index].price!,
                               widget.data.lots![index].lotName!,
                               inventoryDetailsModel
@@ -587,13 +591,15 @@ class _ProductContainerState extends State<ProductContainer> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 textBlack18W700Center('€ $amount'),
-                Text(
-                  "Quantity : $quantity",
-                  style: GoogleFonts.poppins(
-                      fontSize: 16.sp,
-                      color: const Color(0xff0E5F02),
-                      fontWeight: FontWeight.w500),
-                )
+                quantity == 0
+                    ? const SizedBox()
+                    : Text(
+                        "Quantity : $quantity",
+                        style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            color: const Color(0xff0E5F02),
+                            fontWeight: FontWeight.w500),
+                      )
               ],
             ),
           ],

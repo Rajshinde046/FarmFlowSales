@@ -37,14 +37,96 @@ class _selectFarmerState extends State<selectFarmer> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  buildprofilelogoutdialog(context) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AlertDialog(
+              insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+              backgroundColor:
+                  Get.isDarkMode ? Colors.black : const Color(0XFFFFFFFF),
+              shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                side: BorderSide(
+                    color:
+                        Get.isDarkMode ? Colors.grey : const Color(0XFFFFFFFF)),
+              ),
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Align(
+                      alignment: Alignment.center,
+                      child: Icon(
+                        Icons.warning_amber_outlined,
+                        color: Colors.red,
+                        size: 60,
+                      )),
+                  SizedBox(
+                    height: 22.h,
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Please connect to farmer to place order !",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.sp,
+                      ),
+                    ),
+                  ),
+                  sizedBoxHeight(21.h),
+                  InkWell(
+                    onTap: () async {
+                      Get.back();
+                      Get.back();
+                    },
+                    child: Center(
+                      child: Container(
+                        height: 48.h,
+                        width: 200.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.h),
+                            color: AppColors.buttoncolour),
+                        child: Center(
+                          child: Text(
+                            "OK",
+                            style: TextStyle(
+                                color: AppColors.white, fontSize: 18.sp),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await FarmerListAPI().farmerApi().then((value) {
-        cartController.farmerListModel = value;
-        for (var a in value.data!.farmers!) {
-          farmerList.add(a.userName!);
-          farmerId.add(a.id!);
+        if (value == "SalesAgents not connect to Any Farmer") {
+          buildprofilelogoutdialog(context);
+        } else {
+          cartController.farmerListModel = value;
+          for (var a in value.data!.farmers!) {
+            farmerList.add(a.userName!);
+            farmerId.add(a.id!);
+          }
         }
         setState(() {});
       });
