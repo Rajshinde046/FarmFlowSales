@@ -45,6 +45,9 @@ class NetworkApiServices extends BaseApiServices {
           Get.offAndToNamed("/loginScreen");
         } else if (e.response!.statusCode == 500) {
           Get.to(() => const ErrorScreen());
+        } else if (e.response!.statusCode == 404) {
+          return ResponseData<dynamic>(
+              e.response!.data['message'].toString(), ResponseStatus.FAILED);
         }
       }
 

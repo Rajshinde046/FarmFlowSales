@@ -10,11 +10,11 @@ import '../../Model/farmerListModel.dart';
 class FarmerListAPI {
   FarmerListAPI();
   var data;
-  Future<FarmerListModel> farmerApi() async {
+  Future<dynamic> farmerApi() async {
     final response = await NetworkApiServices().getApi1(
       ApiUrls.farmerlistApi,
     );
-
+    log(response.data.toString());
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
           Map<String, dynamic>.from(response.data);
@@ -25,7 +25,8 @@ class FarmerListAPI {
         throw Exception(responseData['message']);
       }
     } else {
-      throw Exception('Failed to fetch data');
+      return response.message.trim();
+      //   throw Exception('Failed to fetch data');
     }
   }
 

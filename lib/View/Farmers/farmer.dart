@@ -20,11 +20,16 @@ class Farmer extends StatefulWidget {
 
 class _FarmerState extends State<Farmer> {
   RxBool isLoading = true.obs;
+  RxBool isEmpty = false.obs;
   FarmerListModel farmerData = FarmerListModel();
   @override
   void initState() {
     FarmerListAPI().farmerApi().then((value) {
-      farmerData = value;
+      if (value == "SalesAgents not connect to Any Farmer") {
+        isEmpty.value = true;
+      } else {
+        farmerData = value;
+      }
       isLoading.value = false;
     });
     super.initState();
@@ -48,8 +53,14 @@ class _FarmerState extends State<Farmer> {
                   child: CircularProgressIndicator(
                   color: AppColors.buttoncolour,
                 ))
-              : farmerData.data!.farmers!.isEmpty
-                  ? const Center(child: Text('No farmer available'))
+              : isEmpty.value
+                  ? Center(
+                      child: Text('No farmer available',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w500,
+                          )))
                   : SingleChildScrollView(
                       child: RefreshIndicator(
                       strokeWidth: 3,

@@ -525,13 +525,15 @@ class _ProductContainerState extends State<ProductContainer> {
                           children: [
                             textBlack18W700Center('€ ${price.value}'),
                             inventoriesController.fromWarehouse
-                                ? Text(
-                                    "Quantity : ${bagsQuantity.value}",
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16.sp,
-                                        color: const Color(0xff0E5F02),
-                                        fontWeight: FontWeight.w500),
-                                  )
+                                ? bagsQuantity.value == 0
+                                    ? SizedBox()
+                                    : Text(
+                                        "Quantity : ${bagsQuantity.value}",
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 16.sp,
+                                            color: const Color(0xff0E5F02),
+                                            fontWeight: FontWeight.w500),
+                                      )
                                 : Row(
                                     children: [
                                       GestureDetector(
@@ -769,13 +771,15 @@ class _ProductContainerState extends State<ProductContainer> {
               children: [
                 textBlack18W700Center('€ $amount'),
                 inventoriesController.fromWarehouse
-                    ? Text(
-                        "Quantity : $quantity",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16.sp,
-                            color: const Color(0xff0E5F02),
-                            fontWeight: FontWeight.w500),
-                      )
+                    ? quantity == 0
+                        ? SizedBox()
+                        : Text(
+                            "Quantity : $quantity",
+                            style: GoogleFonts.poppins(
+                                fontSize: 16.sp,
+                                color: const Color(0xff0E5F02),
+                                fontWeight: FontWeight.w500),
+                          )
                     : Obx(
                         () => Row(
                           children: [

@@ -382,19 +382,22 @@ class _PlacedorderState extends State<Placedorder> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  inventoriesController
-                                      .viewCartModel
-                                      .value
-                                      .data!
-                                      .cart![index]
-                                      .getItems![0]
-                                      .item!
-                                      .title!,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color(0xff141414),
+                                SizedBox(
+                                  width: 0.6.sw,
+                                  child: Text(
+                                    inventoriesController
+                                        .viewCartModel
+                                        .value
+                                        .data!
+                                        .cart![index]
+                                        .getItems![0]
+                                        .item!
+                                        .title!,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color(0xff141414),
+                                    ),
                                   ),
                                 ),
                                 sizedBoxHeight(3.h),
