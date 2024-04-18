@@ -59,6 +59,7 @@ class CartApi {
     List<int> cartIds,
     double totalValue,
     double netValue,
+    int orderType,
   ) async {
     final response = await NetworkApiServices().postApi(
       {
@@ -72,6 +73,7 @@ class CartApi {
         "cart_ids": cartIds,
         "total_value": totalValue,
         "net_value": netValue,
+        "order_type": orderType,
       },
       ApiUrls.placeOrderApi,
     );

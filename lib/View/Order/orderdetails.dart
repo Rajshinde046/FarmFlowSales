@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:farm_flow_sales/Common/limit_range.dart';
@@ -337,17 +339,20 @@ class _OrderdetailsState extends State<Orderdetails> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              orderDetailsModel
-                                                  .data!
-                                                  .productList![index]
-                                                  .itemTitle!,
-                                              style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                  color:
-                                                      const Color(0XFF141414),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontFamily: "Poppins"),
+                                            SizedBox(
+                                              width: 0.6.sw,
+                                              child: Text(
+                                                orderDetailsModel
+                                                    .data!
+                                                    .productList![index]
+                                                    .itemTitle!,
+                                                style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    color:
+                                                        const Color(0XFF141414),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontFamily: "Poppins"),
+                                              ),
                                             ),
                                             sizedBoxHeight(2.h),
                                             Text(
@@ -362,6 +367,16 @@ class _OrderdetailsState extends State<Orderdetails> {
                                             sizedBoxHeight(2.h),
                                             Text(
                                               "Lot : ${orderDetailsModel.data!.productList![index].lot}",
+                                              style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w300,
+                                                  color:
+                                                      const Color(0XFF4D4D4D),
+                                                  fontFamily: "Poppins"),
+                                            ),
+                                            sizedBoxHeight(2.h),
+                                            Text(
+                                              "Order Type :Bin",
                                               style: TextStyle(
                                                   fontSize: 16.sp,
                                                   fontWeight: FontWeight.w300,
@@ -490,6 +505,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                     .isPermanentlyDenied) {
                                   await openAppSettings();
                                 } else {
+                                  log("${ApiUrls.base}download/invoice/${orderDetailsModel.data!.orderHeaderId!}");
                                   OrderApi()
                                       .downloadFile(
                                           "${ApiUrls.base}download/invoice/${orderDetailsModel.data!.orderHeaderId!}",

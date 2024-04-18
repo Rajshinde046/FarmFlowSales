@@ -5,6 +5,7 @@ import '../Model/farmerListModel.dart';
 
 class CartController extends GetxController {
   int selectedFarmerId = 0;
+  int selectedOrderType = 0;
   int selectedFarmAddressId = 0;
   String farmerName = "";
   List<int> cartDataId = [];
