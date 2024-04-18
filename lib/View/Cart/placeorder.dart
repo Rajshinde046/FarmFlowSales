@@ -527,6 +527,7 @@ class _PlacedorderState extends State<Placedorder> {
                       cartController.cartDataId,
                       inventoriesController.cartSubTotalValue.value.toDouble(),
                       cartController.netValue,
+                      cartController.selectedOrderType,
                     )
                         .then((value) {
                       Get.back();

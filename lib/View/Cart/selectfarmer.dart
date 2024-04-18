@@ -25,10 +25,12 @@ class selectFarmer extends StatefulWidget {
 class _selectFarmerState extends State<selectFarmer> {
   String? selectedFarmer;
   String? selectedAddress;
+  String? selectedOrderType;
 
   List<String> farmerList = [];
   List<String> farmerAddressList = [];
   List<int> farmerId = [];
+  List<String> orderTypeList = ['Shed', 'Bin'];
 
   List<int> farmerAddressId = [];
 
@@ -231,6 +233,47 @@ class _selectFarmerState extends State<selectFarmer> {
                     .toList(),
                 value: selectedAddress,
               ),
+              SizedBox(
+                height: 25.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Select Order Type",
+                    style: GoogleFonts.poppins(
+                        fontSize: 20.sp, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+              sizedBoxHeight(10.h),
+              DropdownBtn(
+                hint: "Select Order Type",
+                // items: ,
+                items: orderTypeList
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          onTap: () async {
+                            setState(() {
+                              selectedOrderType = e;
+                              cartController.selectedOrderType =
+                                  e == "Shed" ? 0 : 1;
+                            });
+                          },
+                          child: Text(
+                            e,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF4D4D4D),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ))
+                    .toList(),
+                value: selectedOrderType,
+              ),
+              sizedBoxHeight(30),
               sizedBoxHeight(30),
               CustomButton(
                   text: "Deliver To This Address",
@@ -239,6 +282,8 @@ class _selectFarmerState extends State<selectFarmer> {
                       utils.showToast("Please Select Farmer");
                     } else if (selectedAddress == null) {
                       utils.showToast("Please Select Farmer Address");
+                    } else if (selectedOrderType == null) {
+                      utils.showToast("Please Select Order Type");
                     } else {
                       cartController.farmerName = selectedFarmer!;
 
