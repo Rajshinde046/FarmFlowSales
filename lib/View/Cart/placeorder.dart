@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
 import 'package:farm_flow_sales/Common/limit_range.dart';
@@ -514,7 +516,7 @@ class _PlacedorderState extends State<Placedorder> {
                       formattedDate =
                           '${dateSplit[2]}-${dateSplit[1]}-${dateSplit[0]}';
                     }
-
+                    log(cartController.selectedOrderType.toString());
                     CartApi()
                         .placeOrder(
                       cartController.selectedFarmerId,

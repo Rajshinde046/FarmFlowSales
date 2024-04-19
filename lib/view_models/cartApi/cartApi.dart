@@ -61,6 +61,19 @@ class CartApi {
     double netValue,
     int orderType,
   ) async {
+    log({
+      "farmer_xid": farmerId,
+      "farm_xid": farmId,
+      "delivery_instruction": deliveryInstruction,
+      "frequency_xid": frequencyId,
+      "start_date": startDate,
+      "discount_type": discountType,
+      "discount_value": discountValue,
+      "cart_ids": cartIds,
+      "total_value": totalValue,
+      "net_value": netValue,
+      "order_type": orderType,
+    }.toString());
     final response = await NetworkApiServices().postApi(
       {
         "farmer_xid": farmerId,
