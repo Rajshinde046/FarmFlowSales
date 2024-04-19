@@ -91,6 +91,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         designSize: const Size(390, 844),
         builder: (context, child) {
           return GetMaterialApp(
+            title: 'FarmFlow Sales',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               canvasColor: Colors.transparent,

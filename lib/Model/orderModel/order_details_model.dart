@@ -37,19 +37,22 @@ class Data {
   String? deliveryAgent;
   String? oderSummary;
   List<DeliveryStatus>? deliveryStatus;
+  int? orderType;
 
-  Data(
-      {this.orderHeaderId,
-      this.address,
-      this.productList,
-      this.discountType,
-      this.discountValue,
-      this.totalValue,
-      this.netValue,
-      this.orderStatus,
-      this.deliveryAgent,
-      this.deliveryStatus,
-      this.oderSummary});
+  Data({
+    this.orderHeaderId,
+    this.address,
+    this.productList,
+    this.discountType,
+    this.discountValue,
+    this.totalValue,
+    this.netValue,
+    this.orderStatus,
+    this.deliveryAgent,
+    this.deliveryStatus,
+    this.oderSummary,
+    this.orderType,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     orderHeaderId = json['order_header_id'];
@@ -76,7 +79,7 @@ class Data {
         deliveryStatus!.add(DeliveryStatus.fromJson(v));
       });
     }
-
+    orderType = json["order_type"];
     oderSummary = json['order_summary'];
   }
 
@@ -92,11 +95,12 @@ class Data {
     data['total_value'] = totalValue;
     data['net_value'] = netValue;
     data['order_status'] = orderStatus;
-
+    data['order_type'] = orderType;
     data['delivery_agent'] = deliveryAgent!;
     if (deliveryStatus != null) {
       data['delivery_status'] = deliveryStatus!.map((v) => v.toJson()).toList();
     }
+    data["order_type"] = orderType;
     data['oder_summary'] = oderSummary;
     return data;
   }
