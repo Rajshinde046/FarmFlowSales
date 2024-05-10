@@ -438,7 +438,12 @@ class _ProductContainerState extends State<ProductContainer> {
                           children: [
                             textBlack18W700Center('€ ${price.value}'),
                             bagsQuantity.value == 0
-                                ? SizedBox()
+                                ? ((bagText.value.contains("Small Bag") ||
+                                            bagText.value
+                                                .contains("Big Bag")) &&
+                                        bagsQuantity.value == 0)
+                                    ? const Text("Out of stock")
+                                    : SizedBox()
                                 : Text(
                                     "Quantity : ${bagsQuantity.value}",
                                     style: GoogleFonts.poppins(
@@ -591,15 +596,18 @@ class _ProductContainerState extends State<ProductContainer> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 textBlack18W700Center('€ $amount'),
-                quantity == 0
-                    ? const SizedBox()
-                    : Text(
-                        "Quantity : $quantity",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16.sp,
-                            color: const Color(0xff0E5F02),
-                            fontWeight: FontWeight.w500),
-                      )
+                ((bag.contains("Small Bag") || bag.contains("Big Bag")) &&
+                        quantity == 0)
+                    ? const Text("Out of stock")
+                    : quantity == 0
+                        ? const SizedBox()
+                        : Text(
+                            "Quantity : $quantity",
+                            style: GoogleFonts.poppins(
+                                fontSize: 16.sp,
+                                color: const Color(0xff0E5F02),
+                                fontWeight: FontWeight.w500),
+                          )
               ],
             ),
           ],

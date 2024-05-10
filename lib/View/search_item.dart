@@ -80,7 +80,7 @@ class _SearchItemState extends State<SearchItem> {
       },
       child: Scaffold(
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.all(25),
+          padding: const EdgeInsets.all(25),
           child: customButtonCurve(
               text: 'Add to Cart',
               onTap: () {
@@ -517,75 +517,78 @@ class _SearchItemState extends State<SearchItem> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               textBlack18W700Center('€ $amount'),
-              Obx(
-                () => Row(
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            log("${counter.value} ${counterValue.value}");
-                            if (counterValue.value > 0) {
-                              if (selectedBag.value == index) {
-                                counter--;
-                              }
-                              counterValue.value--;
-                              CartApi()
-                                  .manageCartData(id, counterValue.value)
-                                  .then((value) {
-                                Map<String, dynamic> responseData =
-                                    Map<String, dynamic>.from(value.data);
+              ((bag.contains("Small Bag") || bag.contains("Big Bag")) &&
+                      quantity == 0)
+                  ? const Text("Out of stock")
+                  : Obx(
+                      () => Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  log("${counter.value} ${counterValue.value}");
+                                  if (counterValue.value > 0) {
+                                    if (selectedBag.value == index) {
+                                      counter--;
+                                    }
+                                    counterValue.value--;
+                                    CartApi()
+                                        .manageCartData(id, counterValue.value)
+                                        .then((value) {
+                                      Map<String, dynamic> responseData =
+                                          Map<String, dynamic>.from(value.data);
 
-                                utils.showToast(responseData["message"]);
-                              });
-                            }
-                          });
-                        },
-                        child:
-                            SvgPicture.asset("assets/images/minusbutton.svg")),
-                    sizedBoxWidth(12.w),
-                    textblack14M('${counterValue.value}'),
-                    sizedBoxWidth(8.w),
-                    GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            log("RUNNING TIHIS ==> ${bag}");
-                            if (bag.contains("Bulk")) {
-                              if (selectedBag.value == index) {
-                                counter++;
-                              }
-                              counterValue.value++;
+                                      utils.showToast(responseData["message"]);
+                                    });
+                                  }
+                                });
+                              },
+                              child: SvgPicture.asset(
+                                  "assets/images/minusbutton.svg")),
+                          sizedBoxWidth(12.w),
+                          textblack14M('${counterValue.value}'),
+                          sizedBoxWidth(8.w),
+                          GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  log("RUNNING TIHIS ==> ${bag}");
+                                  if (bag.contains("Bulk")) {
+                                    if (selectedBag.value == index) {
+                                      counter++;
+                                    }
+                                    counterValue.value++;
 
-                              CartApi()
-                                  .manageCartData(id, counterValue.value)
-                                  .then((value) {
-                                Map<String, dynamic> responseData =
-                                    Map<String, dynamic>.from(value.data);
+                                    CartApi()
+                                        .manageCartData(id, counterValue.value)
+                                        .then((value) {
+                                      Map<String, dynamic> responseData =
+                                          Map<String, dynamic>.from(value.data);
 
-                                utils.showToast(responseData["message"]);
-                              });
-                            } else {
-                              if (counterValue.value < quantity) {
-                                if (selectedBag.value == index) {
-                                  counter++;
-                                }
-                                counterValue.value++;
-                              }
-                              CartApi()
-                                  .manageCartData(id, counterValue.value)
-                                  .then((value) {
-                                Map<String, dynamic> responseData =
-                                    Map<String, dynamic>.from(value.data);
+                                      utils.showToast(responseData["message"]);
+                                    });
+                                  } else {
+                                    if (counterValue.value < quantity) {
+                                      if (selectedBag.value == index) {
+                                        counter++;
+                                      }
+                                      counterValue.value++;
+                                    }
+                                    CartApi()
+                                        .manageCartData(id, counterValue.value)
+                                        .then((value) {
+                                      Map<String, dynamic> responseData =
+                                          Map<String, dynamic>.from(value.data);
 
-                                utils.showToast(responseData["message"]);
-                              });
-                            }
-                          });
-                        },
-                        child:
-                            SvgPicture.asset("assets/images/plusreorder.svg")),
-                  ],
-                ),
-              )
+                                      utils.showToast(responseData["message"]);
+                                    });
+                                  }
+                                });
+                              },
+                              child: SvgPicture.asset(
+                                  "assets/images/plusreorder.svg")),
+                        ],
+                      ),
+                    )
             ],
           ),
         ],

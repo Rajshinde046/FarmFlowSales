@@ -1,6 +1,8 @@
 import 'package:farm_flow_sales/Utils/base_manager.dart';
+import 'package:get/get.dart';
 import '../../Utils/api_urls.dart';
 import 'package:farm_flow_sales/data/network/network_api_services.dart';
+import 'dart:developer';
 
 class ForgotPasswordAPI {
   ForgotPasswordAPI(
@@ -13,6 +15,7 @@ class ForgotPasswordAPI {
       data,
       "${ApiUrls.base}forgot-password",
     );
+    log(response.data.toString());
 
     if (response.status == ResponseStatus.SUCCESS) {
       Map<String, dynamic> responseData =
@@ -24,6 +27,9 @@ class ForgotPasswordAPI {
         return ResponseData<dynamic>(
             responseData['message'], ResponseStatus.FAILED);
       }
+    } else {
+      Get.back();
+      log("Running");
     }
     return response;
   }
