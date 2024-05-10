@@ -13,6 +13,7 @@ import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
 import 'package:farm_flow_sales/view_models/inventoriesApi/inventoriesApi.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -534,97 +535,115 @@ class _ProductContainerState extends State<ProductContainer> {
                                             color: const Color(0xff0E5F02),
                                             fontWeight: FontWeight.w500),
                                       )
-                                : Row(
-                                    children: [
-                                      GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              if (counter.value >
-                                                  widget.minValue) {
-                                                counter.value--;
-                                                CartApi()
-                                                    .manageCartData(
-                                                        widget
-                                                            .data
-                                                            .lots![selectedBag
-                                                                .value]
-                                                            .itemMasterXid!,
-                                                        counter.value)
-                                                    .then((value) {
-                                                  Map<String, dynamic>
-                                                      responseData =
-                                                      Map<String, dynamic>.from(
-                                                          value.data);
-                                                  utils.showToast(
-                                                      responseData["message"]);
+                                : ((widget.data.lots![selectedBag.value]
+                                                .lotName!
+                                                .contains("Small Bag") ||
+                                            widget.data.lots![selectedBag.value]
+                                                .lotName!
+                                                .contains("Big Bag")) &&
+                                        widget.data.lots![selectedBag.value]
+                                                .quantity ==
+                                            0)
+                                    ? Text("Out of stock")
+                                    : Row(
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (counter.value >
+                                                      widget.minValue) {
+                                                    counter.value--;
+                                                    CartApi()
+                                                        .manageCartData(
+                                                            widget
+                                                                .data
+                                                                .lots![
+                                                                    selectedBag
+                                                                        .value]
+                                                                .itemMasterXid!,
+                                                            counter.value)
+                                                        .then((value) {
+                                                      Map<String, dynamic>
+                                                          responseData = Map<
+                                                                  String,
+                                                                  dynamic>.from(
+                                                              value.data);
+                                                      utils.showToast(
+                                                          responseData[
+                                                              "message"]);
+                                                    });
+                                                  }
                                                 });
-                                              }
-                                            });
-                                          },
-                                          child: SvgPicture.asset(
-                                            "assets/images/minusbutton.svg",
-                                            width: 20.w,
-                                          )),
-                                      sizedBoxWidth(12.w),
-                                      textblack14M('${counter.value}'),
-                                      sizedBoxWidth(8.w),
-                                      GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              if (bagText.contains("Bulk")) {
-                                                counter.value++;
+                                              },
+                                              child: SvgPicture.asset(
+                                                "assets/images/minusbutton.svg",
+                                                width: 20.w,
+                                              )),
+                                          sizedBoxWidth(12.w),
+                                          textblack14M('${counter.value}'),
+                                          sizedBoxWidth(8.w),
+                                          GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (bagText
+                                                      .contains("Bulk")) {
+                                                    counter.value++;
 
-                                                CartApi()
-                                                    .manageCartData(
-                                                        widget
-                                                            .data
-                                                            .lots![selectedBag
-                                                                .value]
-                                                            .itemMasterXid!,
-                                                        counter.value)
-                                                    .then((value) {
-                                                  Map<String, dynamic>
-                                                      responseData =
-                                                      Map<String, dynamic>.from(
-                                                          value.data);
+                                                    CartApi()
+                                                        .manageCartData(
+                                                            widget
+                                                                .data
+                                                                .lots![
+                                                                    selectedBag
+                                                                        .value]
+                                                                .itemMasterXid!,
+                                                            counter.value)
+                                                        .then((value) {
+                                                      Map<String, dynamic>
+                                                          responseData = Map<
+                                                                  String,
+                                                                  dynamic>.from(
+                                                              value.data);
 
-                                                  utils.showToast(
-                                                      responseData["message"]);
+                                                      utils.showToast(
+                                                          responseData[
+                                                              "message"]);
+                                                    });
+                                                  } else {
+                                                    if (counter.value <
+                                                        bagsQuantity.value) {
+                                                      counter.value++;
+
+                                                      CartApi()
+                                                          .manageCartData(
+                                                              widget
+                                                                  .data
+                                                                  .lots![
+                                                                      selectedBag
+                                                                          .value]
+                                                                  .itemMasterXid!,
+                                                              counter.value)
+                                                          .then((value) {
+                                                        Map<String, dynamic>
+                                                            responseData = Map<
+                                                                    String,
+                                                                    dynamic>.from(
+                                                                value.data);
+
+                                                        utils.showToast(
+                                                            responseData[
+                                                                "message"]);
+                                                      });
+                                                    }
+                                                  }
                                                 });
-                                              } else {
-                                                if (counter.value <
-                                                    bagsQuantity.value) {
-                                                  counter.value++;
-
-                                                  CartApi()
-                                                      .manageCartData(
-                                                          widget
-                                                              .data
-                                                              .lots![selectedBag
-                                                                  .value]
-                                                              .itemMasterXid!,
-                                                          counter.value)
-                                                      .then((value) {
-                                                    Map<String, dynamic>
-                                                        responseData = Map<
-                                                                String,
-                                                                dynamic>.from(
-                                                            value.data);
-
-                                                    utils.showToast(
-                                                        responseData[
-                                                            "message"]);
-                                                  });
-                                                }
-                                              }
-                                            });
-                                          },
-                                          child: SvgPicture.asset(
-                                            "assets/images/plusreorder.svg",
-                                            width: 20.w,
-                                          )),
-                                    ],
-                                  )
+                                              },
+                                              child: SvgPicture.asset(
+                                                "assets/images/plusreorder.svg",
+                                                width: 20.w,
+                                              )),
+                                        ],
+                                      )
                           ],
                         ),
                       ),
@@ -780,83 +799,87 @@ class _ProductContainerState extends State<ProductContainer> {
                                 color: const Color(0xff0E5F02),
                                 fontWeight: FontWeight.w500),
                           )
-                    : Obx(
-                        () => Row(
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (counterValue.value > widget.minValue) {
-                                      if (selectedBag.value == index) {
-                                        counter--;
-                                      }
-                                      counterValue.value--;
-                                      CartApi()
-                                          .manageCartData(
-                                              id, counterValue.value)
-                                          .then((value) {
-                                        Map<String, dynamic> responseData =
-                                            Map<String, dynamic>.from(
-                                                value.data);
+                    : ((bag.contains("Small Bag") || bag.contains("Big Bag")) &&
+                            quantity == 0)
+                        ? Text("Out of stock")
+                        : Obx(
+                            () => Row(
+                              children: [
+                                GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (counterValue.value >
+                                            widget.minValue) {
+                                          if (selectedBag.value == index) {
+                                            counter--;
+                                          }
+                                          counterValue.value--;
+                                          CartApi()
+                                              .manageCartData(
+                                                  id, counterValue.value)
+                                              .then((value) {
+                                            Map<String, dynamic> responseData =
+                                                Map<String, dynamic>.from(
+                                                    value.data);
 
-                                        utils
-                                            .showToast(responseData["message"]);
-                                      });
-                                    }
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                    "assets/images/minusbutton.svg")),
-                            sizedBoxWidth(12.w),
-                            textblack14M('${counterValue.value}'),
-                            sizedBoxWidth(8.w),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    log("RUNNING TIHIS ==> ${bag}");
-                                    if (bag.contains("Bulk")) {
-                                      if (selectedBag.value == index) {
-                                        counter++;
-                                      }
-                                      counterValue.value++;
-
-                                      CartApi()
-                                          .manageCartData(
-                                              id, counterValue.value)
-                                          .then((value) {
-                                        Map<String, dynamic> responseData =
-                                            Map<String, dynamic>.from(
-                                                value.data);
-
-                                        utils
-                                            .showToast(responseData["message"]);
-                                      });
-                                    } else {
-                                      if (counterValue.value < quantity) {
-                                        if (selectedBag.value == index) {
-                                          counter++;
+                                            utils.showToast(
+                                                responseData["message"]);
+                                          });
                                         }
-                                        counterValue.value++;
-                                      }
-                                      CartApi()
-                                          .manageCartData(
-                                              id, counterValue.value)
-                                          .then((value) {
-                                        Map<String, dynamic> responseData =
-                                            Map<String, dynamic>.from(
-                                                value.data);
-
-                                        utils
-                                            .showToast(responseData["message"]);
                                       });
-                                    }
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                    "assets/images/plusreorder.svg")),
-                          ],
-                        ),
-                      )
+                                    },
+                                    child: SvgPicture.asset(
+                                        "assets/images/minusbutton.svg")),
+                                sizedBoxWidth(12.w),
+                                textblack14M('${counterValue.value}'),
+                                sizedBoxWidth(8.w),
+                                GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        log("RUNNING TIHIS ==> ${bag}");
+                                        if (bag.contains("Bulk")) {
+                                          if (selectedBag.value == index) {
+                                            counter++;
+                                          }
+                                          counterValue.value++;
+
+                                          CartApi()
+                                              .manageCartData(
+                                                  id, counterValue.value)
+                                              .then((value) {
+                                            Map<String, dynamic> responseData =
+                                                Map<String, dynamic>.from(
+                                                    value.data);
+
+                                            utils.showToast(
+                                                responseData["message"]);
+                                          });
+                                        } else {
+                                          if (counterValue.value < quantity) {
+                                            if (selectedBag.value == index) {
+                                              counter++;
+                                            }
+                                            counterValue.value++;
+                                          }
+                                          CartApi()
+                                              .manageCartData(
+                                                  id, counterValue.value)
+                                              .then((value) {
+                                            Map<String, dynamic> responseData =
+                                                Map<String, dynamic>.from(
+                                                    value.data);
+
+                                            utils.showToast(
+                                                responseData["message"]);
+                                          });
+                                        }
+                                      });
+                                    },
+                                    child: SvgPicture.asset(
+                                        "assets/images/plusreorder.svg")),
+                              ],
+                            ),
+                          )
               ],
             ),
           ],

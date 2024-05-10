@@ -73,7 +73,7 @@ dependencies:
   onesignal_flutter: ^3.5.1
   firebase_core:
   firebase_crashlytics: ^3.4.9
-  firebase_analytics: ^10.8.0
+  firebase_analytics: ^10.10.5
 
 flutter_launcher_icons:
   android: "launcher_icon"
