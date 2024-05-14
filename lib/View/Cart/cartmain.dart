@@ -291,8 +291,8 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                                               counter.value)
                                           .then((value) {
                                         if (counter.value == 0) {
-                                          // inventoriesController.isLoading.value =
-                                          //     true;
+                                          inventoriesController
+                                              .isLoading.value = true;
                                           CartApi()
                                               .getViewCartData()
                                               .then((value) {
@@ -307,9 +307,9 @@ class _CartCardDetailsState extends State<CartCardDetails> {
                                                     .value
                                                     .data!
                                                     .subTotal!;
-                                            // inventoriesController.isLoading.value =
-                                            //     false;
-                                            // setState(() {});
+                                            inventoriesController
+                                                .isLoading.value = false;
+                                            setState(() {});
                                           });
                                         } else {
                                           int totalPriceV = 0;

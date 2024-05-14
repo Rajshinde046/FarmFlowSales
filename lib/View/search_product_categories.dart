@@ -13,7 +13,6 @@ import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
 import 'package:farm_flow_sales/view_models/inventoriesApi/inventoriesApi.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +21,11 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+
+import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart'
+    as lotsV;
+import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart'
+    as lotsvD;
 
 import 'search_item.dart';
 
@@ -42,6 +46,9 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      List<InventoriesData> outOfStockData = [];
+      List<InventoriesData> notOutOfStockData = [];
+
       inventoriesController.isApiCalling.value = true;
       await InventoriesApi()
           .getInventoriesData(
@@ -53,10 +60,66 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
           .then((value1) async {
         inventoriesController.inventoriesDataModel.value =
             InventoriesDataModel.fromJson(value1.data);
+        Future.delayed(const Duration(seconds: 1), () {
+          for (int i = 0;
+              i < inventoriesController.inventoriesDataModel.value.data!.length;
+              i++) {
+            int outOfStockNo = 0;
+
+            List<lotsV.Lots> lotOutOfStockData = [];
+
+            List<lotsV.Lots> lotNotOutOfStockData = [];
+            for (int j = 0;
+                j <
+                    inventoriesController
+                        .inventoriesDataModel.value.data![i].lots!.length;
+                j++) {
+              if (!inventoriesController
+                  .inventoriesDataModel.value.data![i].lots![j].lotName!
+                  .contains("Bulk")) {
+                if (inventoriesController.inventoriesDataModel.value.data![i]
+                        .lots![j].quantity ==
+                    0) {
+                  lotOutOfStockData.add((inventoriesController
+                      .inventoriesDataModel.value.data![i].lots![j]));
+                  outOfStockNo += 1;
+                } else {
+                  lotNotOutOfStockData.add((inventoriesController
+                      .inventoriesDataModel.value.data![i].lots![j]));
+                }
+              } else {
+                lotNotOutOfStockData.add((inventoriesController
+                    .inventoriesDataModel.value.data![i].lots![j]));
+              }
+            }
+
+            if (outOfStockNo ==
+                inventoriesController
+                    .inventoriesDataModel.value.data![i].lots!.length) {
+              lotNotOutOfStockData.addAll(lotOutOfStockData);
+              inventoriesController.inventoriesDataModel.value.data![i].lots =
+                  lotNotOutOfStockData;
+              outOfStockData.add(
+                  inventoriesController.inventoriesDataModel.value.data![i]);
+            } else {
+              lotNotOutOfStockData.addAll(lotOutOfStockData);
+              inventoriesController.inventoriesDataModel.value.data![i].lots =
+                  lotNotOutOfStockData;
+              notOutOfStockData.add(
+                  inventoriesController.inventoriesDataModel.value.data![i]);
+            }
+          }
+          notOutOfStockData.addAll(outOfStockData);
+          inventoriesController.inventoriesDataModel.value.data =
+              notOutOfStockData;
+        });
+
         await InventoriesApi().getFeedLivestockApi().then((value) {
           inventoryLivestockModel =
               InventoryLivestockModel.fromJson(value.data);
-          inventoriesController.isApiCalling.value = false;
+          Future.delayed(const Duration(seconds: 1), () {
+            inventoriesController.isApiCalling.value = false;
+          });
         });
       });
     });
@@ -73,13 +136,13 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: inventoriesController.fromWarehouse
+      bottomNavigationBar: inventoriesController.fromWarehouse
           ? const SizedBox()
-          : SizedBox(
-              width: 100.w,
-              height: 50.h,
+          : Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 20,
+              ),
               child: FloatingActionButton(
                   shape: BeveledRectangleBorder(
                       borderRadius: BorderRadius.circular(3)),
@@ -101,6 +164,7 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                         color: AppColors.white),
                   )),
             ),
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -138,6 +202,10 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                       controller: searchController,
                       onChanged: (value) async {
                         if (value.length >= 3) {
+                          List<InventoriesData> outOfStockData = [];
+
+                          List<InventoriesData> notOutOfStockData = [];
+
                           inventoriesController.isApiCalling.value = true;
                           await InventoriesApi()
                               .getInventoriesData(
@@ -149,9 +217,101 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                               .then((value) {
                             inventoriesController.inventoriesDataModel.value =
                                 InventoriesDataModel.fromJson(value.data);
-                            inventoriesController.isApiCalling.value = false;
+                            Future.delayed(const Duration(seconds: 1), () {
+                              for (int i = 0;
+                                  i <
+                                      inventoriesController.inventoriesDataModel
+                                          .value.data!.length;
+                                  i++) {
+                                int outOfStockNo = 0;
+
+                                List<lotsV.Lots> lotOutOfStockData = [];
+
+                                List<lotsV.Lots> lotNotOutOfStockData = [];
+                                for (int j = 0;
+                                    j <
+                                        inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![i]
+                                            .lots!
+                                            .length;
+                                    j++) {
+                                  if (!inventoriesController
+                                      .inventoriesDataModel
+                                      .value
+                                      .data![i]
+                                      .lots![j]
+                                      .lotName!
+                                      .contains("Bulk")) {
+                                    if (inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![i]
+                                            .lots![j]
+                                            .quantity ==
+                                        0) {
+                                      lotOutOfStockData.add(
+                                          (inventoriesController
+                                              .inventoriesDataModel
+                                              .value
+                                              .data![i]
+                                              .lots![j]));
+                                      outOfStockNo += 1;
+                                    } else {
+                                      lotNotOutOfStockData.add(
+                                          (inventoriesController
+                                              .inventoriesDataModel
+                                              .value
+                                              .data![i]
+                                              .lots![j]));
+                                    }
+                                  } else {
+                                    lotNotOutOfStockData.add(
+                                        (inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![i]
+                                            .lots![j]));
+                                  }
+                                }
+
+                                if (outOfStockNo ==
+                                    inventoriesController.inventoriesDataModel
+                                        .value.data![i].lots!.length) {
+                                  lotNotOutOfStockData
+                                      .addAll(lotOutOfStockData);
+                                  inventoriesController
+                                      .inventoriesDataModel
+                                      .value
+                                      .data![i]
+                                      .lots = lotNotOutOfStockData;
+                                  outOfStockData.add(inventoriesController
+                                      .inventoriesDataModel.value.data![i]);
+                                } else {
+                                  lotNotOutOfStockData
+                                      .addAll(lotOutOfStockData);
+                                  inventoriesController
+                                      .inventoriesDataModel
+                                      .value
+                                      .data![i]
+                                      .lots = lotNotOutOfStockData;
+                                  notOutOfStockData.add(inventoriesController
+                                      .inventoriesDataModel.value.data![i]);
+                                }
+                              }
+                              notOutOfStockData.addAll(outOfStockData);
+                              inventoriesController.inventoriesDataModel.value
+                                  .data = notOutOfStockData;
+                            });
+                            Future.delayed(const Duration(seconds: 1), () {
+                              inventoriesController.isApiCalling.value = false;
+                            });
                           });
                         } else if (value.isEmpty) {
+                          List<InventoriesData> outOfStockData = [];
+
+                          List<InventoriesData> notOutOfStockData = [];
                           inventoriesController.isApiCalling.value = true;
                           await InventoriesApi()
                               .getInventoriesData(
@@ -163,7 +323,96 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                               .then((value) {
                             inventoriesController.inventoriesDataModel.value =
                                 InventoriesDataModel.fromJson(value.data);
-                            inventoriesController.isApiCalling.value = false;
+                            Future.delayed(const Duration(seconds: 1), () {
+                              for (int i = 0;
+                                  i <
+                                      inventoriesController.inventoriesDataModel
+                                          .value.data!.length;
+                                  i++) {
+                                int outOfStockNo = 0;
+
+                                List<lotsV.Lots> lotOutOfStockData = [];
+
+                                List<lotsV.Lots> lotNotOutOfStockData = [];
+                                for (int j = 0;
+                                    j <
+                                        inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![i]
+                                            .lots!
+                                            .length;
+                                    j++) {
+                                  if (!inventoriesController
+                                      .inventoriesDataModel
+                                      .value
+                                      .data![i]
+                                      .lots![j]
+                                      .lotName!
+                                      .contains("Bulk")) {
+                                    if (inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![i]
+                                            .lots![j]
+                                            .quantity ==
+                                        0) {
+                                      lotOutOfStockData.add(
+                                          (inventoriesController
+                                              .inventoriesDataModel
+                                              .value
+                                              .data![i]
+                                              .lots![j]));
+                                      outOfStockNo += 1;
+                                    } else {
+                                      lotNotOutOfStockData.add(
+                                          (inventoriesController
+                                              .inventoriesDataModel
+                                              .value
+                                              .data![i]
+                                              .lots![j]));
+                                    }
+                                  } else {
+                                    lotNotOutOfStockData.add(
+                                        (inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![i]
+                                            .lots![j]));
+                                  }
+                                }
+
+                                if (outOfStockNo ==
+                                    inventoriesController.inventoriesDataModel
+                                        .value.data![i].lots!.length) {
+                                  lotNotOutOfStockData
+                                      .addAll(lotOutOfStockData);
+                                  inventoriesController
+                                      .inventoriesDataModel
+                                      .value
+                                      .data![i]
+                                      .lots = lotNotOutOfStockData;
+                                  outOfStockData.add(inventoriesController
+                                      .inventoriesDataModel.value.data![i]);
+                                } else {
+                                  lotNotOutOfStockData
+                                      .addAll(lotOutOfStockData);
+                                  inventoriesController
+                                      .inventoriesDataModel
+                                      .value
+                                      .data![i]
+                                      .lots = lotNotOutOfStockData;
+                                  notOutOfStockData.add(inventoriesController
+                                      .inventoriesDataModel.value.data![i]);
+                                }
+                              }
+                              notOutOfStockData.addAll(outOfStockData);
+                              inventoriesController.inventoriesDataModel.value
+                                  .data = notOutOfStockData;
+                            });
+                            Future.delayed(const Duration(seconds: 1), () {
+                              inventoriesController.isApiCalling.value = false;
+                            });
                           });
                         }
                       },
@@ -293,6 +542,9 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
               ),
               GestureDetector(
                   onTap: () async {
+                    List<InventoriesData> outOfStockData = [];
+
+                    List<InventoriesData> notOutOfStockData = [];
                     inventoriesController.isApiCalling.value = true;
                     Get.back();
                     await InventoriesApi()
@@ -305,8 +557,73 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                         .then((value) async {
                       inventoriesController.inventoriesDataModel.value =
                           InventoriesDataModel.fromJson(value.data);
+                      Future.delayed(const Duration(seconds: 1), () {
+                        for (int i = 0;
+                            i <
+                                inventoriesController
+                                    .inventoriesDataModel.value.data!.length;
+                            i++) {
+                          int outOfStockNo = 0;
 
-                      inventoriesController.isApiCalling.value = false;
+                          List<lotsV.Lots> lotOutOfStockData = [];
+
+                          List<lotsV.Lots> lotNotOutOfStockData = [];
+                          for (int j = 0;
+                              j <
+                                  inventoriesController.inventoriesDataModel
+                                      .value.data![i].lots!.length;
+                              j++) {
+                            if (!inventoriesController.inventoriesDataModel
+                                .value.data![i].lots![j].lotName!
+                                .contains("Bulk")) {
+                              if (inventoriesController.inventoriesDataModel
+                                      .value.data![i].lots![j].quantity ==
+                                  0) {
+                                lotOutOfStockData.add((inventoriesController
+                                    .inventoriesDataModel
+                                    .value
+                                    .data![i]
+                                    .lots![j]));
+                                outOfStockNo += 1;
+                              } else {
+                                lotNotOutOfStockData.add((inventoriesController
+                                    .inventoriesDataModel
+                                    .value
+                                    .data![i]
+                                    .lots![j]));
+                              }
+                            } else {
+                              lotNotOutOfStockData.add((inventoriesController
+                                  .inventoriesDataModel
+                                  .value
+                                  .data![i]
+                                  .lots![j]));
+                            }
+                          }
+
+                          if (outOfStockNo ==
+                              inventoriesController.inventoriesDataModel.value
+                                  .data![i].lots!.length) {
+                            lotNotOutOfStockData.addAll(lotOutOfStockData);
+                            inventoriesController.inventoriesDataModel.value
+                                .data![i].lots = lotNotOutOfStockData;
+                            outOfStockData.add(inventoriesController
+                                .inventoriesDataModel.value.data![i]);
+                          } else {
+                            lotNotOutOfStockData.addAll(lotOutOfStockData);
+                            inventoriesController.inventoriesDataModel.value
+                                .data![i].lots = lotNotOutOfStockData;
+                            notOutOfStockData.add(inventoriesController
+                                .inventoriesDataModel.value.data![i]);
+                          }
+                        }
+                        notOutOfStockData.addAll(outOfStockData);
+                        inventoriesController.inventoriesDataModel.value.data =
+                            notOutOfStockData;
+                      });
+                      Future.delayed(const Duration(seconds: 1), () {
+                        inventoriesController.isApiCalling.value = false;
+                      });
                     });
                   },
                   child: Container(
@@ -416,8 +733,32 @@ class _ProductContainerState extends State<ProductContainer> {
           InventoriesApi()
               .getInventoryDetailData(widget.data.id.toString())
               .then((value) async {
+            InventoryDetailsModel inventoryDetailsModel =
+                InventoryDetailsModel.fromJson(value.data);
+
+            List<lotsvD.Lots> lotOutOfStockData = [];
+
+            List<lotsvD.Lots> lotNotOutOfStockData = [];
+            for (int j = 0; j < inventoryDetailsModel.data!.lots!.length; j++) {
+              if (!inventoryDetailsModel.data!.lots![j].lotName!
+                  .contains("Bulk")) {
+                if (inventoryDetailsModel.data!.lots![j].quantity == 0) {
+                  lotOutOfStockData.add((inventoryDetailsModel.data!.lots![j]));
+                } else {
+                  lotNotOutOfStockData
+                      .add((inventoryDetailsModel.data!.lots![j]));
+                }
+              } else {
+                lotNotOutOfStockData
+                    .add((inventoryDetailsModel.data!.lots![j]));
+              }
+            }
+
+            lotNotOutOfStockData.addAll(lotOutOfStockData);
+            inventoryDetailsModel.data!.lots = lotNotOutOfStockData;
+
             var res = await Get.to(() => SearchItem(
-                  data: InventoryDetailsModel.fromJson(value.data),
+                  data: inventoryDetailsModel,
                 ));
             if (res == true) {
               inventoriesController.isApiCalling.value = true;
@@ -429,9 +770,70 @@ class _ProductContainerState extends State<ProductContainer> {
                           ? inventoriesController.wareHouseId
                           : 0)
                   .then((value1) async {
+                List<InventoriesData> outOfStockData = [];
+
+                List<InventoriesData> notOutOfStockData = [];
                 inventoriesController.inventoriesDataModel.value =
                     InventoriesDataModel.fromJson(value1.data);
-                inventoriesController.isApiCalling.value = false;
+                Future.delayed(const Duration(seconds: 1), () {
+                  for (int i = 0;
+                      i <
+                          inventoriesController
+                              .inventoriesDataModel.value.data!.length;
+                      i++) {
+                    int outOfStockNo = 0;
+
+                    List<lotsV.Lots> lotOutOfStockData = [];
+
+                    List<lotsV.Lots> lotNotOutOfStockData = [];
+                    for (int j = 0;
+                        j <
+                            inventoriesController.inventoriesDataModel.value
+                                .data![i].lots!.length;
+                        j++) {
+                      if (!inventoriesController
+                          .inventoriesDataModel.value.data![i].lots![j].lotName!
+                          .contains("Bulk")) {
+                        if (inventoriesController.inventoriesDataModel.value
+                                .data![i].lots![j].quantity ==
+                            0) {
+                          lotOutOfStockData.add((inventoriesController
+                              .inventoriesDataModel.value.data![i].lots![j]));
+                          outOfStockNo += 1;
+                        } else {
+                          lotNotOutOfStockData.add((inventoriesController
+                              .inventoriesDataModel.value.data![i].lots![j]));
+                        }
+                      } else {
+                        lotNotOutOfStockData.add((inventoriesController
+                            .inventoriesDataModel.value.data![i].lots![j]));
+                      }
+                    }
+
+                    if (outOfStockNo ==
+                        inventoriesController
+                            .inventoriesDataModel.value.data![i].lots!.length) {
+                      lotNotOutOfStockData.addAll(lotOutOfStockData);
+                      inventoriesController.inventoriesDataModel.value.data![i]
+                          .lots = lotNotOutOfStockData;
+                      outOfStockData.add(inventoriesController
+                          .inventoriesDataModel.value.data![i]);
+                    } else {
+                      lotNotOutOfStockData.addAll(lotOutOfStockData);
+                      inventoriesController.inventoriesDataModel.value.data![i]
+                          .lots = lotNotOutOfStockData;
+                      notOutOfStockData.add(inventoriesController
+                          .inventoriesDataModel.value.data![i]);
+                    }
+                  }
+                  notOutOfStockData.addAll(outOfStockData);
+                  inventoriesController.inventoriesDataModel.value.data =
+                      notOutOfStockData;
+                });
+
+                Future.delayed(const Duration(seconds: 1), () {
+                  inventoriesController.isApiCalling.value = false;
+                });
               });
             }
           });
@@ -480,8 +882,36 @@ class _ProductContainerState extends State<ProductContainer> {
                         InventoriesApi()
                             .getInventoryDetailData(widget.data.id.toString())
                             .then((value) {
+                          List<lotsvD.Lots> lotOutOfStockData = [];
+
+                          List<lotsvD.Lots> lotNotOutOfStockData = [];
                           inventoryDetailsModel =
                               InventoryDetailsModel.fromJson(value.data);
+
+                          for (int j = 0;
+                              j < inventoryDetailsModel.data!.lots!.length;
+                              j++) {
+                            if (!inventoryDetailsModel.data!.lots![j].lotName!
+                                .contains("Bulk")) {
+                              if (inventoryDetailsModel
+                                      .data!.lots![j].quantity ==
+                                  0) {
+                                lotOutOfStockData.add(
+                                    (inventoryDetailsModel.data!.lots![j]));
+                              } else {
+                                lotNotOutOfStockData.add(
+                                    (inventoryDetailsModel.data!.lots![j]));
+                              }
+                            } else {
+                              lotNotOutOfStockData
+                                  .add((inventoryDetailsModel.data!.lots![j]));
+                            }
+                          }
+
+                          lotNotOutOfStockData.addAll(lotOutOfStockData);
+                          inventoryDetailsModel.data!.lots =
+                              lotNotOutOfStockData;
+
                           showModalBottomSheet(
                             context: context,
                             builder: (context) {
@@ -527,7 +957,7 @@ class _ProductContainerState extends State<ProductContainer> {
                             textBlack18W700Center('€ ${price.value}'),
                             inventoriesController.fromWarehouse
                                 ? bagsQuantity.value == 0
-                                    ? SizedBox()
+                                    ? const SizedBox()
                                     : Text(
                                         "Quantity : ${bagsQuantity.value}",
                                         style: GoogleFonts.poppins(
@@ -544,7 +974,7 @@ class _ProductContainerState extends State<ProductContainer> {
                                         widget.data.lots![selectedBag.value]
                                                 .quantity ==
                                             0)
-                                    ? Text("Out of stock")
+                                    ? const Text("Out of stock")
                                     : Row(
                                         children: [
                                           GestureDetector(
@@ -791,7 +1221,7 @@ class _ProductContainerState extends State<ProductContainer> {
                 textBlack18W700Center('€ $amount'),
                 inventoriesController.fromWarehouse
                     ? quantity == 0
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Text(
                             "Quantity : $quantity",
                             style: GoogleFonts.poppins(
@@ -801,7 +1231,7 @@ class _ProductContainerState extends State<ProductContainer> {
                           )
                     : ((bag.contains("Small Bag") || bag.contains("Big Bag")) &&
                             quantity == 0)
-                        ? Text("Out of stock")
+                        ? const Text("Out of stock")
                         : Obx(
                             () => Row(
                               children: [

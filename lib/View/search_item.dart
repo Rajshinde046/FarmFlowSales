@@ -20,6 +20,8 @@ import '../Utils/texts.dart';
 import '../controller/inventories_controller.dart';
 import '../view_models/cartApi/cartApi.dart';
 import '../view_models/inventoriesApi/inventoriesApi.dart';
+import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart'
+    as lotsvD;
 
 class SearchItem extends StatefulWidget {
   final InventoryDetailsModel data;
@@ -87,8 +89,33 @@ class _SearchItemState extends State<SearchItem> {
                 InventoriesApi()
                     .getInventoryDetailData(widget.data.data!.id.toString())
                     .then((value) {
+                  List<lotsvD.Lots> lotOutOfStockData = [];
+
+                  List<lotsvD.Lots> lotNotOutOfStockData = [];
                   inventoryDetailsModel =
                       InventoryDetailsModel.fromJson(value.data);
+
+                  for (int j = 0;
+                      j < inventoryDetailsModel.data!.lots!.length;
+                      j++) {
+                    if (!inventoryDetailsModel.data!.lots![j].lotName!
+                        .contains("Bulk")) {
+                      if (inventoryDetailsModel.data!.lots![j].quantity == 0) {
+                        lotOutOfStockData
+                            .add((inventoryDetailsModel.data!.lots![j]));
+                      } else {
+                        lotNotOutOfStockData
+                            .add((inventoryDetailsModel.data!.lots![j]));
+                      }
+                    } else {
+                      lotNotOutOfStockData
+                          .add((inventoryDetailsModel.data!.lots![j]));
+                    }
+                  }
+
+                  lotNotOutOfStockData.addAll(lotOutOfStockData);
+                  inventoryDetailsModel.data!.lots = lotNotOutOfStockData;
+                  widget.data.data = inventoryDetailsModel.data!;
                   showModalBottomSheet(
                     context: context,
                     builder: (context) {
@@ -477,8 +504,7 @@ class _SearchItemState extends State<SearchItem> {
                                   : widget.data.data!.lots![index].quantity!,
                               widget.data.data!.lots![index].price!,
                               widget.data.data!.lots![index].lotName!,
-                              inventoryDetailsModel
-                                  .data!.lots![index].prevQuantity!,
+                              widget.data.data!.lots![index].prevQuantity!,
                               widget.data.data!.lots![index].itemMasterLotXid!,
                             ));
                       }),
@@ -499,6 +525,7 @@ class _SearchItemState extends State<SearchItem> {
     int prevQuantity,
     id,
   ) {
+    log("Prev ${prevQuantity}");
     RxInt counterValue = prevQuantity.obs;
     return Container(
       width: double.infinity,
