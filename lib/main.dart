@@ -1,18 +1,18 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:farm_flow_sales/firebase_options.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'Utils/colors.dart';
 import 'Utils/global.dart';
 import 'View/no_internet_screen.dart';
@@ -23,16 +23,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  OneSignal.shared.setAppId("8dd88b07-6a9b-46ca-8094-b0ef14d9c660");
-  OneSignal.shared.promptUserForPushNotificationPermission();
+  OneSignal.initialize("8dd88b07-6a9b-46ca-8094-b0ef14d9c660");
+// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+  OneSignal.Notifications.requestPermission(true);
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  OneSignal.shared
-      .setSubscriptionObserver((OSSubscriptionStateChanges changes) async {
-    log(changes.to.userId!.toString());
-    await prefs.setString('playerId', changes.to.userId!);
-  });
+
   token = prefs.getString('token');
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
@@ -71,7 +68,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         });
       } else {
         setState(() {
-          Get.to(() => NoInternetscreen());
+          Get.to(() => const NoInternetscreen());
         });
       }
     });

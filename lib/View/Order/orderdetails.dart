@@ -10,6 +10,7 @@ import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/utils.dart';
 import 'package:farm_flow_sales/view_models/orderApi/order_api.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,6 +34,7 @@ class _OrderdetailsState extends State<Orderdetails> {
   String? id;
   RxBool isLoading = true.obs;
   OrderDetailsModel orderDetailsModel = OrderDetailsModel();
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
@@ -41,6 +43,13 @@ class _OrderdetailsState extends State<Orderdetails> {
     OrderApi().getOrderDetails(id!).then((value) {
       orderDetailsModel = OrderDetailsModel.fromJson(value.data);
       isLoading.value = false;
+
+      _analytics.logEvent(
+        name: 'order_details_loaded',
+        parameters: {
+          'order_id': orderDetailsModel.data!.orderHeaderId,
+        },
+      );
     });
     super.initState();
   }
@@ -101,7 +110,13 @@ class _OrderdetailsState extends State<Orderdetails> {
                   children: [
                     InkWell(
                       onTap: () {
-                        launch("tel://${number}");
+                        launch("tel://$number");
+                        _analytics.logEvent(
+                          name: 'call_delivery_agent',
+                          parameters: {
+                            'number': number,
+                          },
+                        );
                       },
                       child: Container(
                         height: 48.h,
@@ -525,7 +540,15 @@ class _OrderdetailsState extends State<Orderdetails> {
                                       .downloadFile(
                                           "${ApiUrls.base}download/invoice/${orderDetailsModel.data!.orderHeaderId!}",
                                           "invoice_${orderDetailsModel.data!.orderHeaderId!}.pdf")
-                                      .then((value) {});
+                                      .then((value) {
+                                    _analytics.logEvent(
+                                      name: "download_invoice",
+                                      parameters: {
+                                        "order_id": orderDetailsModel
+                                            .data!.orderHeaderId!,
+                                      },
+                                    );
+                                  });
                                 }
                               },
                               child: Padding(
@@ -834,7 +857,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                     ),
                                   ),
                             orderDetailsModel.data!.deliveryAgent == null
-                                ? SizedBox()
+                                ? const SizedBox()
                                 : sizedBoxHeight(20.h),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -852,6 +875,13 @@ class _OrderdetailsState extends State<Orderdetails> {
                                     )
                                   : InkWell(
                                       onTap: () {
+                                        _analytics.logEvent(
+                                          name: "call_delivery_agent",
+                                          parameters: {
+                                            "delivery_agent": orderDetailsModel
+                                                .data!.deliveryAgent!,
+                                          },
+                                        );
                                         buildcontentcalldialog(
                                             context,
                                             orderDetailsModel
@@ -885,6 +915,13 @@ class _OrderdetailsState extends State<Orderdetails> {
                                         EdgeInsets.symmetric(horizontal: 16.w),
                                     child: InkWell(
                                       onTap: () {
+                                        _analytics.logEvent(
+                                          name: "cancel_order",
+                                          parameters: {
+                                            "order_id": orderDetailsModel
+                                                .data!.orderHeaderId!,
+                                          },
+                                        );
                                         Utils.loader();
                                         OrderApi()
                                             .cancelOrderApi(orderDetailsModel
@@ -933,7 +970,7 @@ class _OrderdetailsState extends State<Orderdetails> {
                                     color: Color(0xffF1F1F1),
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Color(0xFF00000029),
+                                          color: Color(0xff00000029),
                                           blurRadius: 6.0,
                                           spreadRadius: 0)
                                     ]),

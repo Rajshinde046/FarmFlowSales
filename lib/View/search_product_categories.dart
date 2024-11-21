@@ -3,7 +3,11 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Model/cartModel/cartModel.dart';
+import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart'
+    as lotsV;
 import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart';
+import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart'
+    as lotsvD;
 import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart';
 import 'package:farm_flow_sales/Model/livestockModel/inventory_livestock_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
@@ -13,6 +17,7 @@ import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
 import 'package:farm_flow_sales/view_models/inventoriesApi/inventoriesApi.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,11 +26,6 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-
-import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart'
-    as lotsV;
-import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart'
-    as lotsvD;
 
 import 'search_item.dart';
 
@@ -45,6 +45,12 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
   InventoryLivestockModel inventoryLivestockModel = InventoryLivestockModel();
   @override
   void initState() {
+    // Add analytics event for screen view
+    FirebaseAnalytics.instance.logScreenView(
+      screenName: 'SearchProductCategories',
+      screenClass: 'SearchProductCategories',
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       List<InventoriesData> outOfStockData = [];
       List<InventoriesData> notOutOfStockData = [];
@@ -202,6 +208,11 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
                       controller: searchController,
                       onChanged: (value) async {
                         if (value.length >= 3) {
+                          // Log search event
+                          FirebaseAnalytics.instance.logSearch(
+                            searchTerm: value,
+                          );
+
                           List<InventoriesData> outOfStockData = [];
 
                           List<InventoriesData> notOutOfStockData = [];
@@ -542,6 +553,15 @@ class _SearchProductCategoriesState extends State<SearchProductCategories> {
               ),
               GestureDetector(
                   onTap: () async {
+                    // Log filter applied event
+                    FirebaseAnalytics.instance.logEvent(
+                      name: 'apply_product_filter',
+                      parameters: {
+                        'filter_count': filterList.length,
+                        'filters': filterList.toString(),
+                      },
+                    );
+
                     List<InventoriesData> outOfStockData = [];
 
                     List<InventoriesData> notOutOfStockData = [];
@@ -730,6 +750,17 @@ class _ProductContainerState extends State<ProductContainer> {
     return GestureDetector(
       onTap: () {
         if (!inventoriesController.fromWarehouse) {
+          // Log product view event
+          FirebaseAnalytics.instance.logViewItem(
+            items: [
+              AnalyticsEventItem(
+                itemId: widget.data.id.toString(),
+                itemName: widget.txt,
+                price: widget.data.lots?[0].price?.toDouble(),
+              )
+            ],
+          );
+
           InventoriesApi()
               .getInventoryDetailData(widget.data.id.toString())
               .then((value) async {
@@ -956,7 +987,7 @@ class _ProductContainerState extends State<ProductContainer> {
                           children: [
                             textBlack18W700Center('€ ${price.value}'),
                             inventoriesController.fromWarehouse
-                                ? bagsQuantity.value == 0
+                                ? bagsQuantity.value <= 0
                                     ? const SizedBox()
                                     : Text(
                                         "Quantity : ${bagsQuantity.value}",
@@ -983,6 +1014,31 @@ class _ProductContainerState extends State<ProductContainer> {
                                                   if (counter.value >
                                                       widget.minValue) {
                                                     counter.value--;
+
+                                                    // Log remove from cart event
+                                                    FirebaseAnalytics.instance
+                                                        .logRemoveFromCart(
+                                                      items: [
+                                                        AnalyticsEventItem(
+                                                          itemId: widget
+                                                              .data
+                                                              .lots![selectedBag
+                                                                  .value]
+                                                              .itemMasterXid
+                                                              .toString(),
+                                                          itemName: widget.txt,
+                                                          itemVariant:
+                                                              bagText.value,
+                                                          price: price.value
+                                                              .toDouble(),
+                                                          quantity: 1,
+                                                        )
+                                                      ],
+                                                      value: price.value
+                                                          .toDouble(),
+                                                      currency: 'EUR',
+                                                    );
+
                                                     CartApi()
                                                         .manageCartData(
                                                             widget
@@ -1019,6 +1075,31 @@ class _ProductContainerState extends State<ProductContainer> {
                                                       .contains("Bulk")) {
                                                     counter.value++;
 
+                                                    // Log add to cart event
+                                                    FirebaseAnalytics.instance
+                                                        .logAddToCart(
+                                                            items: [
+                                                          AnalyticsEventItem(
+                                                            itemId: widget
+                                                                .data
+                                                                .lots![
+                                                                    selectedBag
+                                                                        .value]
+                                                                .itemMasterXid
+                                                                .toString(),
+                                                            itemName:
+                                                                widget.txt,
+                                                            itemVariant:
+                                                                bagText.value,
+                                                            price: price.value
+                                                                .toDouble(),
+                                                            quantity: 1,
+                                                          )
+                                                        ],
+                                                            value: price.value
+                                                                .toDouble(),
+                                                            currency: "EUR");
+
                                                     CartApi()
                                                         .manageCartData(
                                                             widget
@@ -1043,6 +1124,32 @@ class _ProductContainerState extends State<ProductContainer> {
                                                     if (counter.value <
                                                         bagsQuantity.value) {
                                                       counter.value++;
+
+                                                      // Log add to cart event
+                                                      FirebaseAnalytics.instance
+                                                          .logAddToCart(
+                                                        items: [
+                                                          AnalyticsEventItem(
+                                                            itemId: widget
+                                                                .data
+                                                                .lots![
+                                                                    selectedBag
+                                                                        .value]
+                                                                .itemMasterXid
+                                                                .toString(),
+                                                            itemName:
+                                                                widget.txt,
+                                                            itemVariant:
+                                                                bagText.value,
+                                                            price: price.value
+                                                                .toDouble(),
+                                                            quantity: 1,
+                                                          )
+                                                        ],
+                                                        value: price.value
+                                                            .toDouble(),
+                                                        currency: 'EUR',
+                                                      );
 
                                                       CartApi()
                                                           .manageCartData(
@@ -1244,6 +1351,23 @@ class _ProductContainerState extends State<ProductContainer> {
                                             counter--;
                                           }
                                           counterValue.value--;
+
+                                          // Log remove from cart event
+                                          FirebaseAnalytics.instance
+                                              .logRemoveFromCart(
+                                            items: [
+                                              AnalyticsEventItem(
+                                                itemId: id.toString(),
+                                                itemName: widget.txt,
+                                                itemVariant: bag,
+                                                price: amount.toDouble(),
+                                                quantity: 1,
+                                              )
+                                            ],
+                                            value: amount.toDouble(),
+                                            currency: 'EUR',
+                                          );
+
                                           CartApi()
                                               .manageCartData(
                                                   id, counterValue.value)
@@ -1266,12 +1390,27 @@ class _ProductContainerState extends State<ProductContainer> {
                                 GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        log("RUNNING TIHIS ==> ${bag}");
                                         if (bag.contains("Bulk")) {
                                           if (selectedBag.value == index) {
                                             counter++;
                                           }
                                           counterValue.value++;
+
+                                          // Log add to cart event
+                                          FirebaseAnalytics.instance
+                                              .logAddToCart(
+                                            items: [
+                                              AnalyticsEventItem(
+                                                itemId: id.toString(),
+                                                itemName: widget.txt,
+                                                itemVariant: bag,
+                                                price: amount.toDouble(),
+                                                quantity: 1,
+                                              )
+                                            ],
+                                            value: amount.toDouble(),
+                                            currency: 'EUR',
+                                          );
 
                                           CartApi()
                                               .manageCartData(
@@ -1290,18 +1429,36 @@ class _ProductContainerState extends State<ProductContainer> {
                                               counter++;
                                             }
                                             counterValue.value++;
-                                          }
-                                          CartApi()
-                                              .manageCartData(
-                                                  id, counterValue.value)
-                                              .then((value) {
-                                            Map<String, dynamic> responseData =
-                                                Map<String, dynamic>.from(
-                                                    value.data);
 
-                                            utils.showToast(
-                                                responseData["message"]);
-                                          });
+                                            // Log add to cart event
+                                            FirebaseAnalytics.instance
+                                                .logAddToCart(
+                                              items: [
+                                                AnalyticsEventItem(
+                                                  itemId: id.toString(),
+                                                  itemName: widget.txt,
+                                                  itemVariant: bag,
+                                                  price: amount.toDouble(),
+                                                  quantity: 1,
+                                                )
+                                              ],
+                                              value: amount.toDouble(),
+                                              currency: 'EUR',
+                                            );
+
+                                            CartApi()
+                                                .manageCartData(
+                                                    id, counterValue.value)
+                                                .then((value) {
+                                              Map<String, dynamic>
+                                                  responseData =
+                                                  Map<String, dynamic>.from(
+                                                      value.data);
+
+                                              utils.showToast(
+                                                  responseData["message"]);
+                                            });
+                                          }
                                         }
                                       });
                                     },

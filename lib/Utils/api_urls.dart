@@ -1,9 +1,12 @@
 class ApiUrls {
   // Base URL for the FarmFlow API.
-  static const base = "https://staging.farmflowsolutions.com/api/";
+  static const base = //"http://192.168.50.130/new-farmflow/farmflow/api/";
+      "https://staging.farmflowsolutions.com/api/";
 
   // Base URL for image resources.
-  static const baseImageUrl = "https://staging.farmflowsolutions.com/public";
+  static const baseImageUrl =
+      // "http://192.168.50.130/new-farmflow/farmflow/public";
+      "https://staging.farmflowsolutions.com/public";
 
   //Weather API base URL.
   static const weatherApi = "http://api.weatherapi.com/v1/current.json";

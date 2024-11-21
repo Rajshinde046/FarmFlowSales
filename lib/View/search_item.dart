@@ -3,25 +3,23 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:farm_flow_sales/Common/custom_button_curve.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
+import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart'
+    as lotsvD;
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:farm_flow_sales/Common/limit_range.dart';
 import '../Model/inventoriesModel/inventory_details_model.dart';
 import '../Utils/texts.dart';
 import '../controller/inventories_controller.dart';
 import '../view_models/cartApi/cartApi.dart';
 import '../view_models/inventoriesApi/inventoriesApi.dart';
-import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart'
-    as lotsvD;
 
 class SearchItem extends StatefulWidget {
   final InventoryDetailsModel data;
@@ -37,7 +35,7 @@ class SearchItem extends StatefulWidget {
 class _SearchItemState extends State<SearchItem> {
   int _current = 0;
   InventoryDetailsModel inventoryDetailsModel = InventoryDetailsModel();
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
   InventoriesController inventoriesController =
       Get.put(InventoriesController());
   RxInt counter = 0.obs;
@@ -525,7 +523,7 @@ class _SearchItemState extends State<SearchItem> {
     int prevQuantity,
     id,
   ) {
-    log("Prev ${prevQuantity}");
+    log("Prev $prevQuantity");
     RxInt counterValue = prevQuantity.obs;
     return Container(
       width: double.infinity,
@@ -578,7 +576,7 @@ class _SearchItemState extends State<SearchItem> {
                           GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  log("RUNNING TIHIS ==> ${bag}");
+                                  log("RUNNING TIHIS ==> $bag");
                                   if (bag.contains("Bulk")) {
                                     if (selectedBag.value == index) {
                                       counter++;

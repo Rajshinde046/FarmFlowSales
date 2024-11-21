@@ -4,6 +4,7 @@ import 'package:farm_flow_sales/Model/salesModel/sales_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/view_models/salesApi/sales_api.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,12 +25,23 @@ class Sales extends StatefulWidget {
 class _SalesState extends State<Sales> {
   RxBool isLoading = true.obs;
   SalesModel salesModel = SalesModel();
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
+    _analytics.setCurrentScreen(screenName: 'Sales_Screen');
+
     SalesApi().getSalesData().then((value) {
       salesModel = SalesModel.fromJson(value.data);
       isLoading.value = false;
+
+      _analytics.logEvent(
+        name: 'sales_data_loaded',
+        parameters: {
+          'target': salesModel.data?.salesData?.target?.toString() ?? '0',
+          'current': salesModel.data?.salesData?.current?.toString() ?? '0',
+        },
+      );
     });
     super.initState();
   }
@@ -91,6 +103,13 @@ class _SalesState extends State<Sales> {
                   children: [
                     InkWell(
                       onTap: () {
+                        _analytics.logEvent(
+                          name: 'sales_call_initiated',
+                          parameters: {
+                            'customer_name': name,
+                            'phone_number': number,
+                          },
+                        );
                         launch("tel://$number");
                       },
                       child: Container(

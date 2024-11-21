@@ -4,8 +4,9 @@ import 'package:farm_flow_sales/Utils/global.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/view_models/notificationApi/notificationApi.dart';
 import 'package:farm_flow_sales/view_models/profileApi/ProfileAPI.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
@@ -23,9 +24,11 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   bool state = false;
   bool fingerstate = false;
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
+    _analytics.logScreenView(screenName: 'Settings_Screen');
     NotificationAPI().getNotificationStatus().then((value) {
       NotificationStatusModel notificationStatusModel =
           NotificationStatusModel.fromJson(value.data);
@@ -335,6 +338,9 @@ class _SettingsState extends State<Settings> {
                   children: [
                     InkWell(
                       onTap: () async {
+                        await _analytics.logEvent(
+                          name: 'user_logout',
+                        );
                         ProfileAPI().logoutApi().then((value) async {
                           if (value.status == ResponseStatus.SUCCESS) {
                             SharedPreferences prefs =
@@ -447,6 +453,12 @@ class _CustomListTileState extends State<CustomListTile> {
               onToggle: (val) {
                 setState(() {
                   widget.statecontroller = val;
+                  FirebaseAnalytics.instance.logEvent(
+                    name: 'notification_settings_changed',
+                    parameters: {
+                      'enabled': val.toString(),
+                    },
+                  );
                   NotificationAPI().notificationSettingsApi(3).then((value) {});
                 });
               },

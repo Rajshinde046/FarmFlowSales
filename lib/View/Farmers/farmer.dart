@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 import '../../Model/farmerListModel.dart';
 
@@ -24,6 +25,12 @@ class _FarmerState extends State<Farmer> {
   FarmerListModel farmerData = FarmerListModel();
   @override
   void initState() {
+    // Log screen view event
+    FirebaseAnalytics.instance.logScreenView(
+      screenName: 'Farmers_List_Screen',
+      screenClass: 'Farmer',
+    );
+    
     FarmerListAPI().farmerApi().then((value) {
       if (value == "SalesAgents not connect to Any Farmer") {
         isEmpty.value = true;
@@ -91,6 +98,15 @@ class _FarmerState extends State<Farmer> {
                             children: [
                               GestureDetector(
                                 onTap: () {
+                                  // Log farmer selection event
+                                  FirebaseAnalytics.instance.logEvent(
+                                    name: 'select_farmer',
+                                    parameters: {
+                                      'farmer_id': farmerData.data!.farmers![index].id.toString(),
+                                      'farmer_name': farmerData.data!.farmers![index].userName,
+                                    },
+                                  );
+                                  
                                   Get.toNamed("/farmerdetails", arguments: {
                                     "id": farmerData.data!.farmers![index].id
                                         .toString()

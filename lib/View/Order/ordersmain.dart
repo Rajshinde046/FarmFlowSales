@@ -13,6 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 import '../../Utils/api_urls.dart';
 import '../../Utils/texts.dart';
@@ -40,9 +41,12 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
   RxBool isOngoingLoading = true.obs;
   RxBool isCompletedLoading = true.obs;
   TabController? tabController;
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this);
+    _logAnalyticsEvent("OrderMain_Init");
     if (dashboardController.selectedTab.value == 0) {
       tabController!.animateTo(0);
       OrderApi().getOngoingOrderData().then((value) {
@@ -66,6 +70,15 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
     super.initState();
   }
 
+  Future<void> _logAnalyticsEvent(String eventName) async {
+    await _analytics.logEvent(
+      name: eventName,
+      parameters: {
+        'tab': dashboardController.selectedTab.value,
+      },
+    );
+  }
+
   SingingCharacter? _character = SingingCharacter.All;
   @override
   Widget build(BuildContext context) {
@@ -80,6 +93,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
               child: TabBar(
                 controller: tabController,
                 onTap: ((value) {
+                  _logAnalyticsEvent("Tab_Tapped");
                   if (value == 0) {
                     isOngoingLoading.value = true;
                     OrderApi().getOngoingOrderData().then((value) {
@@ -137,6 +151,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                 color: AppColors.buttoncolour,
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 1500));
+                  _logAnalyticsEvent("OngoingOrders_Refreshed");
                   isOngoingLoading.value = true;
                   OrderApi().getOngoingOrderData().then((value) {
                     ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
@@ -242,6 +257,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                 color: AppColors.buttoncolour,
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 1500));
+                  _logAnalyticsEvent("PendingOrders_Refreshed");
                   isOngoingLoading.value = true;
                   OrderApi().getPendingOrdersList().then((value) {
                     ongoingOrderModel = OngoingOrderModel.fromJson(value.data);
@@ -347,6 +363,7 @@ class _OrderMainState extends State<OrderMain> with TickerProviderStateMixin {
                 color: AppColors.buttoncolour,
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 1500));
+                  _logAnalyticsEvent("CompletedOrders_Refreshed");
                   isCompletedLoading.value = true;
                   OrderApi().getCompletedOrderData("0").then((value) {
                     completedOrderModel =

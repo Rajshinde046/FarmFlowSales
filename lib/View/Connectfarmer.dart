@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:farm_flow_sales/common/limit_range.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class Connectfarmer extends StatefulWidget {
   const Connectfarmer({super.key});
@@ -26,17 +27,34 @@ class _ConnectfarmerState extends State<Connectfarmer> {
   _codecheck(BuildContext context) async {
     final isValid = _form.currentState?.validate();
     if (isValid!) {
+      await FirebaseAnalytics.instance.logEvent(
+        name: 'farmer_connect_attempt',
+        parameters: {
+          'connect_code': connectCode.text,
+        },
+      );
+
       Map<String, String> updata = {
         "connect_code": connectCode.text,
       };
       final resp = await ConnectFarmerAPI(updata).connectFarmerApi();
       if (resp.status == ResponseStatus.SUCCESS) {
-        // Future.delayed(const Duration(microseconds: 1), () {
-        //   buildconnectfarmer(context);
-        // });
+        await FirebaseAnalytics.instance.logEvent(
+          name: 'farmer_connect_success',
+          parameters: {
+            'connect_code': connectCode.text,
+          },
+        );
         connectCode.clear();
         utils.showToast("Request Send Succesfully");
       } else if (resp.status == ResponseStatus.PRIVATE) {
+        await FirebaseAnalytics.instance.logEvent(
+          name: 'farmer_connect_error',
+          parameters: {
+            'error_type': 'private',
+            'connect_code': connectCode.text,
+          },
+        );
         var message = resp.data;
         if (message.toString().contains("Already Connected to this farmer")) {
           utils.showToast(message["data"]);
@@ -44,6 +62,13 @@ class _ConnectfarmerState extends State<Connectfarmer> {
           utils.showToast(message["data"]["connect_code"][0]);
         }
       } else {
+        await FirebaseAnalytics.instance.logEvent(
+          name: 'farmer_connect_error',
+          parameters: {
+            'error_type': 'general',
+            'connect_code': connectCode.text,
+          },
+        );
         utils.showToast(resp.data);
         utils.showToast("Error");
       }

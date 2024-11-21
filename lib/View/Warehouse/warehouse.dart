@@ -3,6 +3,7 @@ import 'package:farm_flow_sales/Model/WarehouseModel.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/view_models/WarehouseAPI.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,8 +20,20 @@ class Warehouse extends StatefulWidget {
 }
 
 class _WarehouseState extends State<Warehouse> {
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
   InventoriesController inventoriesController =
       Get.put(InventoriesController());
+
+  Future<void> _logWarehouseSelection(String warehouseTitle) async {
+    await _analytics.logEvent(
+      name: 'select_warehouse',
+      parameters: {
+        'warehouse_title': warehouseTitle,
+        'timestamp': DateTime.now().toString(),
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +74,9 @@ class _WarehouseState extends State<Warehouse> {
                     return Column(
                       children: [
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            await _logWarehouseSelection(
+                                warehouseData.title ?? 'Unknown');
                             inventoriesController.fromWarehouse = true;
                             inventoriesController.wareHouseId =
                                 warehouseData.id!;

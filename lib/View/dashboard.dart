@@ -3,23 +3,23 @@ import 'dart:developer';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:farm_flow_sales/view_models/dashboardApi/dashboard_api.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:location/location.dart' as ls;
 import 'package:intl/intl.dart';
+import 'package:location/location.dart' as ls;
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../Model/NotificationModel/notification_count_model.dart';
 import '../Model/dashboardModel/dashboard_model.dart';
-import 'package:farm_flow_sales/common/limit_range.dart';
-
 import '../controller/dashboard_controller.dart';
 import '../view_models/notificationApi/notificationApi.dart';
 import '../view_models/weatherApi/weather_api.dart';
@@ -48,8 +48,42 @@ class _Dashboard extends State<Dashboard> {
     return currentTime.isAfter(sunriseTime) && currentTime.isBefore(sunsetTime);
   }
 
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+
+  // New analytics event methods
+  Future<void> _logWeatherTap() async {
+    await _analytics.logEvent(
+      name: 'view_weather_details',
+      parameters: {
+        'weather_condition': dashboardController.weatherCondition.value,
+        'temperature': dashboardController.tempValue.value,
+      },
+    );
+  }
+
+  Future<void> _logNotificationTap() async {
+    await _analytics.logEvent(
+      name: 'view_notifications',
+      parameters: {
+        'notification_count': dashboardController.notificationCount.value,
+      },
+    );
+  }
+
+  Future<void> _logProductListView() async {
+    await _analytics.logEvent(
+      name: 'view_product_list',
+      parameters: {
+        'source': 'dashboard_fab',
+      },
+    );
+  }
+
   @override
   void initState() {
+    super.initState();
+    _analytics.logScreenView(screenName: 'Dashboard');
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (dashboardController.isDashboardFirst) {
         dashboardController.isDashboardApiLoading.value = true;
@@ -140,11 +174,11 @@ class _Dashboard extends State<Dashboard> {
         padding: EdgeInsets.only(bottom: 80.h),
         child: FloatingActionButton(
             backgroundColor: AppColors.buttoncolour,
-            onPressed: () {
+            onPressed: () async {
+              await _logProductListView();
               inventoriesController.fromWarehouse = false;
               Get.toNamed('/searchnmain');
             },
-            //  _incrementCounter,
             tooltip: 'Search',
             child: SvgPicture.asset(
               "assets/images/floatingbutton.svg",
@@ -306,7 +340,8 @@ class _Dashboard extends State<Dashboard> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       InkWell(
-                                        onTap: () {
+                                        onTap: () async {
+                                          await _logNotificationTap();
                                           Get.toNamed("/notification");
                                         },
                                         child: SvgPicture.asset(
@@ -406,10 +441,11 @@ class _Dashboard extends State<Dashboard> {
                                   child: Column(
                                     children: [
                                       InkWell(
-                                        onTap: () {
+                                        onTap: () async {
                                           if (dashboardController
                                                   .permissionStatus.value !=
                                               "denied") {
+                                            await _logWeatherTap();
                                             Get.to(() =>
                                                 const WeatherForecastScreen());
                                           }
@@ -986,10 +1022,35 @@ class _Dashboard extends State<Dashboard> {
     );
   }
 
+  Future<void> _logDeliveryCardTap(String deliveryType) async {
+    await _analytics.logEvent(
+      name: 'view_delivery_list',
+      parameters: {
+        'delivery_type': deliveryType,
+      },
+    );
+  }
+
+  Future<void> _logSectionNavigation(String section) async {
+    await _analytics.logEvent(
+      name: 'navigate_section',
+      parameters: {
+        'section_name': section,
+      },
+    );
+  }
+
   Widget deliveriesCard(String image, String title, String number, int index) {
     return Expanded(
       child: InkWell(
-        onTap: () {
+        onTap: () async {
+          String deliveryType = index == 0
+              ? 'in_progress'
+              : index == 1
+                  ? 'pending'
+                  : 'completed';
+          await _logDeliveryCardTap(deliveryType);
+
           dashboardController.selectedIndex.value = 0;
           if (index == 0) {
             dashboardController.selectedTab.value = 0;
@@ -1041,7 +1102,8 @@ class _Dashboard extends State<Dashboard> {
   Widget sfwCard(String image, String title, String onTapnamed) {
     return Expanded(
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
+          await _logSectionNavigation(title.toLowerCase());
           Get.toNamed(onTapnamed);
         },
         child: Container(

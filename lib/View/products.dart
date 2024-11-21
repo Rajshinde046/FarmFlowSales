@@ -1,5 +1,11 @@
 import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart'
+    as lotsV;
 import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart';
+import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart'
+    as lotsvD;
 import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart';
 import 'package:farm_flow_sales/Model/livestockModel/inventory_livestock_model.dart';
 import 'package:farm_flow_sales/Utils/api_urls.dart';
@@ -8,6 +14,7 @@ import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:farm_flow_sales/view_models/inventoriesApi/inventoriesApi.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,12 +23,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'search_item.dart';
-import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart'
-    as lotsV;
-import 'package:farm_flow_sales/Model/inventoriesModel/inventory_details_model.dart'
-    as lotsvD;
 
 class Productspage extends StatefulWidget {
   const Productspage({Key? key}) : super(key: key);
@@ -36,8 +39,13 @@ class ProductspageState extends State<Productspage> {
   TextEditingController searchController = TextEditingController();
   List<int> filterList = [];
   InventoryLivestockModel inventoryLivestockModel = InventoryLivestockModel();
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+
   @override
   void initState() {
+    super.initState();
+    _analytics.logScreenView(screenName: 'Products_Page');
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (inventoriesController.isProductFirst) {
         inventoriesController.isApiCalling.value = true;
@@ -143,6 +151,7 @@ class ProductspageState extends State<Productspage> {
                       controller: searchController,
                       onChanged: (value) async {
                         if (value.length >= 3) {
+                          _logSearchEvent(value);
                           List<InventoriesData> outOfStockData = [];
                           List<InventoriesData> notOutOfStockData = [];
                           inventoriesController.isApiCalling.value = true;
@@ -408,27 +417,90 @@ class ProductspageState extends State<Productspage> {
                                         .data!
                                         .length,
                                     itemBuilder: (ctx, index) {
-                                      return ProductContainer(
-                                        txt: inventoriesController
-                                            .inventoriesDataModel
-                                            .value
-                                            .data![index]
-                                            .title!,
-                                        png: inventoriesController
-                                            .inventoriesDataModel
-                                            .value
-                                            .data![index]
-                                            .smallImageUrl!,
-                                        data: inventoriesController
-                                            .inventoriesDataModel
-                                            .value
-                                            .data![index],
-                                        maxValue: inventoriesController
-                                            .inventoriesDataModel
-                                            .value
-                                            .data![index]
-                                            .lots![0]
-                                            .quantity!,
+                                      return GestureDetector(
+                                        onTap: () {
+                                          _logProductSelect(
+                                              inventoriesController
+                                                  .inventoriesDataModel
+                                                  .value
+                                                  .data![index]);
+                                          InventoriesApi()
+                                              .getInventoryDetailData(
+                                                  inventoriesController
+                                                      .inventoriesDataModel
+                                                      .value
+                                                      .data![index]
+                                                      .id
+                                                      .toString())
+                                              .then((value) async {
+                                            InventoryDetailsModel
+                                                inventoryDetailsModel =
+                                                InventoryDetailsModel.fromJson(
+                                                    value.data);
+
+                                            List<lotsvD.Lots>
+                                                lotOutOfStockData = [];
+
+                                            List<lotsvD.Lots>
+                                                lotNotOutOfStockData = [];
+                                            for (int j = 0;
+                                                j <
+                                                    inventoryDetailsModel
+                                                        .data!.lots!.length;
+                                                j++) {
+                                              if (!inventoryDetailsModel
+                                                  .data!.lots![j].lotName!
+                                                  .contains("Bulk")) {
+                                                if (inventoryDetailsModel.data!
+                                                        .lots![j].quantity ==
+                                                    0) {
+                                                  lotOutOfStockData.add(
+                                                      (inventoryDetailsModel
+                                                          .data!.lots![j]));
+                                                } else {
+                                                  lotNotOutOfStockData.add(
+                                                      (inventoryDetailsModel
+                                                          .data!.lots![j]));
+                                                }
+                                              } else {
+                                                lotNotOutOfStockData.add(
+                                                    (inventoryDetailsModel
+                                                        .data!.lots![j]));
+                                              }
+                                            }
+
+                                            lotNotOutOfStockData
+                                                .addAll(lotOutOfStockData);
+                                            inventoryDetailsModel.data!.lots =
+                                                lotNotOutOfStockData;
+
+                                            Get.to(() => SearchItem(
+                                                  data: inventoryDetailsModel,
+                                                ));
+                                          });
+                                        },
+                                        child: ProductContainer(
+                                          txt: inventoriesController
+                                              .inventoriesDataModel
+                                              .value
+                                              .data![index]
+                                              .title!,
+                                          png: inventoriesController
+                                              .inventoriesDataModel
+                                              .value
+                                              .data![index]
+                                              .smallImageUrl!,
+                                          data: inventoriesController
+                                              .inventoriesDataModel
+                                              .value
+                                              .data![index],
+                                          maxValue: inventoriesController
+                                              .inventoriesDataModel
+                                              .value
+                                              .data![index]
+                                              .lots![0]
+                                              .quantity!,
+                                        ),
                                       );
                                     }),
                               )
@@ -476,6 +548,7 @@ class ProductspageState extends State<Productspage> {
               ),
               GestureDetector(
                   onTap: () async {
+                    _logFilterEvent(filterList);
                     List<InventoriesData> outOfStockData = [];
 
                     List<InventoriesData> notOutOfStockData = [];
@@ -614,6 +687,27 @@ class ProductspageState extends State<Productspage> {
       ],
     );
   }
+
+  void _logSearchEvent(String searchTerm) {
+    _analytics.logSearch(searchTerm: searchTerm);
+  }
+
+  void _logFilterEvent(List<int> filters) {
+    _analytics.logEvent(
+      name: 'apply_product_filter',
+      parameters: {
+        'filter_count': filters.length,
+        'filters': filters.toString(),
+      },
+    );
+  }
+
+  void _logProductSelect(InventoriesData product) {
+    _analytics.logSelectContent(
+      contentType: 'product',
+      itemId: product.id.toString(),
+    );
+  }
 }
 
 class ProductContainer extends StatefulWidget {
@@ -644,6 +738,7 @@ class _ProductContainerState extends State<ProductContainer> {
   InventoryDetailsModel inventoryDetailsModel = InventoryDetailsModel();
   InventoriesController inventoriesController =
       Get.put(InventoriesController());
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
@@ -658,6 +753,7 @@ class _ProductContainerState extends State<ProductContainer> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        _logProductSelect(widget.data);
         InventoriesApi()
             .getInventoryDetailData(widget.data.id.toString())
             .then((value) async {
@@ -776,13 +872,15 @@ class _ProductContainerState extends State<ProductContainer> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             textBlack18W700Center('€ ${price.value}'),
-                            bagsQuantity.value == 0
+                            bagsQuantity.value <= 0
                                 ? ((bagText.value.contains("Small Bag") ||
                                             bagText.value
                                                 .contains("Big Bag")) &&
                                         bagsQuantity.value == 0)
                                     ? const Text("Out of stock")
-                                    : SizedBox()
+                                    : bagText.value.contains("Bulk")
+                                        ? const SizedBox()
+                                        : const SizedBox()
                                 : Text(
                                     "Quantity : ${bagsQuantity.value}",
                                     style: GoogleFonts.poppins(
@@ -911,6 +1009,7 @@ class _ProductContainerState extends State<ProductContainer> {
     RxInt counterValue = prevQuantity.obs;
     return GestureDetector(
       onTap: () {
+        _logBagSelect(bag, amount);
         bagText.value = bag;
         price.value = amount;
         bagsQuantity.value = quantity;
@@ -952,6 +1051,23 @@ class _ProductContainerState extends State<ProductContainer> {
           ],
         ),
       ),
+    );
+  }
+
+  void _logProductSelect(InventoriesData product) {
+    _analytics.logSelectContent(
+      contentType: 'product',
+      itemId: product.id.toString(),
+    );
+  }
+
+  void _logBagSelect(String bagType, int price) {
+    _analytics.logEvent(
+      name: 'select_bag_type',
+      parameters: {
+        'bag_type': bagType,
+        'price': price,
+      },
     );
   }
 }

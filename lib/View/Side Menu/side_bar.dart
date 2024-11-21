@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 import '../../Model/ProfileModel/profile_info_model.dart';
 import '../../Utils/api_urls.dart';
@@ -73,6 +74,17 @@ class _SideBarState extends State<SideBar> {
     },
   ];
 
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+
+  Future<void> _logMenuItemClick(String itemName) async {
+    await _analytics.logEvent(
+      name: 'sidebar_menu_click',
+      parameters: {
+        'item_name': itemName,
+      },
+    );
+  }
+
   @override
   void initState() {
     isLoading.value = true;
@@ -100,7 +112,8 @@ class _SideBarState extends State<SideBar> {
                 children: [
                   sizedBoxHeight(80.h),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
+                      await _logMenuItemClick("Profile");
                       Get.to(() => const Profile());
                     },
                     child: Row(
@@ -193,12 +206,9 @@ class _SideBarState extends State<SideBar> {
                         return SideBarTile(
                           icon: sideBarData[index]["icon"],
                           text: sideBarData[index]["text"],
-                          onTap: () {
-                            // if (index == 4) {
-                            //   buildprofilelogoutdialog(context);
-                            // } else {
+                          onTap: () async {
+                            await _logMenuItemClick(sideBarData[index]["text"]);
                             Get.toNamed(sideBarData[index]["route"]);
-                            // }
                           },
                         );
                       },

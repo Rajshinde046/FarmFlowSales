@@ -9,6 +9,7 @@ import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
 import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -52,6 +53,19 @@ class _PlacedorderState extends State<Placedorder> {
   String state = "";
   String zipcode = "";
   String country = "";
+
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+
+  Future<void> _logOrderPlacedEvent() async {
+    await _analytics.logEvent(
+      name: 'order_placed',
+      parameters: <String, dynamic>{
+        'farmer_id': cartController.selectedFarmerId,
+        'total_amount': cartController.netValue,
+        'discount_value': cartController.discountValue,
+      },
+    );
+  }
 
   buildorderconfirmpopup() {
     return showDialog(
@@ -353,7 +367,7 @@ class _PlacedorderState extends State<Placedorder> {
                           color: Color(0xffF1F1F1),
                           boxShadow: [
                             BoxShadow(
-                                color: Color(0xff0000001F),
+                                color: Color(0xff0000001f),
                                 blurRadius: 12.0,
                                 offset: Offset(0.0, 0.75),
                                 spreadRadius: 2)
@@ -536,6 +550,7 @@ class _PlacedorderState extends State<Placedorder> {
                       if (value.status == ResponseStatus.FAILED) {
                         utils.showToast(value.message);
                       } else {
+                        _logOrderPlacedEvent();
                         buildorderconfirmpopup();
                       }
                     });

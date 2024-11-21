@@ -7,13 +7,14 @@ import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/global.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:farm_flow_sales/Utils/utils.dart';
+import 'package:farm_flow_sales/common/limit_range.dart';
 import 'package:farm_flow_sales/view_models/onBoarding/LoginAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:farm_flow_sales/common/limit_range.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,6 +33,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _logincheck() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? playerId = OneSignal.User.pushSubscription.id;
+    print("Directly fetched Player ID -> $playerId");
+
+    await prefs.setString("playerId", playerId!);
+
     final isValid = _form.currentState?.validate();
     if (isValid!) {
       Utils.loader();
