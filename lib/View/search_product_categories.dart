@@ -989,13 +989,15 @@ class _ProductContainerState extends State<ProductContainer> {
                             inventoriesController.fromWarehouse
                                 ? bagsQuantity.value <= 0
                                     ? const SizedBox()
-                                    : Text(
-                                        "Quantity : ${bagsQuantity.value}",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 16.sp,
-                                            color: const Color(0xff0E5F02),
-                                            fontWeight: FontWeight.w500),
-                                      )
+                                    : bagText.value.contains("Bulk")
+                                        ? const SizedBox()
+                                        : Text(
+                                            "Quantity : ${bagsQuantity.value}",
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 16.sp,
+                                                color: const Color(0xff0E5F02),
+                                                fontWeight: FontWeight.w500),
+                                          )
                                 : ((widget.data.lots![selectedBag.value]
                                                 .lotName!
                                                 .contains("Small Bag") ||
@@ -1329,7 +1331,9 @@ class _ProductContainerState extends State<ProductContainer> {
                 inventoriesController.fromWarehouse
                     ? quantity == 0
                         ? const SizedBox()
-                        : Text(
+                        : bagText.value.contains("Bulk")
+                            ? const SizedBox()
+                            :Text(
                             "Quantity : $quantity",
                             style: GoogleFonts.poppins(
                                 fontSize: 16.sp,

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart'
     as lotsV;
 import 'package:farm_flow_sales/Model/inventoriesModel/inventories_model.dart';
@@ -13,6 +14,7 @@ import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
 import 'package:farm_flow_sales/Utils/texts.dart';
 import 'package:farm_flow_sales/controller/inventories_controller.dart';
+import 'package:farm_flow_sales/view_models/cartApi/cartApi.dart';
 import 'package:farm_flow_sales/view_models/inventoriesApi/inventoriesApi.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,9 +49,7 @@ class ProductspageState extends State<Productspage> {
     _analytics.logScreenView(screenName: 'Products_Page');
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (inventoriesController.isProductFirst) {
-        inventoriesController.isApiCalling.value = true;
-      }
+      inventoriesController.isApiCalling.value = true;
 
       await InventoriesApi().getFeedLivestockApi().then((value) {
         inventoryLivestockModel = InventoryLivestockModel.fromJson(value.data);
@@ -417,90 +417,27 @@ class ProductspageState extends State<Productspage> {
                                         .data!
                                         .length,
                                     itemBuilder: (ctx, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          _logProductSelect(
-                                              inventoriesController
-                                                  .inventoriesDataModel
-                                                  .value
-                                                  .data![index]);
-                                          InventoriesApi()
-                                              .getInventoryDetailData(
-                                                  inventoriesController
-                                                      .inventoriesDataModel
-                                                      .value
-                                                      .data![index]
-                                                      .id
-                                                      .toString())
-                                              .then((value) async {
-                                            InventoryDetailsModel
-                                                inventoryDetailsModel =
-                                                InventoryDetailsModel.fromJson(
-                                                    value.data);
-
-                                            List<lotsvD.Lots>
-                                                lotOutOfStockData = [];
-
-                                            List<lotsvD.Lots>
-                                                lotNotOutOfStockData = [];
-                                            for (int j = 0;
-                                                j <
-                                                    inventoryDetailsModel
-                                                        .data!.lots!.length;
-                                                j++) {
-                                              if (!inventoryDetailsModel
-                                                  .data!.lots![j].lotName!
-                                                  .contains("Bulk")) {
-                                                if (inventoryDetailsModel.data!
-                                                        .lots![j].quantity ==
-                                                    0) {
-                                                  lotOutOfStockData.add(
-                                                      (inventoryDetailsModel
-                                                          .data!.lots![j]));
-                                                } else {
-                                                  lotNotOutOfStockData.add(
-                                                      (inventoryDetailsModel
-                                                          .data!.lots![j]));
-                                                }
-                                              } else {
-                                                lotNotOutOfStockData.add(
-                                                    (inventoryDetailsModel
-                                                        .data!.lots![j]));
-                                              }
-                                            }
-
-                                            lotNotOutOfStockData
-                                                .addAll(lotOutOfStockData);
-                                            inventoryDetailsModel.data!.lots =
-                                                lotNotOutOfStockData;
-
-                                            Get.to(() => SearchItem(
-                                                  data: inventoryDetailsModel,
-                                                ));
-                                          });
-                                        },
-                                        child: ProductContainer(
-                                          txt: inventoriesController
-                                              .inventoriesDataModel
-                                              .value
-                                              .data![index]
-                                              .title!,
-                                          png: inventoriesController
-                                              .inventoriesDataModel
-                                              .value
-                                              .data![index]
-                                              .smallImageUrl!,
-                                          data: inventoriesController
-                                              .inventoriesDataModel
-                                              .value
-                                              .data![index],
-                                          maxValue: inventoriesController
-                                              .inventoriesDataModel
-                                              .value
-                                              .data![index]
-                                              .lots![0]
-                                              .quantity!,
-                                        ),
+                                      return ProductContainer(
+                                        txt: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .title!,
+                                        png: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .smallImageUrl!,
+                                        data: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index],
+                                        maxValue: inventoriesController
+                                            .inventoriesDataModel
+                                            .value
+                                            .data![index]
+                                            .lots![0]
+                                            .quantity!,
                                       );
                                     }),
                               )
@@ -738,13 +675,14 @@ class _ProductContainerState extends State<ProductContainer> {
   InventoryDetailsModel inventoryDetailsModel = InventoryDetailsModel();
   InventoriesController inventoriesController =
       Get.put(InventoriesController());
-  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
     price.value = widget.data.lots![0].price!;
     bagText.value = widget.data.lots![0].lotName!;
-    bagsQuantity.value = widget.data.lots![0].quantity!;
+    bagsQuantity.value = widget.data.lots![0].quantity == null
+        ? 0
+        : widget.data.lots![0].quantity!;
     counter.value = widget.data.lots![0].prevQuantity!;
     super.initState();
   }
@@ -753,37 +691,126 @@ class _ProductContainerState extends State<ProductContainer> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _logProductSelect(widget.data);
-        InventoriesApi()
-            .getInventoryDetailData(widget.data.id.toString())
-            .then((value) async {
-          InventoryDetailsModel inventoryDetailsModel =
-              InventoryDetailsModel.fromJson(value.data);
+        if (!inventoriesController.fromWarehouse) {
+          // Log product view event
+          FirebaseAnalytics.instance.logViewItem(
+            items: [
+              AnalyticsEventItem(
+                itemId: widget.data.id.toString(),
+                itemName: widget.txt,
+                price: widget.data.lots?[0].price?.toDouble(),
+              )
+            ],
+          );
 
-          List<lotsvD.Lots> lotOutOfStockData = [];
+          InventoriesApi()
+              .getInventoryDetailData(widget.data.id.toString())
+              .then((value) async {
+            InventoryDetailsModel inventoryDetailsModel =
+                InventoryDetailsModel.fromJson(value.data);
 
-          List<lotsvD.Lots> lotNotOutOfStockData = [];
-          for (int j = 0; j < inventoryDetailsModel.data!.lots!.length; j++) {
-            if (!inventoryDetailsModel.data!.lots![j].lotName!
-                .contains("Bulk")) {
-              if (inventoryDetailsModel.data!.lots![j].quantity == 0) {
-                lotOutOfStockData.add((inventoryDetailsModel.data!.lots![j]));
+            List<lotsvD.Lots> lotOutOfStockData = [];
+
+            List<lotsvD.Lots> lotNotOutOfStockData = [];
+            for (int j = 0; j < inventoryDetailsModel.data!.lots!.length; j++) {
+              if (!inventoryDetailsModel.data!.lots![j].lotName!
+                  .contains("Bulk")) {
+                if (inventoryDetailsModel.data!.lots![j].quantity == 0) {
+                  lotOutOfStockData.add((inventoryDetailsModel.data!.lots![j]));
+                } else {
+                  lotNotOutOfStockData
+                      .add((inventoryDetailsModel.data!.lots![j]));
+                }
               } else {
                 lotNotOutOfStockData
                     .add((inventoryDetailsModel.data!.lots![j]));
               }
-            } else {
-              lotNotOutOfStockData.add((inventoryDetailsModel.data!.lots![j]));
             }
-          }
 
-          lotNotOutOfStockData.addAll(lotOutOfStockData);
-          inventoryDetailsModel.data!.lots = lotNotOutOfStockData;
+            lotNotOutOfStockData.addAll(lotOutOfStockData);
+            inventoryDetailsModel.data!.lots = lotNotOutOfStockData;
 
-          Get.to(() => SearchItem(
-                data: inventoryDetailsModel,
-              ));
-        });
+            var res = await Get.to(() => SearchItem(
+                  data: inventoryDetailsModel,
+                ));
+            if (res == true) {
+              inventoriesController.isApiCalling.value = true;
+              await InventoriesApi()
+                  .getInventoriesData(
+                      "",
+                      [],
+                      inventoriesController.fromWarehouse
+                          ? inventoriesController.wareHouseId
+                          : 0)
+                  .then((value1) async {
+                List<InventoriesData> outOfStockData = [];
+
+                List<InventoriesData> notOutOfStockData = [];
+                inventoriesController.inventoriesDataModel.value =
+                    InventoriesDataModel.fromJson(value1.data);
+                Future.delayed(const Duration(seconds: 1), () {
+                  for (int i = 0;
+                      i <
+                          inventoriesController
+                              .inventoriesDataModel.value.data!.length;
+                      i++) {
+                    int outOfStockNo = 0;
+
+                    List<lotsV.Lots> lotOutOfStockData = [];
+
+                    List<lotsV.Lots> lotNotOutOfStockData = [];
+                    for (int j = 0;
+                        j <
+                            inventoriesController.inventoriesDataModel.value
+                                .data![i].lots!.length;
+                        j++) {
+                      if (!inventoriesController
+                          .inventoriesDataModel.value.data![i].lots![j].lotName!
+                          .contains("Bulk")) {
+                        if (inventoriesController.inventoriesDataModel.value
+                                .data![i].lots![j].quantity ==
+                            0) {
+                          lotOutOfStockData.add((inventoriesController
+                              .inventoriesDataModel.value.data![i].lots![j]));
+                          outOfStockNo += 1;
+                        } else {
+                          lotNotOutOfStockData.add((inventoriesController
+                              .inventoriesDataModel.value.data![i].lots![j]));
+                        }
+                      } else {
+                        lotNotOutOfStockData.add((inventoriesController
+                            .inventoriesDataModel.value.data![i].lots![j]));
+                      }
+                    }
+
+                    if (outOfStockNo ==
+                        inventoriesController
+                            .inventoriesDataModel.value.data![i].lots!.length) {
+                      lotNotOutOfStockData.addAll(lotOutOfStockData);
+                      inventoriesController.inventoriesDataModel.value.data![i]
+                          .lots = lotNotOutOfStockData;
+                      outOfStockData.add(inventoriesController
+                          .inventoriesDataModel.value.data![i]);
+                    } else {
+                      lotNotOutOfStockData.addAll(lotOutOfStockData);
+                      inventoriesController.inventoriesDataModel.value.data![i]
+                          .lots = lotNotOutOfStockData;
+                      notOutOfStockData.add(inventoriesController
+                          .inventoriesDataModel.value.data![i]);
+                    }
+                  }
+                  notOutOfStockData.addAll(outOfStockData);
+                  inventoriesController.inventoriesDataModel.value.data =
+                      notOutOfStockData;
+                });
+
+                Future.delayed(const Duration(seconds: 1), () {
+                  inventoriesController.isApiCalling.value = false;
+                });
+              });
+            }
+          });
+        }
       },
       child: Container(
         width: double.infinity,
@@ -801,13 +828,13 @@ class _ProductContainerState extends State<ProductContainer> {
           padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 8.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CachedNetworkImage(
-                memCacheWidth: 80,
                 memCacheHeight: 97,
                 maxHeightDiskCache: 97,
-                maxWidthDiskCache: 80,
+                maxWidthDiskCache: 85,
+                memCacheWidth: 85,
                 imageUrl: "${ApiUrls.baseImageUrl}/${widget.png}",
                 placeholder: (context, url) => const CircularProgressIndicator(
                   color: AppColors.buttoncolour,
@@ -828,8 +855,36 @@ class _ProductContainerState extends State<ProductContainer> {
                         InventoriesApi()
                             .getInventoryDetailData(widget.data.id.toString())
                             .then((value) {
+                          List<lotsvD.Lots> lotOutOfStockData = [];
+
+                          List<lotsvD.Lots> lotNotOutOfStockData = [];
                           inventoryDetailsModel =
                               InventoryDetailsModel.fromJson(value.data);
+
+                          for (int j = 0;
+                              j < inventoryDetailsModel.data!.lots!.length;
+                              j++) {
+                            if (!inventoryDetailsModel.data!.lots![j].lotName!
+                                .contains("Bulk")) {
+                              if (inventoryDetailsModel
+                                      .data!.lots![j].quantity ==
+                                  0) {
+                                lotOutOfStockData.add(
+                                    (inventoryDetailsModel.data!.lots![j]));
+                              } else {
+                                lotNotOutOfStockData.add(
+                                    (inventoryDetailsModel.data!.lots![j]));
+                              }
+                            } else {
+                              lotNotOutOfStockData
+                                  .add((inventoryDetailsModel.data!.lots![j]));
+                            }
+                          }
+
+                          lotNotOutOfStockData.addAll(lotOutOfStockData);
+                          inventoryDetailsModel.data!.lots =
+                              lotNotOutOfStockData;
+
                           showModalBottomSheet(
                             context: context,
                             builder: (context) {
@@ -849,6 +904,7 @@ class _ProductContainerState extends State<ProductContainer> {
                             borderRadius: BorderRadius.circular(20)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Obx(
                               () => textGreen14(' ${bagText.value}'),
@@ -872,22 +928,203 @@ class _ProductContainerState extends State<ProductContainer> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             textBlack18W700Center('€ ${price.value}'),
-                            bagsQuantity.value <= 0
-                                ? ((bagText.value.contains("Small Bag") ||
-                                            bagText.value
-                                                .contains("Big Bag")) &&
-                                        bagsQuantity.value == 0)
-                                    ? const Text("Out of stock")
+                            inventoriesController.fromWarehouse
+                                ? bagsQuantity.value <= 0
+                                    ? const SizedBox()
                                     : bagText.value.contains("Bulk")
                                         ? const SizedBox()
-                                        : const SizedBox()
-                                : Text(
-                                    "Quantity : ${bagsQuantity.value}",
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16.sp,
-                                        color: const Color(0xff0E5F02),
-                                        fontWeight: FontWeight.w500),
-                                  )
+                                        : Text(
+                                            "Quantity : ${bagsQuantity.value}",
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 16.sp,
+                                                color: const Color(0xff0E5F02),
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                : ((widget.data.lots![selectedBag.value]
+                                                .lotName!
+                                                .contains("Small Bag") ||
+                                            widget.data.lots![selectedBag.value]
+                                                .lotName!
+                                                .contains("Big Bag")) &&
+                                        widget.data.lots![selectedBag.value]
+                                                .quantity ==
+                                            0)
+                                    ? const Text("Out of stock")
+                                    : Row(
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (counter.value >
+                                                      widget.minValue) {
+                                                    counter.value--;
+
+                                                    // Log remove from cart event
+                                                    FirebaseAnalytics.instance
+                                                        .logRemoveFromCart(
+                                                      items: [
+                                                        AnalyticsEventItem(
+                                                          itemId: widget
+                                                              .data
+                                                              .lots![selectedBag
+                                                                  .value]
+                                                              .itemMasterXid
+                                                              .toString(),
+                                                          itemName: widget.txt,
+                                                          itemVariant:
+                                                              bagText.value,
+                                                          price: price.value
+                                                              .toDouble(),
+                                                          quantity: 1,
+                                                        )
+                                                      ],
+                                                      value: price.value
+                                                          .toDouble(),
+                                                      currency: 'EUR',
+                                                    );
+
+                                                    CartApi()
+                                                        .manageCartData(
+                                                            widget
+                                                                .data
+                                                                .lots![
+                                                                    selectedBag
+                                                                        .value]
+                                                                .itemMasterXid!,
+                                                            counter.value)
+                                                        .then((value) {
+                                                      Map<String, dynamic>
+                                                          responseData = Map<
+                                                                  String,
+                                                                  dynamic>.from(
+                                                              value.data);
+                                                      utils.showToast(
+                                                          responseData[
+                                                              "message"]);
+                                                    });
+                                                  }
+                                                });
+                                              },
+                                              child: SvgPicture.asset(
+                                                "assets/images/minusbutton.svg",
+                                                width: 20.w,
+                                              )),
+                                          sizedBoxWidth(12.w),
+                                          textblack14M('${counter.value}'),
+                                          sizedBoxWidth(8.w),
+                                          GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (bagText
+                                                      .contains("Bulk")) {
+                                                    counter.value++;
+
+                                                    // Log add to cart event
+                                                    FirebaseAnalytics.instance
+                                                        .logAddToCart(
+                                                            items: [
+                                                          AnalyticsEventItem(
+                                                            itemId: widget
+                                                                .data
+                                                                .lots![
+                                                                    selectedBag
+                                                                        .value]
+                                                                .itemMasterXid
+                                                                .toString(),
+                                                            itemName:
+                                                                widget.txt,
+                                                            itemVariant:
+                                                                bagText.value,
+                                                            price: price.value
+                                                                .toDouble(),
+                                                            quantity: 1,
+                                                          )
+                                                        ],
+                                                            value: price.value
+                                                                .toDouble(),
+                                                            currency: "EUR");
+
+                                                    CartApi()
+                                                        .manageCartData(
+                                                            widget
+                                                                .data
+                                                                .lots![
+                                                                    selectedBag
+                                                                        .value]
+                                                                .itemMasterXid!,
+                                                            counter.value)
+                                                        .then((value) {
+                                                      Map<String, dynamic>
+                                                          responseData = Map<
+                                                                  String,
+                                                                  dynamic>.from(
+                                                              value.data);
+
+                                                      utils.showToast(
+                                                          responseData[
+                                                              "message"]);
+                                                    });
+                                                  } else {
+                                                    if (counter.value <
+                                                        bagsQuantity.value) {
+                                                      counter.value++;
+
+                                                      // Log add to cart event
+                                                      FirebaseAnalytics.instance
+                                                          .logAddToCart(
+                                                        items: [
+                                                          AnalyticsEventItem(
+                                                            itemId: widget
+                                                                .data
+                                                                .lots![
+                                                                    selectedBag
+                                                                        .value]
+                                                                .itemMasterXid
+                                                                .toString(),
+                                                            itemName:
+                                                                widget.txt,
+                                                            itemVariant:
+                                                                bagText.value,
+                                                            price: price.value
+                                                                .toDouble(),
+                                                            quantity: 1,
+                                                          )
+                                                        ],
+                                                        value: price.value
+                                                            .toDouble(),
+                                                        currency: 'EUR',
+                                                      );
+
+                                                      CartApi()
+                                                          .manageCartData(
+                                                              widget
+                                                                  .data
+                                                                  .lots![
+                                                                      selectedBag
+                                                                          .value]
+                                                                  .itemMasterXid!,
+                                                              counter.value)
+                                                          .then((value) {
+                                                        Map<String, dynamic>
+                                                            responseData = Map<
+                                                                    String,
+                                                                    dynamic>.from(
+                                                                value.data);
+
+                                                        utils.showToast(
+                                                            responseData[
+                                                                "message"]);
+                                                      });
+                                                    }
+                                                  }
+                                                });
+                                              },
+                                              child: SvgPicture.asset(
+                                                "assets/images/plusreorder.svg",
+                                                width: 20.w,
+                                              )),
+                                        ],
+                                      )
                           ],
                         ),
                       ),
@@ -1009,7 +1246,6 @@ class _ProductContainerState extends State<ProductContainer> {
     RxInt counterValue = prevQuantity.obs;
     return GestureDetector(
       onTap: () {
-        _logBagSelect(bag, amount);
         bagText.value = bag;
         price.value = amount;
         bagsQuantity.value = quantity;
@@ -1034,40 +1270,154 @@ class _ProductContainerState extends State<ProductContainer> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 textBlack18W700Center('€ $amount'),
-                ((bag.contains("Small Bag") || bag.contains("Big Bag")) &&
-                        quantity == 0)
-                    ? const Text("Out of stock")
-                    : quantity == 0
+                inventoriesController.fromWarehouse
+                    ? quantity == 0
                         ? const SizedBox()
-                        : Text(
-                            "Quantity : $quantity",
-                            style: GoogleFonts.poppins(
-                                fontSize: 16.sp,
-                                color: const Color(0xff0E5F02),
-                                fontWeight: FontWeight.w500),
+                        : bagText.value.contains("Bulk")
+                            ? const SizedBox()
+                            : Text(
+                                "Quantity : $quantity",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    color: const Color(0xff0E5F02),
+                                    fontWeight: FontWeight.w500),
+                              )
+                    : ((bag.contains("Small Bag") || bag.contains("Big Bag")) &&
+                            quantity == 0)
+                        ? const Text("Out of stock")
+                        : Obx(
+                            () => Row(
+                              children: [
+                                GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (counterValue.value >
+                                            widget.minValue) {
+                                          if (selectedBag.value == index) {
+                                            counter--;
+                                          }
+                                          counterValue.value--;
+
+                                          // Log remove from cart event
+                                          FirebaseAnalytics.instance
+                                              .logRemoveFromCart(
+                                            items: [
+                                              AnalyticsEventItem(
+                                                itemId: id.toString(),
+                                                itemName: widget.txt,
+                                                itemVariant: bag,
+                                                price: amount.toDouble(),
+                                                quantity: 1,
+                                              )
+                                            ],
+                                            value: amount.toDouble(),
+                                            currency: 'EUR',
+                                          );
+
+                                          CartApi()
+                                              .manageCartData(
+                                                  id, counterValue.value)
+                                              .then((value) {
+                                            Map<String, dynamic> responseData =
+                                                Map<String, dynamic>.from(
+                                                    value.data);
+
+                                            utils.showToast(
+                                                responseData["message"]);
+                                          });
+                                        }
+                                      });
+                                    },
+                                    child: SvgPicture.asset(
+                                        "assets/images/minusbutton.svg")),
+                                sizedBoxWidth(12.w),
+                                textblack14M('${counterValue.value}'),
+                                sizedBoxWidth(8.w),
+                                GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (bag.contains("Bulk")) {
+                                          if (selectedBag.value == index) {
+                                            counter++;
+                                          }
+                                          counterValue.value++;
+
+                                          // Log add to cart event
+                                          FirebaseAnalytics.instance
+                                              .logAddToCart(
+                                            items: [
+                                              AnalyticsEventItem(
+                                                itemId: id.toString(),
+                                                itemName: widget.txt,
+                                                itemVariant: bag,
+                                                price: amount.toDouble(),
+                                                quantity: 1,
+                                              )
+                                            ],
+                                            value: amount.toDouble(),
+                                            currency: 'EUR',
+                                          );
+
+                                          CartApi()
+                                              .manageCartData(
+                                                  id, counterValue.value)
+                                              .then((value) {
+                                            Map<String, dynamic> responseData =
+                                                Map<String, dynamic>.from(
+                                                    value.data);
+
+                                            utils.showToast(
+                                                responseData["message"]);
+                                          });
+                                        } else {
+                                          if (counterValue.value < quantity) {
+                                            if (selectedBag.value == index) {
+                                              counter++;
+                                            }
+                                            counterValue.value++;
+
+                                            // Log add to cart event
+                                            FirebaseAnalytics.instance
+                                                .logAddToCart(
+                                              items: [
+                                                AnalyticsEventItem(
+                                                  itemId: id.toString(),
+                                                  itemName: widget.txt,
+                                                  itemVariant: bag,
+                                                  price: amount.toDouble(),
+                                                  quantity: 1,
+                                                )
+                                              ],
+                                              value: amount.toDouble(),
+                                              currency: 'EUR',
+                                            );
+
+                                            CartApi()
+                                                .manageCartData(
+                                                    id, counterValue.value)
+                                                .then((value) {
+                                              Map<String, dynamic>
+                                                  responseData =
+                                                  Map<String, dynamic>.from(
+                                                      value.data);
+
+                                              utils.showToast(
+                                                  responseData["message"]);
+                                            });
+                                          }
+                                        }
+                                      });
+                                    },
+                                    child: SvgPicture.asset(
+                                        "assets/images/plusreorder.svg")),
+                              ],
+                            ),
                           )
               ],
             ),
           ],
         ),
       ),
-    );
-  }
-
-  void _logProductSelect(InventoriesData product) {
-    _analytics.logSelectContent(
-      contentType: 'product',
-      itemId: product.id.toString(),
-    );
-  }
-
-  void _logBagSelect(String bagType, int price) {
-    _analytics.logEvent(
-      name: 'select_bag_type',
-      parameters: {
-        'bag_type': bagType,
-        'price': price,
-      },
     );
   }
 }

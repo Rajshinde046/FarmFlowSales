@@ -164,6 +164,10 @@ class _PlacedorderState extends State<Placedorder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+      ),
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: SingleChildScrollView(

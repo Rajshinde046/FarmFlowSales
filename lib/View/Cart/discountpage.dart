@@ -39,6 +39,10 @@ class Discount extends StatelessWidget {
     // discountValueConttroller.text = "0";
     mRP = inventoriesController.cartSubTotalValue.value.toDouble();
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+      ),
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: SingleChildScrollView(

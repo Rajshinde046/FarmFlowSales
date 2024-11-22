@@ -1,3 +1,4 @@
+import 'package:farm_flow_sales/Common/limit_range.dart';
 import 'package:farm_flow_sales/Utils/colors.dart';
 import 'package:farm_flow_sales/Utils/custom_button.dart';
 import 'package:farm_flow_sales/Utils/sized_box.dart';
@@ -10,7 +11,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Common/custom_dropdown.dart';
 import '../../controller/cart_controller.dart';
 import '../../view_models/farmer/FarmerListAPI.dart';
-import 'package:farm_flow_sales/Common/limit_range.dart';
 
 class selectFrequency extends StatefulWidget {
   const selectFrequency({super.key});
@@ -83,6 +83,10 @@ class _selectFrequencyState extends State<selectFrequency> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
